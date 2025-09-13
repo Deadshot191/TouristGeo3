@@ -3,8 +3,12 @@ from typing import List, Optional, Dict, Any, Tuple
 from bson import ObjectId
 import logging
 
-from ..models import LocationHistory, LocationUpdate, LocationPoint, TouristStatus
-from ..database import get_location_history_collection, get_tourists_collection, get_geofences_collection
+try:
+    from ..models import LocationHistory, LocationUpdate, LocationPoint, TouristStatus
+    from ..database import get_location_history_collection, get_tourists_collection, get_geofences_collection
+except ImportError:
+    from models import LocationHistory, LocationUpdate, LocationPoint, TouristStatus
+    from database import get_location_history_collection, get_tourists_collection, get_geofences_collection
 
 logger = logging.getLogger(__name__)
 
