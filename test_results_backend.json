@@ -1,0 +1,140 @@
+{
+  "Health Check Root": {
+    "success": true,
+    "details": "Status: 200, Response: {'message': 'Tourism Safety API', 'status': 'operational', 'timestamp': '2025-09-13T15:20:51.285214'}",
+    "response_data": null,
+    "timestamp": "2025-09-13T15:20:51.288259"
+  },
+  "Detailed Health Check": {
+    "success": true,
+    "details": "Status: 200, Database: connected",
+    "response_data": null,
+    "timestamp": "2025-09-13T15:20:51.301754"
+  },
+  "Login Valid Credentials": {
+    "success": true,
+    "details": "Successfully logged in as Inspector Raj Kumar",
+    "response_data": null,
+    "timestamp": "2025-09-13T15:20:51.589495"
+  },
+  "Login Invalid Credentials": {
+    "success": true,
+    "details": "Status: 401, Expected 401 for invalid credentials",
+    "response_data": null,
+    "timestamp": "2025-09-13T15:20:51.599492"
+  },
+  "Protected Endpoint Valid Token": {
+    "success": true,
+    "details": "Status: 200, User: Inspector Raj Kumar",
+    "response_data": null,
+    "timestamp": "2025-09-13T15:20:51.648763"
+  },
+  "Protected Endpoint No Token": {
+    "success": true,
+    "details": "Status: 403, Expected 403 for missing token",
+    "response_data": null,
+    "timestamp": "2025-09-13T15:20:51.697724"
+  },
+  "Protected Endpoint Invalid Token": {
+    "success": true,
+    "details": "Status: 401, Expected 401 for invalid token",
+    "response_data": null,
+    "timestamp": "2025-09-13T15:20:51.706352"
+  },
+  "Get All Tourists": {
+    "success": true,
+    "details": "Status: 200, Found 5 tourists",
+    "response_data": null,
+    "timestamp": "2025-09-13T15:20:51.720030"
+  },
+  "Get Specific Tourist": {
+    "success": true,
+    "details": "Status: 200, Tourist: John Smith",
+    "response_data": null,
+    "timestamp": "2025-09-13T15:20:51.734878"
+  },
+  "Update Tourist Status": {
+    "success": true,
+    "details": "Status: 200, Response: {'message': 'Status updated successfully'}",
+    "response_data": null,
+    "timestamp": "2025-09-13T15:20:51.751901"
+  },
+  "Get Location History": {
+    "success": true,
+    "details": "Status: 200, History entries: 0",
+    "response_data": null,
+    "timestamp": "2025-09-13T15:20:51.802308"
+  },
+  "Get Tourists With Filters": {
+    "success": true,
+    "details": "Status: 200, Filtered results: 3",
+    "response_data": null,
+    "timestamp": "2025-09-13T15:20:51.815583"
+  },
+  "Get Live Locations": {
+    "success": true,
+    "details": "Status: 200, Live locations: 0",
+    "response_data": null,
+    "timestamp": "2025-09-13T15:20:51.866347"
+  },
+  "Update Location": {
+    "success": false,
+    "details": "Status: 400, Response: {'detail': 'Failed to update location'}",
+    "response_data": null,
+    "timestamp": "2025-09-13T15:20:51.915521"
+  },
+  "Get All Alerts": {
+    "success": true,
+    "details": "Status: 200, Found 0 alerts",
+    "response_data": null,
+    "timestamp": "2025-09-13T15:20:51.926790"
+  },
+  "Create Panic Alert": {
+    "success": false,
+    "details": "Status: 500, Alert ID: None",
+    "response_data": null,
+    "timestamp": "2025-09-13T15:20:51.936605"
+  },
+  "Get Alerts With Filters": {
+    "success": true,
+    "details": "Status: 200, Filtered alerts: 0",
+    "response_data": null,
+    "timestamp": "2025-09-13T15:20:51.947218"
+  },
+  "Get All Geofences": {
+    "success": true,
+    "details": "Status: 200, Found 3 geofences",
+    "response_data": null,
+    "timestamp": "2025-09-13T15:20:51.959203"
+  },
+  "Check Point in Geofences": {
+    "success": true,
+    "details": "Status: 200, Intersecting geofences: 1",
+    "response_data": null,
+    "timestamp": "2025-09-13T15:20:52.010166"
+  },
+  "Get Dashboard KPIs": {
+    "success": true,
+    "details": "Status: 200, Active tourists: 0",
+    "response_data": null,
+    "timestamp": "2025-09-13T15:20:52.026026"
+  },
+  "Get Safety Score": {
+    "success": true,
+    "details": "Status: 200, Safety score: 50",
+    "response_data": null,
+    "timestamp": "2025-09-13T15:20:52.034414"
+  },
+  "Get Location Analytics": {
+    "success": true,
+    "details": "Status: 200, Analytics data available: True",
+    "response_data": null,
+    "timestamp": "2025-09-13T15:20:52.086017"
+  },
+  "Get Alert Analytics": {
+    "success": true,
+    "details": "Status: 200, Analytics data available: True",
+    "response_data": null,
+    "timestamp": "2025-09-13T15:20:52.139061"
+  }
+}
