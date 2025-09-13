@@ -51,7 +51,10 @@ class LocationService:
             if breaches:
                 logger.warning(f"Geo-fence breaches detected for tourist {location_update.tourist_id}: {breaches}")
                 # Here we would trigger alert creation
-                from .alert_service import AlertService
+                try:
+                    from .alert_service import AlertService
+                except ImportError:
+                    from alert_service import AlertService
                 for breach in breaches:
                     await AlertService.create_geofence_breach_alert(
                         location_update.tourist_id,
