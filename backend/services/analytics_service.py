@@ -2,10 +2,16 @@ from datetime import datetime, timedelta
 from typing import Dict, List, Any
 import logging
 
-from ..models import DashboardKPIs, TouristStatus, AlertStatus, SafetyScoreResponse
-from ..services.tourist_service import TouristService
-from ..services.alert_service import AlertService
-from ..database import get_tourists_collection, get_alerts_collection, get_location_history_collection
+try:
+    from ..models import DashboardKPIs, TouristStatus, AlertStatus, SafetyScoreResponse
+    from ..services.tourist_service import TouristService
+    from ..services.alert_service import AlertService
+    from ..database import get_tourists_collection, get_alerts_collection, get_location_history_collection
+except ImportError:
+    from models import DashboardKPIs, TouristStatus, AlertStatus, SafetyScoreResponse
+    from services.tourist_service import TouristService
+    from services.alert_service import AlertService
+    from database import get_tourists_collection, get_alerts_collection, get_location_history_collection
 
 logger = logging.getLogger(__name__)
 
