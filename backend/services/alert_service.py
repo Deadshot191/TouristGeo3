@@ -273,8 +273,12 @@ class AlertService:
                 if status == AlertStatus.RESOLVED:
                     alert = await AlertService.get_alert_by_id(alert_id)
                     if alert:
-                        from .tourist_service import TouristService
-                        from ..models import TouristStatus
+                        try:
+                            from .tourist_service import TouristService
+                            from ..models import TouristStatus
+                        except ImportError:
+                            from tourist_service import TouristService
+                            from models import TouristStatus
                         await TouristService.update_tourist_status(
                             str(alert.tourist_id), 
                             TouristStatus.SAFE,
