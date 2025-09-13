@@ -235,9 +235,20 @@ class TourismSafetyAPITester:
             f"Status: {status}, Live locations: {len(data) if isinstance(data, list) else 'error'}"
         )
         
+        # Get a real tourist ID for location update test
+        success, tourists_data, status = await self.make_request("GET", "/tourists")
+        if not success or not isinstance(tourists_data, list) or len(tourists_data) == 0:
+            self.log_test("Update Location", False, "No tourists available for location update test")
+            return
+            
+        tourist_id = tourists_data[0].get('id')
+        if not tourist_id:
+            self.log_test("Update Location", False, "No valid tourist ID found")
+            return
+        
         # Test location update (this endpoint doesn't require auth based on the code)
         location_update = {
-            "tourist_id": "DIG-12AB34CD",  # Using sample tourist ID
+            "tourist_id": tourist_id,  # Using actual tourist ObjectId
             "longitude": 88.2700,
             "latitude": 27.0400,
             "address": "Test Location, Darjeeling",
