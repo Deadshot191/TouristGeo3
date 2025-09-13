@@ -208,8 +208,12 @@ async def handle_location_websocket(websocket: WebSocket, tourist_id: str):
                 location_update = LocationWebSocketData(**location_data)
                 
                 # Process location update
-                from .services.location_service import LocationService
-                from .models import LocationUpdate
+                try:
+                    from .services.location_service import LocationService
+                    from .models import LocationUpdate
+                except ImportError:
+                    from services.location_service import LocationService
+                    from models import LocationUpdate
                 
                 location_update_model = LocationUpdate(
                     tourist_id=location_update.tourist_id,
