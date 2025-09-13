@@ -206,13 +206,13 @@ const LiveMap = ({ onTouristSelect }) => {
           </div>
 
           {/* Tourist Markers */}
-          {tourists.map((tourist) => (
+          {tourists.map((tourist, index) => (
             <div
-              key={tourist.id}
+              key={tourist.tourist_id || index}
               className="absolute transform -translate-x-1/2 -translate-y-1/2 cursor-pointer transition-all hover:scale-110"
               style={{
-                left: `${30 + (Math.random() * 40)}%`,
-                top: `${20 + (Math.random() * 60)}%`
+                left: `${30 + (index * 10) % 40}%`,
+                top: `${20 + (index * 15) % 60}%`
               }}
               onClick={() => handleMarkerClick(tourist)}
             >
