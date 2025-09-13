@@ -3,10 +3,11 @@ import { Link, useLocation } from 'react-router-dom';
 import { Map, AlertTriangle, Users, Settings, LogOut, Shield } from 'lucide-react';
 import { Avatar, AvatarImage, AvatarFallback } from './ui/avatar';
 import { Button } from './ui/button';
-import { mockOfficer } from '../mock';
+import { useAuth } from '../contexts/AuthContext';
 
 const Sidebar = () => {
   const location = useLocation();
+  const { user, logout } = useAuth();
 
   const navigation = [
     { name: 'Live Map', href: '/', icon: Map, current: location.pathname === '/' },
@@ -14,6 +15,12 @@ const Sidebar = () => {
     { name: 'Tourist Database', href: '/tourists', icon: Users, current: location.pathname === '/tourists' },
     { name: 'Settings', href: '/settings', icon: Settings, current: location.pathname === '/settings' },
   ];
+
+  const handleLogout = () => {
+    logout();
+  };
+
+  if (!user) return null;
 
   return (
     <div className="flex flex-col w-64 bg-slate-800 border-r border-slate-700">
@@ -55,26 +62,28 @@ const Sidebar = () => {
       <div className="p-4 border-t border-slate-700">
         <div className="flex items-center space-x-3 mb-4">
           <Avatar className="w-10 h-10">
-            <AvatarImage src={mockOfficer.avatar} alt={mockOfficer.name} />
             <AvatarFallback className="bg-blue-600 text-white">
-              {mockOfficer.name.split(' ').map(n => n[0]).join('')}
+              {user.full_name.split(' ').map(n => n[0]).join('')}
             </AvatarFallback>
           </Avatar>
           <div className="flex-1 min-w-0">
             <p className="text-sm font-medium text-white truncate">
-              {mockOfficer.name}
+              {user.full_name}
             </p>
             <p className="text-xs text-slate-400 truncate">
-              {mockOfficer.department}
+              {user.department}
             </p>
-            <p className="text-xs text-slate-500">
-              Badge: {mockOfficer.badge}
-            </p>
+            {user.badge_number && (
+              <p className="text-xs text-slate-500">
+                Badge: {user.badge_number}
+              </p>
+            )}
           </div>
         </div>
         <Button 
           variant="outline" 
           size="sm" 
+          onClick={handleLogout}
           className="w-full border-slate-600 text-slate-300 hover:bg-slate-700 hover:text-white"
         >
           <LogOut className="w-4 h-4 mr-2" />
