@@ -92,7 +92,7 @@ class User(BaseModel):
     last_login: Optional[datetime] = None
 
     class Config:
-        allow_population_by_field_name = True
+        populate_by_name = True
         arbitrary_types_allowed = True
         json_encoders = {ObjectId: str}
 
@@ -136,7 +136,7 @@ class Tourist(BaseModel):
     last_location_update: Optional[datetime] = None
 
     class Config:
-        allow_population_by_field_name = True
+        populate_by_name = True
         arbitrary_types_allowed = True
         json_encoders = {ObjectId: str}
 
@@ -181,7 +181,7 @@ class LocationHistory(BaseModel):
     speed: Optional[float] = None
 
     class Config:
-        allow_population_by_field_name = True
+        populate_by_name = True
         arbitrary_types_allowed = True
         json_encoders = {ObjectId: str}
 
@@ -209,7 +209,7 @@ class Geofence(BaseModel):
     active: bool = True
 
     class Config:
-        allow_population_by_field_name = True
+        populate_by_name = True
         arbitrary_types_allowed = True
         json_encoders = {ObjectId: str}
 
@@ -249,7 +249,7 @@ class Alert(BaseModel):
     response_actions: List[str] = []
 
     class Config:
-        allow_population_by_field_name = True
+        populate_by_name = True
         arbitrary_types_allowed = True
         json_encoders = {ObjectId: str}
 
