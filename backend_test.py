@@ -286,52 +286,54 @@ class TourismSafetyAPITester:
             f"Status: {status}, Found {len(alerts_list)} alerts"
         )
         
-        # Test create panic alert (no auth required based on code)
-        temp_token = self.auth_token
-        self.auth_token = None
-        
-        panic_data = {
-            "tourist_id": "DIG-12AB34CD",  # Using sample tourist ID
-            "longitude": 88.2700,
-            "latitude": 27.0400,
-            "address": "Emergency Location, Darjeeling"
-        }
-        
-        # Create panic alert via query params as per the endpoint definition
-        params = {
-            "tourist_id": panic_data["tourist_id"],
-            "longitude": panic_data["longitude"],
-            "latitude": panic_data["latitude"],
-            "address": panic_data["address"]
-        }
-        
-        success, data, status = await self.make_request("POST", "/alerts/panic", params=params)
-        self.auth_token = temp_token
-        
-        alert_id = None
-        if success and isinstance(data, dict) and 'alert_id' in data:
-            alert_id = data['alert_id']
-            
-        self.log_test(
-            "Create Panic Alert", 
-            success and status == 200,
-            f"Status: {status}, Alert ID: {alert_id}"
-        )
-        
-        # Test update alert status if we have an alert
-        if alert_id:
-            status_update = {
-                "status": "in_progress",
-                "resolved_by": "Test Officer",
-                "resolution_notes": "Test resolution"
-            }
-            
-            success, data, status = await self.make_request("PUT", f"/alerts/{alert_id}/status", status_update)
-            self.log_test(
-                "Update Alert Status", 
-                success and status == 200,
-                f"Status: {status}, Response: {data}"
-            )
+        # Get a real tourist ID for panic alert test
+        success, tourists_data, status = await self.make_request("GET", "/tourists")
+        if not success or not isinstance(tourists_data, list) or len(tourists_data) == 0:
+            self.log_test("Create Panic Alert", False, "No tourists available for panic alert test")
+        else:
+            tourist_id = tourists_data[0].get('id')
+            if not tourist_id:
+                self.log_test("Create Panic Alert", False, "No valid tourist ID found")
+            else:
+                # Test create panic alert (no auth required based on code)
+                temp_token = self.auth_token
+                self.auth_token = None
+                
+                # Create panic alert via query params as per the endpoint definition
+                params = {
+                    "tourist_id": tourist_id,  # Using actual tourist ObjectId
+                    "longitude": 88.2700,
+                    "latitude": 27.0400,
+                    "address": "Emergency Location, Darjeeling"
+                }
+                
+                success, data, status = await self.make_request("POST", "/alerts/panic", params=params)
+                self.auth_token = temp_token
+                
+                alert_id = None
+                if success and isinstance(data, dict) and 'alert_id' in data:
+                    alert_id = data['alert_id']
+                    
+                self.log_test(
+                    "Create Panic Alert", 
+                    success and status == 200,
+                    f"Status: {status}, Alert ID: {alert_id}"
+                )
+                
+                # Test update alert status if we have an alert
+                if alert_id:
+                    status_update = {
+                        "status": "in_progress",
+                        "resolved_by": "Test Officer",
+                        "resolution_notes": "Test resolution"
+                    }
+                    
+                    success, data, status = await self.make_request("PUT", f"/alerts/{alert_id}/status", status_update)
+                    self.log_test(
+                        "Update Alert Status", 
+                        success and status == 200,
+                        f"Status: {status}, Response: {data}"
+                    )
         
         # Test get alerts with filters
         params = {"severity": "high", "limit": 10}
