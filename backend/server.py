@@ -9,15 +9,26 @@ from datetime import datetime, timedelta
 from typing import List, Optional
 
 # Import our modules
-from .database import connect_to_mongo, close_mongo_connection
-from .auth import create_access_token, authenticate_user, get_current_user, get_current_admin_or_police_user
-from .models import *
-from .services.tourist_service import TouristService
-from .services.location_service import LocationService
-from .services.alert_service import AlertService
-from .services.geofence_service import GeofenceService
-from .services.analytics_service import AnalyticsService
-from .websocket_manager import manager, handle_location_websocket, handle_dashboard_websocket
+try:
+    from .database import connect_to_mongo, close_mongo_connection
+    from .auth import create_access_token, authenticate_user, get_current_user, get_current_admin_or_police_user
+    from .models import *
+    from .services.tourist_service import TouristService
+    from .services.location_service import LocationService
+    from .services.alert_service import AlertService
+    from .services.geofence_service import GeofenceService
+    from .services.analytics_service import AnalyticsService
+    from .websocket_manager import manager, handle_location_websocket, handle_dashboard_websocket
+except ImportError:
+    from database import connect_to_mongo, close_mongo_connection
+    from auth import create_access_token, authenticate_user, get_current_user, get_current_admin_or_police_user
+    from models import *
+    from services.tourist_service import TouristService
+    from services.location_service import LocationService
+    from services.alert_service import AlertService
+    from services.geofence_service import GeofenceService
+    from services.analytics_service import AnalyticsService
+    from websocket_manager import manager, handle_location_websocket, handle_dashboard_websocket
 
 ROOT_DIR = Path(__file__).parent
 load_dotenv(ROOT_DIR / '.env')
