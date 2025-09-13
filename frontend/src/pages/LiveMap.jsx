@@ -282,8 +282,8 @@ const LiveMap = ({ onTouristSelect }) => {
             <div className="p-4">
               <div className="flex justify-between items-start mb-3">
                 <div>
-                  <h3 className="font-medium text-white">{selectedTourist.name}</h3>
-                  <p className="text-sm text-slate-400">{selectedTourist.digitalId}</p>
+                  <h3 className="font-medium text-white">{selectedTourist.tourist_name}</h3>
+                  <p className="text-sm text-slate-400">{selectedTourist.digital_id}</p>
                 </div>
                 <Badge className={getStatusBadgeColor(selectedTourist.status)}>
                   {selectedTourist.status.toUpperCase()}
@@ -293,15 +293,22 @@ const LiveMap = ({ onTouristSelect }) => {
               <div className="space-y-2 mb-4">
                 <div className="flex items-center space-x-2 text-sm">
                   <MapPin className="w-4 h-4 text-slate-400" />
-                  <span className="text-slate-300">{selectedTourist.location.address}</span>
+                  <span className="text-slate-300">
+                    {selectedTourist.address || `${selectedTourist.coordinates?.[1]?.toFixed(4)}, ${selectedTourist.coordinates?.[0]?.toFixed(4)}`}
+                  </span>
                 </div>
                 <p className="text-xs text-slate-500">
-                  Last updated: {new Date(selectedTourist.location.timestamp).toLocaleTimeString()}
+                  Last updated: {selectedTourist.timestamp ? new Date(selectedTourist.timestamp).toLocaleTimeString() : 'Unknown'}
                 </p>
               </div>
 
               <Button 
-                onClick={() => onTouristSelect(selectedTourist)}
+                onClick={() => onTouristSelect({
+                  id: selectedTourist.tourist_id,
+                  name: selectedTourist.tourist_name,
+                  digital_id: selectedTourist.digital_id,
+                  status: selectedTourist.status
+                })}
                 className="w-full bg-blue-600 hover:bg-blue-700 text-white"
               >
                 View Details
