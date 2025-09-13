@@ -3,26 +3,97 @@ import { MapPin, Users, AlertTriangle, Shield } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/card';
 import { Badge } from '../components/ui/badge';
 import { Button } from '../components/ui/button';
-import { mockTourists, mockKPIs, mockGeoFences } from '../mock';
+import { analyticsAPI, geofencesAPI, locationAPI, wsManager } from '../services/api';
 
 const LiveMap = ({ onTouristSelect }) => {
-  const [tourists, setTourists] = useState(mockTourists);
+  const [tourists, setTourists] = useState([]);
+  const [kpis, setKpis] = useState({
+    total_active_tourists: 0,
+    active_alerts: 0,
+    safe_status: 0,
+    high_risk_tourists: 0
+  });
+  const [geofences, setGeofences] = useState([]);
   const [selectedTourist, setSelectedTourist] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-  // Simulate real-time updates
+  // Load initial data
   useEffect(() => {
-    const interval = setInterval(() => {
-      setTourists(prev => prev.map(tourist => ({
-        ...tourist,
-        location: {
-          ...tourist.location,
-          timestamp: new Date().toISOString()
-        }
-      })));
-    }, 30000); // Update timestamps every 30 seconds
-
-    return () => clearInterval(interval);
+    loadDashboardData();
   }, []);
+
+  // Set up real-time updates
+  useEffect(() => {
+    const handleLocationUpdate = (data) => {
+      setTourists(prev => prev.map(tourist => 
+        tourist.tourist_id === data.tourist_id 
+          ? { ...tourist, ...data }
+          : tourist
+      ));
+    };
+
+    const handleStatusChange = (data) => {
+      setTourists(prev => prev.map(tourist => 
+        tourist.tourist_id === data.tourist_id 
+          ? { ...tourist, status: data.new_status }
+          : tourist
+      ));
+      // Refresh KPIs when status changes
+      loadKPIs();
+    };
+
+    wsManager.subscribe('location_update', handleLocationUpdate);
+    wsManager.subscribe('status_change', handleStatusChange);
+
+    return () => {
+      wsManager.unsubscribe('location_update', handleLocationUpdate);
+      wsManager.unsubscribe('status_change', handleStatusChange);
+    };
+  }, []);
+
+  const loadDashboardData = async () => {
+    try {
+      setLoading(true);
+      await Promise.all([
+        loadKPIs(),
+        loadLiveLocations(),
+        loadGeofences()
+      ]);
+    } catch (error) {
+      console.error('Error loading dashboard data:', error);
+      setError('Failed to load dashboard data');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const loadKPIs = async () => {
+    try {
+      const data = await analyticsAPI.getDashboardKPIs();
+      setKpis(data);
+    } catch (error) {
+      console.error('Error loading KPIs:', error);
+    }
+  };
+
+  const loadLiveLocations = async () => {
+    try {
+      const data = await locationAPI.getLiveLocations();
+      setTourists(data);
+    } catch (error) {
+      console.error('Error loading live locations:', error);
+    }
+  };
+
+  const loadGeofences = async () => {
+    try {
+      const data = await geofencesAPI.getGeofences();
+      setGeofences(data);
+    } catch (error) {
+      console.error('Error loading geofences:', error);
+    }
+  };
 
   const getStatusColor = (status) => {
     switch (status) {
