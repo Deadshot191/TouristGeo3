@@ -225,7 +225,10 @@ async def handle_location_websocket(websocket: WebSocket, tourist_id: str):
                 
                 if success:
                     # Get tourist details for broadcasting
-                    from .services.tourist_service import TouristService
+                    try:
+                        from .services.tourist_service import TouristService
+                    except ImportError:
+                        from services.tourist_service import TouristService
                     tourist = await TouristService.get_tourist_by_id(tourist_id)
                     
                     if tourist:
