@@ -391,14 +391,21 @@ class TourismSafetyAPITester:
             f"Status: {status}, Active tourists: {data.get('total_active_tourists', 'unknown') if isinstance(data, dict) else 'error'}"
         )
         
-        # Test safety score for a tourist
-        tourist_id = "DIG-12AB34CD"  # Using sample tourist ID
-        success, data, status = await self.make_request("GET", f"/analytics/safety-score/{tourist_id}")
-        self.log_test(
-            "Get Safety Score", 
-            success and status == 200,
-            f"Status: {status}, Safety score: {data.get('safety_score', 'unknown') if isinstance(data, dict) else 'error'}"
-        )
+        # Test safety score for a tourist - use actual tourist ID
+        success, tourists_data, status = await self.make_request("GET", "/tourists")
+        if success and isinstance(tourists_data, list) and len(tourists_data) > 0:
+            tourist_id = tourists_data[0].get('id')
+            if tourist_id:
+                success, data, status = await self.make_request("GET", f"/analytics/safety-score/{tourist_id}")
+                self.log_test(
+                    "Get Safety Score", 
+                    success and status == 200,
+                    f"Status: {status}, Safety score: {data.get('safety_score', 'unknown') if isinstance(data, dict) else 'error'}"
+                )
+            else:
+                self.log_test("Get Safety Score", False, "No valid tourist ID found")
+        else:
+            self.log_test("Get Safety Score", False, "No tourists available for safety score test")
         
         # Test location analytics
         params = {"hours": 24}
