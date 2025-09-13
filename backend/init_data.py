@@ -7,6 +7,10 @@ import hashlib
 from datetime import datetime, timedelta
 from bson import ObjectId
 
+import sys
+import os
+sys.path.append(os.path.dirname(os.path.abspath(__file__)))
+
 from database import connect_to_mongo, get_users_collection, get_tourists_collection
 from models import User, Tourist, UserRole, TouristStatus, EmergencyContact
 from auth import hash_password
