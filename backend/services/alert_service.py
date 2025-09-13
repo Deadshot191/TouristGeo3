@@ -4,11 +4,18 @@ from typing import List, Optional, Dict, Any
 from bson import ObjectId
 import logging
 
-from ..models import (
-    Alert, AlertCreate, AlertResponse, AlertFilters, AlertType, 
-    AlertSeverity, AlertStatus, AlertLocation
-)
-from ..database import get_alerts_collection, get_tourists_collection
+try:
+    from ..models import (
+        Alert, AlertCreate, AlertResponse, AlertFilters, AlertType, 
+        AlertSeverity, AlertStatus, AlertLocation
+    )
+    from ..database import get_alerts_collection, get_tourists_collection
+except ImportError:
+    from models import (
+        Alert, AlertCreate, AlertResponse, AlertFilters, AlertType, 
+        AlertSeverity, AlertStatus, AlertLocation
+    )
+    from database import get_alerts_collection, get_tourists_collection
 
 logger = logging.getLogger(__name__)
 
