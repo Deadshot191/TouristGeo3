@@ -117,6 +117,34 @@ const LiveMap = ({ onTouristSelect }) => {
     setSelectedTourist(tourist);
   };
 
+  if (loading) {
+    return (
+      <div className="h-full flex items-center justify-center bg-slate-900">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-400 mx-auto mb-4"></div>
+          <p className="text-slate-400">Loading dashboard...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="h-full flex items-center justify-center bg-slate-900">
+        <div className="text-center">
+          <AlertTriangle className="w-12 h-12 text-red-400 mx-auto mb-4" />
+          <p className="text-red-400">{error}</p>
+          <Button 
+            onClick={loadDashboardData}
+            className="mt-4 bg-blue-600 hover:bg-blue-700"
+          >
+            Retry
+          </Button>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="h-full flex flex-col bg-slate-900">
       {/* Header Section */}
@@ -132,7 +160,7 @@ const LiveMap = ({ onTouristSelect }) => {
                   <Users className="w-5 h-5 text-blue-400" />
                   <div>
                     <p className="text-xs text-slate-400">Total Active</p>
-                    <p className="text-lg font-bold text-white">{mockKPIs.totalActiveTourists}</p>
+                    <p className="text-lg font-bold text-white">{kpis.total_active_tourists}</p>
                   </div>
                 </div>
               </CardContent>
@@ -144,7 +172,7 @@ const LiveMap = ({ onTouristSelect }) => {
                   <AlertTriangle className="w-5 h-5 text-red-400" />
                   <div>
                     <p className="text-xs text-slate-400">Active Alerts</p>
-                    <p className="text-lg font-bold text-red-400">{mockKPIs.activeAlerts}</p>
+                    <p className="text-lg font-bold text-red-400">{kpis.active_alerts}</p>
                   </div>
                 </div>
               </CardContent>
@@ -156,7 +184,7 @@ const LiveMap = ({ onTouristSelect }) => {
                   <Shield className="w-5 h-5 text-green-400" />
                   <div>
                     <p className="text-xs text-slate-400">Safe Status</p>
-                    <p className="text-lg font-bold text-green-400">{mockKPIs.safeStatus}</p>
+                    <p className="text-lg font-bold text-green-400">{kpis.safe_status}</p>
                   </div>
                 </div>
               </CardContent>
