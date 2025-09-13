@@ -56,8 +56,12 @@ class AlertService:
             
             # Update tourist status if it's a critical alert
             if alert_data.severity in [AlertSeverity.HIGH, AlertSeverity.CRITICAL]:
-                from .tourist_service import TouristService
-                from ..models import TouristStatus
+                try:
+                    from .tourist_service import TouristService
+                    from ..models import TouristStatus
+                except ImportError:
+                    from tourist_service import TouristService
+                    from models import TouristStatus
                 
                 if alert_data.alert_type == AlertType.PANIC_BUTTON:
                     await TouristService.update_tourist_status(
