@@ -130,7 +130,10 @@ class AnalyticsService:
             )
             
             if latest_location:
-                from .geofence_service import GeofenceService
+                try:
+                    from .geofence_service import GeofenceService
+                except ImportError:
+                    from geofence_service import GeofenceService
                 coords = latest_location["coordinates"]["coordinates"]
                 intersecting_fences = await GeofenceService.check_point_in_geofences(coords[0], coords[1])
                 
