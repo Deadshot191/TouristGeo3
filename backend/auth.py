@@ -7,8 +7,12 @@ from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from typing import Optional, Dict, Any
 import logging
 
-from .models import User, UserRole
-from .database import get_users_collection
+try:
+    from .models import User, UserRole
+    from .database import get_users_collection
+except ImportError:
+    from models import User, UserRole
+    from database import get_users_collection
 
 logger = logging.getLogger(__name__)
 
