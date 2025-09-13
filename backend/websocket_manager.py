@@ -268,7 +268,10 @@ async def handle_dashboard_websocket(websocket: WebSocket):
                     await websocket.send_text(json.dumps({"type": "pong"}))
                 elif command.get("type") == "request_status":
                     # Send current system status
-                    from .services.analytics_service import AnalyticsService
+                    try:
+                        from .services.analytics_service import AnalyticsService
+                    except ImportError:
+                        from services.analytics_service import AnalyticsService
                     kpis = await AnalyticsService.get_dashboard_kpis()
                     
                     message = WebSocketMessage(
