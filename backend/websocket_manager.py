@@ -5,7 +5,10 @@ from typing import Dict, List, Set
 from fastapi import WebSocket, WebSocketDisconnect
 from datetime import datetime
 
-from .models import WebSocketMessage, LocationWebSocketData
+try:
+    from .models import WebSocketMessage, LocationWebSocketData
+except ImportError:
+    from models import WebSocketMessage, LocationWebSocketData
 
 logger = logging.getLogger(__name__)
 
