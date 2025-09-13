@@ -227,18 +227,26 @@ const LiveMap = ({ onTouristSelect }) => {
           ))}
 
           {/* Geo-fenced Zones */}
-          {mockGeoFences.map((zone) => (
+          {geofences.map((zone, index) => (
             <div
               key={zone.id}
-              className="absolute bg-red-500 bg-opacity-20 border-2 border-red-500 border-dashed rounded-lg"
+              className={`absolute border-2 border-dashed rounded-lg ${
+                zone.risk_level === 'critical' ? 'bg-red-500 bg-opacity-20 border-red-500' :
+                zone.risk_level === 'high' ? 'bg-orange-500 bg-opacity-20 border-orange-500' :
+                'bg-yellow-500 bg-opacity-20 border-yellow-500'
+              }`}
               style={{
-                left: `${60 + (Math.random() * 20)}%`,
-                top: `${30 + (Math.random() * 30)}%`,
+                left: `${60 + (index * 10) % 20}%`,
+                top: `${30 + (index * 12) % 30}%`,
                 width: '120px',
                 height: '80px'
               }}
             >
-              <div className="absolute -top-6 left-0 text-xs text-red-400 font-medium bg-slate-800 px-2 py-1 rounded">
+              <div className={`absolute -top-6 left-0 text-xs font-medium bg-slate-800 px-2 py-1 rounded ${
+                zone.risk_level === 'critical' ? 'text-red-400' :
+                zone.risk_level === 'high' ? 'text-orange-400' :
+                'text-yellow-400'
+              }`}>
                 {zone.name}
               </div>
             </div>
