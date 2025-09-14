@@ -1,140 +1,146 @@
 {
   "Health Check Root": {
     "success": true,
-    "details": "Status: 200, Response: {'message': 'Tourism Safety API', 'status': 'operational', 'timestamp': '2025-09-14T20:02:55.738011'}",
+    "details": "Status: 200, Response: {'message': 'Tourism Safety API', 'status': 'operational', 'timestamp': '2025-09-14T20:04:35.380758'}",
     "response_data": null,
-    "timestamp": "2025-09-14T20:02:55.740791"
+    "timestamp": "2025-09-14T20:04:35.384649"
   },
   "Detailed Health Check": {
     "success": true,
     "details": "Status: 200, Database: connected",
     "response_data": null,
-    "timestamp": "2025-09-14T20:02:55.787508"
+    "timestamp": "2025-09-14T20:04:35.398040"
   },
   "Login Valid Credentials": {
     "success": true,
     "details": "Successfully logged in as Inspector Kumar",
     "response_data": null,
-    "timestamp": "2025-09-14T20:02:56.033095"
+    "timestamp": "2025-09-14T20:04:35.680765"
   },
   "Login Invalid Credentials": {
     "success": true,
     "details": "Status: 401, Expected 401 for invalid credentials",
     "response_data": null,
-    "timestamp": "2025-09-14T20:02:56.042837"
+    "timestamp": "2025-09-14T20:04:35.695119"
   },
   "Protected Endpoint Valid Token": {
     "success": true,
     "details": "Status: 200, User: Inspector Kumar",
     "response_data": null,
-    "timestamp": "2025-09-14T20:02:56.053167"
+    "timestamp": "2025-09-14T20:04:35.746756"
   },
   "Protected Endpoint No Token": {
     "success": true,
     "details": "Status: 403, Expected 403 for missing token",
     "response_data": null,
-    "timestamp": "2025-09-14T20:02:56.099342"
+    "timestamp": "2025-09-14T20:04:35.754394"
   },
   "Protected Endpoint Invalid Token": {
     "success": true,
     "details": "Status: 401, Expected 401 for invalid token",
     "response_data": null,
-    "timestamp": "2025-09-14T20:02:56.105632"
+    "timestamp": "2025-09-14T20:04:35.803316"
   },
   "Get All Tourists": {
     "success": true,
     "details": "Status: 200, Found 3 tourists",
     "response_data": null,
-    "timestamp": "2025-09-14T20:02:56.120849"
+    "timestamp": "2025-09-14T20:04:35.816359"
   },
   "Get Specific Tourist": {
     "success": true,
     "details": "Status: 200, Tourist: Rajesh Sharma",
     "response_data": null,
-    "timestamp": "2025-09-14T20:02:56.171801"
+    "timestamp": "2025-09-14T20:04:35.831161"
   },
   "Update Tourist Status": {
     "success": true,
     "details": "Status: 200, Response: {'message': 'Status updated successfully'}",
     "response_data": null,
-    "timestamp": "2025-09-14T20:02:56.186154"
+    "timestamp": "2025-09-14T20:04:35.884011"
   },
   "Get Location History": {
     "success": true,
-    "details": "Status: 200, History entries: 0",
+    "details": "Status: 200, History entries: 2",
     "response_data": null,
-    "timestamp": "2025-09-14T20:02:56.195476"
+    "timestamp": "2025-09-14T20:04:35.935581"
   },
   "Get Tourists With Filters": {
     "success": true,
     "details": "Status: 200, Filtered results: 3",
     "response_data": null,
-    "timestamp": "2025-09-14T20:02:56.207432"
+    "timestamp": "2025-09-14T20:04:35.961033"
   },
   "Get Live Locations": {
     "success": true,
-    "details": "Status: 200, Live locations: 0",
+    "details": "Status: 200, Live locations: 1",
     "response_data": null,
-    "timestamp": "2025-09-14T20:02:56.257947"
+    "timestamp": "2025-09-14T20:04:36.011804"
   },
   "Update Location": {
     "success": true,
     "details": "Status: 200, Response: {'message': 'Location updated successfully'}",
     "response_data": null,
-    "timestamp": "2025-09-14T20:02:56.282118"
+    "timestamp": "2025-09-14T20:04:36.033625"
   },
   "Get All Alerts": {
     "success": true,
-    "details": "Status: 200, Found 0 alerts",
+    "details": "Status: 200, Found 2 alerts",
     "response_data": null,
-    "timestamp": "2025-09-14T20:02:56.331339"
+    "timestamp": "2025-09-14T20:04:36.085523"
   },
   "Create Panic Alert": {
-    "success": false,
-    "details": "Status: 500, Alert ID: None",
+    "success": true,
+    "details": "Status: 200, Alert ID: PN-02762AA8",
     "response_data": null,
-    "timestamp": "2025-09-14T20:02:56.351230"
+    "timestamp": "2025-09-14T20:04:36.111286"
+  },
+  "Update Alert Status": {
+    "success": false,
+    "details": "Status: 404, Response: {'detail': 'Alert not found or update failed'}",
+    "response_data": null,
+    "timestamp": "2025-09-14T20:04:36.162323"
   },
   "Get Alerts With Filters": {
     "success": true,
     "details": "Status: 200, Filtered alerts: 0",
     "response_data": null,
-    "timestamp": "2025-09-14T20:02:56.359499"
+    "timestamp": "2025-09-14T20:04:36.174940"
   },
   "Get All Geofences": {
     "success": true,
     "details": "Status: 200, Found 3 geofences",
     "response_data": null,
-    "timestamp": "2025-09-14T20:02:56.367336"
+    "timestamp": "2025-09-14T20:04:36.185154"
   },
   "Check Point in Geofences": {
     "success": true,
     "details": "Status: 200, Intersecting geofences: 1",
     "response_data": null,
-    "timestamp": "2025-09-14T20:02:56.375447"
+    "timestamp": "2025-09-14T20:04:36.196168"
   },
   "Get Dashboard KPIs": {
     "success": true,
     "details": "Status: 200, Active tourists: 2",
     "response_data": null,
-    "timestamp": "2025-09-14T20:02:56.429058"
+    "timestamp": "2025-09-14T20:04:36.252493"
   },
   "Get Safety Score": {
     "success": true,
-    "details": "Status: 200, Safety score: 75",
+    "details": "Status: 200, Safety score: 25",
     "response_data": null,
-    "timestamp": "2025-09-14T20:02:56.453343"
+    "timestamp": "2025-09-14T20:04:36.281490"
   },
   "Get Location Analytics": {
     "success": true,
     "details": "Status: 200, Analytics data available: True",
     "response_data": null,
-    "timestamp": "2025-09-14T20:02:56.506281"
+    "timestamp": "2025-09-14T20:04:36.333325"
   },
   "Get Alert Analytics": {
     "success": true,
     "details": "Status: 200, Analytics data available: True",
     "response_data": null,
-    "timestamp": "2025-09-14T20:02:56.516846"
+    "timestamp": "2025-09-14T20:04:36.345933"
   }
 }
