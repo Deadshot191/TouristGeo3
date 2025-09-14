@@ -497,11 +497,20 @@ async def startup_event():
     # Create default geo-fences
     await GeofenceService.create_default_geofences()
     
+    # Start background AI tasks
+    await task_manager.start_background_tasks()
+    
     logger.info("Tourism Safety API started successfully")
 
 @app.on_event("shutdown")
 async def shutdown_event():
     """Cleanup on shutdown"""
     logger.info("Shutting down Tourism Safety API...")
+    
+    # Stop background tasks first
+    await task_manager.stop_background_tasks()
+    
+    # Close database connection
     await close_mongo_connection()
+    
     logger.info("Tourism Safety API shut down successfully")
