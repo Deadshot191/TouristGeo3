@@ -1,0 +1,62 @@
+{
+  "Authentication": {
+    "success": true,
+    "details": "Successfully authenticated",
+    "timestamp": "2025-09-14T20:04:24.514773"
+  },
+  "Get Tourist ID": {
+    "success": true,
+    "details": "Using tourist: Rajesh Sharma",
+    "timestamp": "2025-09-14T20:04:24.543606"
+  },
+  "Location WebSocket Connection": {
+    "success": true,
+    "details": "Connected successfully",
+    "timestamp": "2025-09-14T20:04:24.610467"
+  },
+  "Send Location Update": {
+    "success": true,
+    "details": "Location data sent",
+    "timestamp": "2025-09-14T20:04:24.610776"
+  },
+  "Location Update Response": {
+    "success": true,
+    "details": "No response (expected for successful update)",
+    "timestamp": "2025-09-14T20:04:29.613845"
+  },
+  "Dashboard WebSocket Connection": {
+    "success": true,
+    "details": "Connected successfully",
+    "timestamp": "2025-09-14T20:04:29.689813"
+  },
+  "Dashboard Ping-Pong": {
+    "success": true,
+    "details": "Received pong response",
+    "timestamp": "2025-09-14T20:04:29.691735"
+  },
+  "Dashboard Status Request": {
+    "success": true,
+    "details": "Received system status",
+    "timestamp": "2025-09-14T20:04:29.698725"
+  },
+  "Create Panic Alert": {
+    "success": true,
+    "details": "Alert created: PN-0269FF7C",
+    "timestamp": "2025-09-14T20:04:29.718294"
+  },
+  "Verify Alert in Database": {
+    "success": true,
+    "details": "Alert PN-0269FF7C found with severity: critical",
+    "timestamp": "2025-09-14T20:04:29.728040"
+  },
+  "WebSocket Statistics": {
+    "success": true,
+    "details": "Total connections: 0",
+    "timestamp": "2025-09-14T20:04:29.750820"
+  },
+  "Location History Verification": {
+    "success": true,
+    "details": "Found 2 location entries",
+    "timestamp": "2025-09-14T20:04:29.798962"
+  }
+}
