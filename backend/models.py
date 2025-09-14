@@ -79,6 +79,13 @@ class LocationData(BaseModel):
     accuracy: Optional[float] = None
     speed: Optional[float] = None
 
+class PlannedItinerary(BaseModel):
+    """Planned route for tourist as GeoJSON LineString"""
+    type: str = "LineString"
+    coordinates: List[List[float]]  # Array of [longitude, latitude] points
+    waypoint_names: List[str] = []  # Names of waypoints/destinations
+    description: Optional[str] = None
+
 # User Models
 class User(BaseModel):
     id: Optional[PyObjectId] = Field(default_factory=PyObjectId, alias="_id")
