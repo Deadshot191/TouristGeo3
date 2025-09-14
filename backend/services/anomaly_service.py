@@ -13,9 +13,9 @@ try:
 except ImportError:
     from models import AlertType, AlertSeverity, TouristStatus
     from database import get_tourists_collection, get_location_history_collection, get_geofences_collection
-    from alert_service import AlertService
-    from location_service import LocationService
-    from tourist_service import TouristService
+    from services.alert_service import AlertService
+    from services.location_service import LocationService
+    from services.tourist_service import TouristService
 
 logger = logging.getLogger(__name__)
 
