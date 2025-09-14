@@ -136,6 +136,7 @@ class Tourist(BaseModel):
     visit_start_date: datetime
     visit_end_date: datetime
     itinerary: str
+    planned_route: Optional[PlannedItinerary] = None  # Enhanced itinerary with coordinates
     emergency_contacts: List[EmergencyContact] = []
     status: TouristStatus = TouristStatus.SAFE
     safety_score: int = Field(default=95, ge=0, le=100)
