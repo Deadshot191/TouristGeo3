@@ -198,13 +198,13 @@ metadata:
 
 test_plan:
   current_focus:
-    - "Enhanced Geo-fencing with MongoDB Geospatial"
-    - "Background AI Anomaly Detection Service"
-    - "Admin Geo-fence Management Endpoints"
+    - "WebSocket Location Tracking Endpoint"
+    - "Panic Button Alert Endpoint"
+    - "Real-time Dashboard WebSocket Updates"
   stuck_tasks: []
   test_all: false
   test_priority: "high_first"
 
 agent_communication:
   - agent: "main"
-    message: "Starting implementation of advanced real-time features. Found solid foundation with existing WebSocket endpoints, basic geo-fencing, and alert system. Need to enhance geo-fencing with geospatial queries, create AI anomaly detection service, and improve admin management endpoints."
+    message: "User confirmed implementation plan. Starting with testing existing WebSocket and alert features first to ensure solid foundation before implementing enhancements. AI thresholds: route deviation >2km, prolonged inactivity >90min outside safe zones."
