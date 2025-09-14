@@ -18,7 +18,9 @@ try:
     from .services.alert_service import AlertService
     from .services.geofence_service import GeofenceService
     from .services.analytics_service import AnalyticsService
+    from .services.anomaly_service import AnomalyDetectionService
     from .websocket_manager import manager, handle_location_websocket, handle_dashboard_websocket
+    from .background_tasks import task_manager
 except ImportError:
     from database import connect_to_mongo, close_mongo_connection
     from auth import create_access_token, authenticate_user, get_current_user, get_current_admin_or_police_user
@@ -28,7 +30,9 @@ except ImportError:
     from services.alert_service import AlertService
     from services.geofence_service import GeofenceService
     from services.analytics_service import AnalyticsService
+    from services.anomaly_service import AnomalyDetectionService
     from websocket_manager import manager, handle_location_websocket, handle_dashboard_websocket
+    from background_tasks import task_manager
 
 ROOT_DIR = Path(__file__).parent
 load_dotenv(ROOT_DIR / '.env')
