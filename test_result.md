@@ -158,6 +158,9 @@ backend:
       - working: true
         agent: "main"
         comment: "Dashboard WebSocket endpoint exists at /api/ws/dashboard with alert broadcasting capability"
+      - working: true
+        agent: "testing"
+        comment: "TESTED: Dashboard WebSocket connection successful, ping-pong communication working, system status requests handled correctly. Connection statistics endpoint functional. Real-time broadcasting verified."
 
   - task: "Background AI Anomaly Detection Service"
     implemented: false
