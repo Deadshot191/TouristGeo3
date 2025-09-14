@@ -167,15 +167,18 @@ backend:
 
   - task: "Background AI Anomaly Detection Service"
     implemented: true
-    working: "NA"
+    working: true
     file: "services/anomaly_service.py, background_tasks.py, server.py"
     stuck_count: 0
     priority: "high"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
       - working: "NA"
         agent: "main"
         comment: "Created comprehensive AI anomaly detection service with route deviation (>2km threshold) and prolonged inactivity (>90min threshold) detection. Added background task manager and integrated with server startup."
+      - working: true
+        agent: "testing"
+        comment: "TESTED: Background AI anomaly detection service fully operational. Background task status endpoint (/api/ai/background-tasks/status) shows service running and monitoring 2 active tourists. AI safety score calculation (/api/ai/safety-score/{tourist_id}) working with risk factor analysis. Manual anomaly check (/api/ai/anomaly-check/{tourist_id}) performs route deviation and prolonged inactivity checks successfully. Background task restart functionality working. Route deviation detection successfully triggered when tourist moved >2km from planned route. New alert types (route_deviation, prolonged_inactivity) properly created and broadcast via WebSocket."
 
   - task: "Admin Geo-fence Management Endpoints"
     implemented: true
