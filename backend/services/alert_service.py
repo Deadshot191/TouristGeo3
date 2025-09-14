@@ -60,7 +60,7 @@ class AlertService:
                     from .tourist_service import TouristService
                     from ..models import TouristStatus
                 except ImportError:
-                    from tourist_service import TouristService
+                    from services.tourist_service import TouristService
                     from models import TouristStatus
                 
                 if alert_data.alert_type == AlertType.PANIC_BUTTON:
