@@ -1,74 +1,230 @@
 {
   "Health Check Root": {
-    "success": false,
-    "details": "Status: 502, Response: ",
+    "success": true,
+    "details": "Status: 200, Response: {'message': 'Tourism Safety API', 'status': 'operational', 'timestamp': '2025-09-14T20:15:21.918186'}",
     "response_data": null,
-    "timestamp": "2025-09-14T20:14:36.499363"
+    "timestamp": "2025-09-14T20:15:21.920490"
   },
   "Detailed Health Check": {
-    "success": false,
-    "details": "Status: 502, Database: error",
+    "success": true,
+    "details": "Status: 200, Database: connected",
     "response_data": null,
-    "timestamp": "2025-09-14T20:14:36.504046"
+    "timestamp": "2025-09-14T20:15:21.928461"
   },
   "Login Valid Credentials": {
-    "success": false,
-    "details": "Status: 502, Response: ",
+    "success": true,
+    "details": "Successfully logged in as Inspector Kumar",
     "response_data": null,
-    "timestamp": "2025-09-14T20:14:36.511605"
+    "timestamp": "2025-09-14T20:15:22.172503"
   },
-  "Tourist Management": {
-    "success": false,
-    "details": "No auth token available",
+  "Login Invalid Credentials": {
+    "success": true,
+    "details": "Status: 401, Expected 401 for invalid credentials",
     "response_data": null,
-    "timestamp": "2025-09-14T20:14:36.511638"
+    "timestamp": "2025-09-14T20:15:22.181126"
   },
-  "Location Services": {
-    "success": false,
-    "details": "No auth token available",
+  "Protected Endpoint Valid Token": {
+    "success": true,
+    "details": "Status: 200, User: Inspector Kumar",
     "response_data": null,
-    "timestamp": "2025-09-14T20:14:36.511648"
+    "timestamp": "2025-09-14T20:15:22.191460"
   },
-  "Alerts System": {
-    "success": false,
-    "details": "No auth token available",
+  "Protected Endpoint No Token": {
+    "success": true,
+    "details": "Status: 403, Expected 403 for missing token",
     "response_data": null,
-    "timestamp": "2025-09-14T20:14:36.511656"
+    "timestamp": "2025-09-14T20:15:22.201048"
   },
-  "Geofencing": {
-    "success": false,
-    "details": "No auth token available",
+  "Protected Endpoint Invalid Token": {
+    "success": true,
+    "details": "Status: 401, Expected 401 for invalid token",
     "response_data": null,
-    "timestamp": "2025-09-14T20:14:36.511665"
+    "timestamp": "2025-09-14T20:15:22.247333"
   },
-  "Analytics Dashboard": {
-    "success": false,
-    "details": "No auth token available",
+  "Get All Tourists": {
+    "success": true,
+    "details": "Status: 200, Found 3 tourists",
     "response_data": null,
-    "timestamp": "2025-09-14T20:14:36.511674"
+    "timestamp": "2025-09-14T20:15:22.258386"
   },
-  "AI Anomaly Detection": {
-    "success": false,
-    "details": "No auth token available",
+  "Get Specific Tourist": {
+    "success": true,
+    "details": "Status: 200, Tourist: Rajesh Sharma",
     "response_data": null,
-    "timestamp": "2025-09-14T20:14:36.511686"
+    "timestamp": "2025-09-14T20:15:22.307542"
   },
-  "Enhanced Geofencing": {
-    "success": false,
-    "details": "No auth token available",
+  "Update Tourist Status": {
+    "success": true,
+    "details": "Status: 200, Response: {'message': 'Status updated successfully'}",
     "response_data": null,
-    "timestamp": "2025-09-14T20:14:36.511693"
+    "timestamp": "2025-09-14T20:15:22.316309"
   },
-  "New Alert Types": {
-    "success": false,
-    "details": "No auth token available",
+  "Get Location History": {
+    "success": true,
+    "details": "Status: 200, History entries: 3",
     "response_data": null,
-    "timestamp": "2025-09-14T20:14:36.511702"
+    "timestamp": "2025-09-14T20:15:22.365439"
   },
-  "Database Operations": {
-    "success": false,
-    "details": "No auth token available",
+  "Get Tourists With Filters": {
+    "success": true,
+    "details": "Status: 200, Filtered results: 3",
     "response_data": null,
-    "timestamp": "2025-09-14T20:14:36.511711"
+    "timestamp": "2025-09-14T20:15:22.375878"
+  },
+  "Get Live Locations": {
+    "success": true,
+    "details": "Status: 200, Live locations: 1",
+    "response_data": null,
+    "timestamp": "2025-09-14T20:15:22.424892"
+  },
+  "Update Location": {
+    "success": true,
+    "details": "Status: 200, Response: {'message': 'Location updated successfully'}",
+    "response_data": null,
+    "timestamp": "2025-09-14T20:15:22.595455"
+  },
+  "Get All Alerts": {
+    "success": true,
+    "details": "Status: 200, Found 3 alerts",
+    "response_data": null,
+    "timestamp": "2025-09-14T20:15:22.605857"
+  },
+  "Create Panic Alert": {
+    "success": true,
+    "details": "Status: 200, Alert ID: PN-09227E1F",
+    "response_data": null,
+    "timestamp": "2025-09-14T20:15:22.626434"
+  },
+  "Update Alert Status": {
+    "success": false,
+    "details": "Status: 404, Response: {'detail': 'Alert not found or update failed'}",
+    "response_data": null,
+    "timestamp": "2025-09-14T20:15:22.674903"
+  },
+  "Get Alerts With Filters": {
+    "success": true,
+    "details": "Status: 200, Filtered alerts: 0",
+    "response_data": null,
+    "timestamp": "2025-09-14T20:15:22.797935"
+  },
+  "Get All Geofences": {
+    "success": true,
+    "details": "Status: 200, Found 3 geofences",
+    "response_data": null,
+    "timestamp": "2025-09-14T20:15:22.805785"
+  },
+  "Check Point in Geofences": {
+    "success": true,
+    "details": "Status: 200, Intersecting geofences: 1",
+    "response_data": null,
+    "timestamp": "2025-09-14T20:15:22.813102"
+  },
+  "Get Dashboard KPIs": {
+    "success": true,
+    "details": "Status: 200, Active tourists: 2",
+    "response_data": null,
+    "timestamp": "2025-09-14T20:15:22.824631"
+  },
+  "Get Safety Score": {
+    "success": true,
+    "details": "Status: 200, Safety score: 25",
+    "response_data": null,
+    "timestamp": "2025-09-14T20:15:23.014673"
+  },
+  "Get Location Analytics": {
+    "success": true,
+    "details": "Status: 200, Analytics data available: True",
+    "response_data": null,
+    "timestamp": "2025-09-14T20:15:23.024808"
+  },
+  "Get Alert Analytics": {
+    "success": true,
+    "details": "Status: 200, Analytics data available: True",
+    "response_data": null,
+    "timestamp": "2025-09-14T20:15:23.035135"
+  },
+  "Background Task Status": {
+    "success": true,
+    "details": "Status: 200, Running: True",
+    "response_data": null,
+    "timestamp": "2025-09-14T20:15:23.042129"
+  },
+  "AI Safety Score Calculation": {
+    "success": true,
+    "details": "Status: 200, Safety Score: 0",
+    "response_data": null,
+    "timestamp": "2025-09-14T20:15:23.101904"
+  },
+  "Manual Anomaly Check": {
+    "success": true,
+    "details": "Status: 200, Checks performed: 2",
+    "response_data": null,
+    "timestamp": "2025-09-14T20:15:23.113452"
+  },
+  "Background Task Restart": {
+    "success": true,
+    "details": "Status: 200, Response: Background tasks restarted",
+    "response_data": null,
+    "timestamp": "2025-09-14T20:15:23.121756"
+  },
+  "Geospatial Check - Central Darjeeling": {
+    "success": true,
+    "details": "Status: 200, Intersecting geofences: 1",
+    "response_data": null,
+    "timestamp": "2025-09-14T20:15:23.170933"
+  },
+  "Geospatial Check - Near Military Zone": {
+    "success": true,
+    "details": "Status: 200, Intersecting geofences: 1",
+    "response_data": null,
+    "timestamp": "2025-09-14T20:15:23.179493"
+  },
+  "Geospatial Check - Landslide Area": {
+    "success": true,
+    "details": "Status: 200, Intersecting geofences: 1",
+    "response_data": null,
+    "timestamp": "2025-09-14T20:15:23.197670"
+  },
+  "Geospatial Check - Mall Road Safe Zone": {
+    "success": true,
+    "details": "Status: 200, Intersecting geofences: 1",
+    "response_data": null,
+    "timestamp": "2025-09-14T20:15:23.205148"
+  },
+  "Geofence List with Geospatial Data": {
+    "success": true,
+    "details": "Status: 200, Found 3 geofences with geospatial coordinates",
+    "response_data": null,
+    "timestamp": "2025-09-14T20:15:23.298824"
+  },
+  "Alert Types Analysis": {
+    "success": true,
+    "details": "Status: 200, Alert types found: ['panic_button'], Total alerts: 4",
+    "response_data": null,
+    "timestamp": "2025-09-14T20:15:23.311843"
+  },
+  "Filter Alerts - route_deviation": {
+    "success": true,
+    "details": "Status: 200, Found 0 route_deviation alerts",
+    "response_data": null,
+    "timestamp": "2025-09-14T20:15:23.320847"
+  },
+  "Filter Alerts - prolonged_inactivity": {
+    "success": true,
+    "details": "Status: 200, Found 0 prolonged_inactivity alerts",
+    "response_data": null,
+    "timestamp": "2025-09-14T20:15:23.394035"
+  },
+  "Location History Geospatial Data": {
+    "success": true,
+    "details": "Status: 200, History entries: 4, Has geospatial data: True",
+    "response_data": null,
+    "timestamp": "2025-09-14T20:15:23.502680"
+  },
+  "Live Locations Geospatial Structure": {
+    "success": true,
+    "details": "Status: 200, Total locations: 1, Geospatial format: 1",
+    "response_data": null,
+    "timestamp": "2025-09-14T20:15:23.513739"
   }
 }
