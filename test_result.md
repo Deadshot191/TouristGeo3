@@ -166,16 +166,16 @@ backend:
         comment: "TESTED: Dashboard WebSocket connection successful, ping-pong communication working, system status requests handled correctly. Connection statistics endpoint functional. Real-time broadcasting verified."
 
   - task: "Background AI Anomaly Detection Service"
-    implemented: false
+    implemented: true
     working: "NA"
-    file: "services/anomaly_service.py"
+    file: "services/anomaly_service.py, background_tasks.py, server.py"
     stuck_count: 0
     priority: "high"
     needs_retesting: true
     status_history:
       - working: "NA"
         agent: "main"
-        comment: "Need to create new service for route deviation and prolonged inactivity detection with background tasks"
+        comment: "Created comprehensive AI anomaly detection service with route deviation (>2km threshold) and prolonged inactivity (>90min threshold) detection. Added background task manager and integrated with server startup."
 
   - task: "Admin Geo-fence Management Endpoints"
     implemented: true
