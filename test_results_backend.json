@@ -1,50 +1,140 @@
 {
   "Health Check Root": {
     "success": true,
-    "details": "Status: 200, Response: {'message': 'Tourism Safety API', 'status': 'operational', 'timestamp': '2025-09-14T20:01:53.412284'}",
+    "details": "Status: 200, Response: {'message': 'Tourism Safety API', 'status': 'operational', 'timestamp': '2025-09-14T20:02:55.738011'}",
     "response_data": null,
-    "timestamp": "2025-09-14T20:01:53.415285"
+    "timestamp": "2025-09-14T20:02:55.740791"
   },
   "Detailed Health Check": {
     "success": true,
     "details": "Status: 200, Database: connected",
     "response_data": null,
-    "timestamp": "2025-09-14T20:01:53.424126"
+    "timestamp": "2025-09-14T20:02:55.787508"
   },
   "Login Valid Credentials": {
-    "success": false,
-    "details": "Status: 401, Response: {'detail': 'Incorrect email or password'}",
+    "success": true,
+    "details": "Successfully logged in as Inspector Kumar",
     "response_data": null,
-    "timestamp": "2025-09-14T20:01:53.438020"
+    "timestamp": "2025-09-14T20:02:56.033095"
   },
-  "Tourist Management": {
-    "success": false,
-    "details": "No auth token available",
+  "Login Invalid Credentials": {
+    "success": true,
+    "details": "Status: 401, Expected 401 for invalid credentials",
     "response_data": null,
-    "timestamp": "2025-09-14T20:01:53.438061"
+    "timestamp": "2025-09-14T20:02:56.042837"
   },
-  "Location Services": {
-    "success": false,
-    "details": "No auth token available",
+  "Protected Endpoint Valid Token": {
+    "success": true,
+    "details": "Status: 200, User: Inspector Kumar",
     "response_data": null,
-    "timestamp": "2025-09-14T20:01:53.438071"
+    "timestamp": "2025-09-14T20:02:56.053167"
   },
-  "Alerts System": {
-    "success": false,
-    "details": "No auth token available",
+  "Protected Endpoint No Token": {
+    "success": true,
+    "details": "Status: 403, Expected 403 for missing token",
     "response_data": null,
-    "timestamp": "2025-09-14T20:01:53.438079"
+    "timestamp": "2025-09-14T20:02:56.099342"
   },
-  "Geofencing": {
-    "success": false,
-    "details": "No auth token available",
+  "Protected Endpoint Invalid Token": {
+    "success": true,
+    "details": "Status: 401, Expected 401 for invalid token",
     "response_data": null,
-    "timestamp": "2025-09-14T20:01:53.438086"
+    "timestamp": "2025-09-14T20:02:56.105632"
   },
-  "Analytics Dashboard": {
-    "success": false,
-    "details": "No auth token available",
+  "Get All Tourists": {
+    "success": true,
+    "details": "Status: 200, Found 3 tourists",
     "response_data": null,
-    "timestamp": "2025-09-14T20:01:53.438096"
+    "timestamp": "2025-09-14T20:02:56.120849"
+  },
+  "Get Specific Tourist": {
+    "success": true,
+    "details": "Status: 200, Tourist: Rajesh Sharma",
+    "response_data": null,
+    "timestamp": "2025-09-14T20:02:56.171801"
+  },
+  "Update Tourist Status": {
+    "success": true,
+    "details": "Status: 200, Response: {'message': 'Status updated successfully'}",
+    "response_data": null,
+    "timestamp": "2025-09-14T20:02:56.186154"
+  },
+  "Get Location History": {
+    "success": true,
+    "details": "Status: 200, History entries: 0",
+    "response_data": null,
+    "timestamp": "2025-09-14T20:02:56.195476"
+  },
+  "Get Tourists With Filters": {
+    "success": true,
+    "details": "Status: 200, Filtered results: 3",
+    "response_data": null,
+    "timestamp": "2025-09-14T20:02:56.207432"
+  },
+  "Get Live Locations": {
+    "success": true,
+    "details": "Status: 200, Live locations: 0",
+    "response_data": null,
+    "timestamp": "2025-09-14T20:02:56.257947"
+  },
+  "Update Location": {
+    "success": true,
+    "details": "Status: 200, Response: {'message': 'Location updated successfully'}",
+    "response_data": null,
+    "timestamp": "2025-09-14T20:02:56.282118"
+  },
+  "Get All Alerts": {
+    "success": true,
+    "details": "Status: 200, Found 0 alerts",
+    "response_data": null,
+    "timestamp": "2025-09-14T20:02:56.331339"
+  },
+  "Create Panic Alert": {
+    "success": false,
+    "details": "Status: 500, Alert ID: None",
+    "response_data": null,
+    "timestamp": "2025-09-14T20:02:56.351230"
+  },
+  "Get Alerts With Filters": {
+    "success": true,
+    "details": "Status: 200, Filtered alerts: 0",
+    "response_data": null,
+    "timestamp": "2025-09-14T20:02:56.359499"
+  },
+  "Get All Geofences": {
+    "success": true,
+    "details": "Status: 200, Found 3 geofences",
+    "response_data": null,
+    "timestamp": "2025-09-14T20:02:56.367336"
+  },
+  "Check Point in Geofences": {
+    "success": true,
+    "details": "Status: 200, Intersecting geofences: 1",
+    "response_data": null,
+    "timestamp": "2025-09-14T20:02:56.375447"
+  },
+  "Get Dashboard KPIs": {
+    "success": true,
+    "details": "Status: 200, Active tourists: 2",
+    "response_data": null,
+    "timestamp": "2025-09-14T20:02:56.429058"
+  },
+  "Get Safety Score": {
+    "success": true,
+    "details": "Status: 200, Safety score: 75",
+    "response_data": null,
+    "timestamp": "2025-09-14T20:02:56.453343"
+  },
+  "Get Location Analytics": {
+    "success": true,
+    "details": "Status: 200, Analytics data available: True",
+    "response_data": null,
+    "timestamp": "2025-09-14T20:02:56.506281"
+  },
+  "Get Alert Analytics": {
+    "success": true,
+    "details": "Status: 200, Analytics data available: True",
+    "response_data": null,
+    "timestamp": "2025-09-14T20:02:56.516846"
   }
 }
