@@ -425,6 +425,187 @@ class TourismSafetyAPITester:
             f"Status: {status}, Analytics data available: {isinstance(data, dict)}"
         )
     
+    async def test_ai_anomaly_detection(self):
+        """Test AI anomaly detection features"""
+        print("\n=== Testing AI Anomaly Detection Features ===")
+        
+        if not self.auth_token:
+            self.log_test("AI Anomaly Detection", False, "No auth token available")
+            return
+        
+        # Test background task status
+        success, data, status = await self.make_request("GET", "/ai/background-tasks/status")
+        self.log_test(
+            "Background Task Status", 
+            success and status == 200,
+            f"Status: {status}, Running: {data.get('is_running', 'unknown') if isinstance(data, dict) else 'error'}"
+        )
+        
+        # Get a real tourist ID for AI testing
+        success, tourists_data, status = await self.make_request("GET", "/tourists")
+        if not success or not isinstance(tourists_data, list) or len(tourists_data) == 0:
+            self.log_test("AI Anomaly Detection", False, "No tourists available for AI testing")
+            return
+            
+        tourist_id = tourists_data[0].get('id')
+        if not tourist_id:
+            self.log_test("AI Anomaly Detection", False, "No valid tourist ID found")
+            return
+        
+        # Test AI safety score calculation
+        success, data, status = await self.make_request("GET", f"/ai/safety-score/{tourist_id}")
+        self.log_test(
+            "AI Safety Score Calculation", 
+            success and status == 200,
+            f"Status: {status}, Safety Score: {data.get('safety_score', 'unknown') if isinstance(data, dict) else 'error'}"
+        )
+        
+        # Test manual anomaly check
+        success, data, status = await self.make_request("GET", f"/ai/anomaly-check/{tourist_id}")
+        self.log_test(
+            "Manual Anomaly Check", 
+            success and status == 200,
+            f"Status: {status}, Checks performed: {len(data.get('checks_performed', [])) if isinstance(data, dict) else 'error'}"
+        )
+        
+        # Test background task restart (admin only)
+        success, data, status = await self.make_request("POST", "/ai/background-tasks/restart")
+        self.log_test(
+            "Background Task Restart", 
+            success and status == 200,
+            f"Status: {status}, Response: {data.get('message', 'unknown') if isinstance(data, dict) else 'error'}"
+        )
+    
+    async def test_enhanced_geofencing(self):
+        """Test enhanced geofencing with geospatial queries"""
+        print("\n=== Testing Enhanced Geofencing ===")
+        
+        if not self.auth_token:
+            self.log_test("Enhanced Geofencing", False, "No auth token available")
+            return
+        
+        # Test geospatial point checking with various coordinates
+        test_coordinates = [
+            {"longitude": 88.2700, "latitude": 27.0400, "name": "Central Darjeeling"},
+            {"longitude": 88.2800, "latitude": 27.0460, "name": "Near Military Zone"},
+            {"longitude": 88.2550, "latitude": 27.0325, "name": "Landslide Area"},
+            {"longitude": 88.2650, "latitude": 27.0400, "name": "Mall Road Safe Zone"}
+        ]
+        
+        for coord in test_coordinates:
+            params = {
+                "longitude": coord["longitude"],
+                "latitude": coord["latitude"]
+            }
+            
+            success, data, status = await self.make_request("GET", "/geofences/check", params=params)
+            intersecting_count = len(data) if isinstance(data, list) else 0
+            
+            self.log_test(
+                f"Geospatial Check - {coord['name']}", 
+                success and status == 200,
+                f"Status: {status}, Intersecting geofences: {intersecting_count}"
+            )
+        
+        # Test geofence list to verify MongoDB geospatial indexes are working
+        success, data, status = await self.make_request("GET", "/geofences")
+        geofences_list = data if isinstance(data, list) else []
+        
+        self.log_test(
+            "Geofence List with Geospatial Data", 
+            success and status == 200 and len(geofences_list) > 0,
+            f"Status: {status}, Found {len(geofences_list)} geofences with geospatial coordinates"
+        )
+    
+    async def test_new_alert_types(self):
+        """Test new alert types (route deviation and prolonged inactivity)"""
+        print("\n=== Testing New Alert Types ===")
+        
+        if not self.auth_token:
+            self.log_test("New Alert Types", False, "No auth token available")
+            return
+        
+        # Get alerts and check for new alert types
+        success, data, status = await self.make_request("GET", "/alerts")
+        alerts_list = data if isinstance(data, list) else []
+        
+        # Count different alert types
+        alert_types = {}
+        for alert in alerts_list:
+            alert_type = alert.get('alert_type', 'unknown')
+            alert_types[alert_type] = alert_types.get(alert_type, 0) + 1
+        
+        self.log_test(
+            "Alert Types Analysis", 
+            success and status == 200,
+            f"Status: {status}, Alert types found: {list(alert_types.keys())}, Total alerts: {len(alerts_list)}"
+        )
+        
+        # Test filtering by new alert types
+        new_alert_types = ["route_deviation", "prolonged_inactivity"]
+        
+        for alert_type in new_alert_types:
+            params = {"alert_type": alert_type, "limit": 10}
+            success, data, status = await self.make_request("GET", "/alerts", params=params)
+            filtered_alerts = data if isinstance(data, list) else []
+            
+            self.log_test(
+                f"Filter Alerts - {alert_type}", 
+                success and status == 200,
+                f"Status: {status}, Found {len(filtered_alerts)} {alert_type} alerts"
+            )
+    
+    async def test_database_operations(self):
+        """Test database operations and geospatial indexes"""
+        print("\n=== Testing Database Operations ===")
+        
+        if not self.auth_token:
+            self.log_test("Database Operations", False, "No auth token available")
+            return
+        
+        # Test location history with geospatial data
+        success, tourists_data, status = await self.make_request("GET", "/tourists")
+        if success and isinstance(tourists_data, list) and len(tourists_data) > 0:
+            tourist_id = tourists_data[0].get('id')
+            if tourist_id:
+                # Test location history retrieval
+                success, data, status = await self.make_request("GET", f"/tourists/{tourist_id}/location-history")
+                location_history = data if isinstance(data, list) else []
+                
+                # Check if location data has geospatial coordinates
+                has_geospatial_data = False
+                if location_history:
+                    for location in location_history:
+                        if 'coordinates' in location and 'coordinates' in location['coordinates']:
+                            has_geospatial_data = True
+                            break
+                
+                self.log_test(
+                    "Location History Geospatial Data", 
+                    success and status == 200 and has_geospatial_data,
+                    f"Status: {status}, History entries: {len(location_history)}, Has geospatial data: {has_geospatial_data}"
+                )
+            else:
+                self.log_test("Location History Geospatial Data", False, "No valid tourist ID found")
+        else:
+            self.log_test("Location History Geospatial Data", False, "No tourists available for testing")
+        
+        # Test live locations for geospatial queries
+        success, data, status = await self.make_request("GET", "/location/live")
+        live_locations = data if isinstance(data, list) else []
+        
+        # Check if live locations have proper geospatial structure
+        geospatial_locations = 0
+        for location in live_locations:
+            if 'coordinates' in location and isinstance(location['coordinates'], list) and len(location['coordinates']) == 2:
+                geospatial_locations += 1
+        
+        self.log_test(
+            "Live Locations Geospatial Structure", 
+            success and status == 200,
+            f"Status: {status}, Total locations: {len(live_locations)}, Geospatial format: {geospatial_locations}"
+        )
+
     async def run_all_tests(self):
         """Run all test suites"""
         print(f"🚀 Starting Tourism Safety API Tests")
@@ -439,6 +620,12 @@ class TourismSafetyAPITester:
         await self.test_alerts_system()
         await self.test_geofencing()
         await self.test_analytics_dashboard()
+        
+        # NEW AI ANOMALY DETECTION TESTS
+        await self.test_ai_anomaly_detection()
+        await self.test_enhanced_geofencing()
+        await self.test_new_alert_types()
+        await self.test_database_operations()
         
         # Print summary
         print("\n" + "=" * 60)
