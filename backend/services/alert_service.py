@@ -277,7 +277,7 @@ class AlertService:
                             from .tourist_service import TouristService
                             from ..models import TouristStatus
                         except ImportError:
-                            from tourist_service import TouristService
+                            from services.tourist_service import TouristService
                             from models import TouristStatus
                         await TouristService.update_tourist_status(
                             str(alert.tourist_id), 
