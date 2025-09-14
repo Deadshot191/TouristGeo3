@@ -391,6 +391,44 @@ async def get_alert_analytics(
     return await AnalyticsService.get_alert_analytics(days)
 
 # ============================================================================
+# AI ANOMALY DETECTION ROUTES
+# ============================================================================
+
+@api_router.get("/ai/anomaly-check/{tourist_id}")
+async def manual_anomaly_check(
+    tourist_id: str, 
+    current_user: User = Depends(get_current_user)
+):
+    """Manually trigger anomaly detection for specific tourist"""
+    results = await AnomalyDetectionService.manual_anomaly_check(tourist_id)
+    return results
+
+@api_router.get("/ai/safety-score/{tourist_id}")
+async def get_ai_safety_score(
+    tourist_id: str,
+    current_user: User = Depends(get_current_user)
+):
+    """Get AI-calculated safety score for tourist"""
+    safety_data = await AnomalyDetectionService.calculate_safety_score(tourist_id)
+    return safety_data
+
+@api_router.get("/ai/background-tasks/status")
+async def get_background_task_status(
+    current_user: User = Depends(get_current_admin_or_police_user)
+):
+    """Get status of background AI tasks"""
+    return task_manager.get_task_status()
+
+@api_router.post("/ai/background-tasks/restart")
+async def restart_background_tasks(
+    current_user: User = Depends(get_current_admin_or_police_user)
+):
+    """Restart background AI tasks"""
+    await task_manager.stop_background_tasks()
+    await task_manager.start_background_tasks()
+    return {"message": "Background tasks restarted", "status": task_manager.get_task_status()}
+
+# ============================================================================
 # WEBSOCKET ROUTES
 # ============================================================================
 
