@@ -141,18 +141,33 @@ class AlertService:
         return await AlertService.create_alert(alert_data)
     
     @staticmethod
-    async def create_route_deviation_alert(tourist_id: str, current_location: Dict[str, Any]) -> Alert:
+    async def create_route_deviation_alert(tourist_id: str, longitude: float, latitude: float, 
+                                         deviation_distance: float, address: str = None) -> Alert:
         """Create a route deviation alert"""
-        coords = current_location["coordinates"]["coordinates"]
-        
         alert_data = AlertCreate(
             tourist_id=tourist_id,
             alert_type=AlertType.ROUTE_DEVIATION,
             severity=AlertSeverity.MEDIUM,
-            longitude=coords[0],
-            latitude=coords[1],
-            address=current_location.get("address"),
-            description="Significant deviation from planned route detected"
+            longitude=longitude,
+            latitude=latitude,
+            address=address,
+            description=f"Route deviation detected: {deviation_distance:.2f}km from planned itinerary"
+        )
+        
+        return await AlertService.create_alert(alert_data)
+    
+    @staticmethod
+    async def create_prolonged_inactivity_alert(tourist_id: str, longitude: float, latitude: float, 
+                                              inactivity_duration_minutes: int, address: str = None) -> Alert:
+        """Create a prolonged inactivity alert"""
+        alert_data = AlertCreate(
+            tourist_id=tourist_id,
+            alert_type=AlertType.PROLONGED_INACTIVITY,
+            severity=AlertSeverity.HIGH,
+            longitude=longitude,
+            latitude=latitude,
+            address=address,
+            description=f"Prolonged inactivity: No movement detected for {inactivity_duration_minutes} minutes"
         )
         
         return await AlertService.create_alert(alert_data)
