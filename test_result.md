@@ -213,9 +213,7 @@ metadata:
 
 test_plan:
   current_focus:
-    - "WebSocket Location Tracking Endpoint"
-    - "Panic Button Alert Endpoint"
-    - "Real-time Dashboard WebSocket Updates"
+    - "Background AI Anomaly Detection Service"
   stuck_tasks: []
   test_all: false
   test_priority: "high_first"
