@@ -30,11 +30,11 @@ async def test_integrated_security_system():
     
     try:
         # Import after setting environment
-        from database import connect_to_mongo, close_mongo_connection
-        from services.tourist_service import TouristService
-        from services.alert_service import AlertService
-        from services.digital_id_client import digital_id_client
-        from models import TouristCreate, EmergencyContact, AlertType, AlertSeverity
+        import backend.database as backend_db
+        from backend.services.tourist_service import TouristService
+        from backend.services.alert_service import AlertService
+        from backend.services.digital_id_client import digital_id_client
+        from backend.models import TouristCreate, EmergencyContact, AlertType, AlertSeverity
         
         # Connect to main database
         print("Connecting to main database...")
