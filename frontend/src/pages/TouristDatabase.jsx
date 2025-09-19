@@ -70,27 +70,30 @@ const TouristDatabase = ({ onTouristSelect }) => {
 
   return (
     <div className="h-full flex flex-col bg-slate-900">
-      {/* Header Section */}
+      {/* Enhanced Header Section */}
       <div className="p-6 border-b border-slate-700">
-        <div className="flex justify-between items-center mb-6">
-          <h1 className="text-2xl font-bold text-white">Tourist Database</h1>
-          <div className="flex space-x-2">
+        <div className="flex justify-between items-start mb-6">
+          <div>
+            <h1 className="page-title mb-2">Tourist Database</h1>
+            <p className="text-slate-400 text-sm">Comprehensive tourist registry and management system</p>
+          </div>
+          <div className="flex space-x-3">
             <Button variant="outline" className="border-slate-600 text-slate-300 hover:bg-slate-700">
               <Download className="w-4 h-4 mr-2" />
               Export Data
             </Button>
-            <Button className="bg-blue-600 hover:bg-blue-700 text-white">
+            <Button className="action-btn-primary">
               <Plus className="w-4 h-4 mr-2" />
               Add Tourist
             </Button>
           </div>
         </div>
 
-        {/* Filter Controls */}
-        <div className="flex flex-wrap gap-4 items-center">
+        {/* Enhanced Filter Controls */}
+        <div className="flex flex-wrap gap-4 items-center mb-4">
           <div className="flex items-center space-x-2">
             <Filter className="w-4 h-4 text-slate-400" />
-            <span className="text-sm text-slate-300">Filters:</span>
+            <span className="text-sm font-medium text-slate-300">Filters:</span>
           </div>
           
           <Select value={filters.status} onValueChange={(value) => handleFilterChange('status', value)}>
@@ -130,73 +133,87 @@ const TouristDatabase = ({ onTouristSelect }) => {
           </div>
         </div>
 
-        <div className="mt-4 text-sm text-slate-400">
-          Showing {filteredTourists.length} of {tourists.length} tourists
+        <div className="text-sm text-slate-400">
+          Showing <span className="font-semibold text-white">{filteredTourists.length}</span> of <span className="font-semibold text-white">{tourists.length}</span> tourists
         </div>
       </div>
 
-      {/* Tourist Grid */}
+      {/* Enhanced Tourist Grid */}
       <div className="flex-1 overflow-auto p-6">
         <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
           {filteredTourists.map((tourist) => (
-            <Card key={tourist.id} className="bg-slate-800 border-slate-700 hover:bg-slate-750 transition-colors">
-              <CardContent className="p-6">
+            <Card key={tourist.id} className="tourist-card">
+              <CardContent className="tourist-card-content">
+                {/* Header with Avatar, Name, and Status Badge */}
                 <div className="flex items-start justify-between mb-4">
-                  <div className="flex items-center space-x-3">
-                    <Avatar className="w-12 h-12">
+                  <div className="flex items-center space-x-3 flex-1">
+                    <Avatar className="w-12 h-12 ring-2 ring-slate-600">
                       <AvatarImage src={tourist.photo} alt={tourist.name} />
-                      <AvatarFallback className="bg-blue-600 text-white">
+                      <AvatarFallback className="bg-blue-600 text-white font-semibold">
                         {tourist.name.split(' ').map(n => n[0]).join('')}
                       </AvatarFallback>
                     </Avatar>
-                    <div>
-                      <h3 className="font-semibold text-white">{tourist.name}</h3>
-                      <p className="text-sm text-slate-400">{tourist.nationality}</p>
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center space-x-2">
+                        <h3 className="font-semibold text-white truncate">{tourist.name}</h3>
+                        <Badge className={getStatusBadge(tourist.status)}>
+                          {tourist.status.toUpperCase()}
+                        </Badge>
+                      </div>
+                      <p className="text-sm text-slate-400 flex items-center">
+                        {tourist.nationality}
+                      </p>
                       <p className="text-xs text-slate-500 font-mono">{tourist.digitalId}</p>
                     </div>
                   </div>
-                  <Badge className={getStatusBadge(tourist.status)}>
-                    {tourist.status.toUpperCase()}
-                  </Badge>
                 </div>
 
-                <div className="space-y-2 mb-4">
-                  <div className="flex items-center text-sm text-slate-300">
-                    <MapPin className="w-4 h-4 mr-2 text-slate-400" />
-                    <span className="truncate">{tourist.location?.address}</span>
+                {/* Location and Contact Info */}
+                <div className="space-y-3 mb-4">
+                  <div className="flex items-start text-sm text-slate-300">
+                    <MapPin className="w-4 h-4 mr-2 text-slate-400 mt-0.5 flex-shrink-0" />
+                    <span className="truncate">{tourist.location?.address || 'Location not available'}</span>
                   </div>
                   
                   <div className="flex items-center text-sm text-slate-300">
-                    <Phone className="w-4 h-4 mr-2 text-slate-400" />
-                    <span>{tourist.emergencyContacts?.[0]?.phone || 'N/A'}</span>
+                    <Phone className="w-4 h-4 mr-2 text-slate-400 flex-shrink-0" />
+                    <span className="truncate">{tourist.emergencyContacts?.[0]?.phone || 'N/A'}</span>
                   </div>
                 </div>
 
-                <div className="grid grid-cols-2 gap-4 mb-4 text-sm">
-                  <div>
-                    <p className="text-slate-400">Safety Score</p>
-                    <p className="text-white font-semibold">{tourist.safetyScore}/100</p>
+                {/* Stats Grid */}
+                <div className="grid grid-cols-2 gap-4 mb-4 p-3 bg-slate-700 rounded-lg">
+                  <div className="text-center">
+                    <p className="text-xs text-slate-400 mb-1">Safety Score</p>
+                    <div className={`text-lg font-bold ${
+                      tourist.safetyScore >= 80 ? 'text-emerald-400' :
+                      tourist.safetyScore >= 50 ? 'text-amber-400' : 'text-red-400'
+                    }`}>
+                      {tourist.safetyScore}/100
+                    </div>
                   </div>
-                  <div>
-                    <p className="text-slate-400">Visit Duration</p>
-                    <p className="text-white font-semibold">
+                  <div className="text-center">
+                    <p className="text-xs text-slate-400 mb-1">Visit Duration</p>
+                    <div className="text-lg font-bold text-white">
                       {Math.ceil((new Date(tourist.visitEndDate) - new Date(tourist.visitStartDate)) / (1000 * 60 * 60 * 24))} days
-                    </p>
+                    </div>
                   </div>
                 </div>
 
+                {/* Action Buttons */}
                 <div className="flex space-x-2">
                   <Button
                     size="sm"
                     onClick={() => onTouristSelect(tourist)}
-                    className="flex-1 bg-blue-600 hover:bg-blue-700 text-white"
+                    className="flex-1 action-btn-primary text-sm py-2"
                   >
                     View Details
                   </Button>
                   <Button
                     size="sm"
                     variant="outline"
-                    className="border-slate-600 text-slate-300 hover:bg-slate-700"
+                    className="border-slate-600 text-slate-300 hover:bg-slate-700 px-3"
+                    title="Show on Map"
                   >
                     <MapPin className="w-4 h-4" />
                   </Button>
@@ -206,10 +223,14 @@ const TouristDatabase = ({ onTouristSelect }) => {
           ))}
         </div>
 
+        {/* Enhanced Empty State */}
         {filteredTourists.length === 0 && (
-          <div className="text-center py-12">
-            <div className="text-slate-400 text-lg mb-2">No tourists found</div>
-            <div className="text-slate-500 text-sm">Try adjusting your filters</div>
+          <div className="text-center py-16">
+            <div className="w-16 h-16 bg-slate-800 rounded-full flex items-center justify-center mx-auto mb-4">
+              <Users className="w-8 h-8 text-slate-400" />
+            </div>
+            <div className="text-slate-400 text-lg font-medium mb-2">No tourists found</div>
+            <div className="text-slate-500 text-sm">Try adjusting your search criteria or filters</div>
           </div>
         )}
       </div>
