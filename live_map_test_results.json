@@ -1,8 +1,8 @@
 {
   "Authentication": {
     "success": false,
-    "details": "Failed to authenticate. Status: 502, Response: ",
+    "details": "Failed to authenticate. Status: 401, Response: {'detail': 'Incorrect email or password'}",
     "response_data": null,
-    "timestamp": "2025-09-19T07:13:30.031499"
+    "timestamp": "2025-09-19T07:14:09.985236"
   }
 }
