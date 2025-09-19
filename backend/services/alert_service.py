@@ -10,12 +10,14 @@ try:
         AlertSeverity, AlertStatus, AlertLocation
     )
     from ..database import get_alerts_collection, get_tourists_collection
+    from .digital_id_client import digital_id_client
 except ImportError:
     from models import (
         Alert, AlertCreate, AlertResponse, AlertFilters, AlertType, 
         AlertSeverity, AlertStatus, AlertLocation
     )
     from database import get_alerts_collection, get_tourists_collection
+    from services.digital_id_client import digital_id_client
 
 logger = logging.getLogger(__name__)
 
