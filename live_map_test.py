@@ -280,35 +280,72 @@ class LiveMapDataTester:
         return {}
     
     async def test_geofences_endpoint(self):
-        """Test GET /api/geofences endpoint used by Live Map"""
+        """Test GET /api/geofences endpoint - should return 3 geofences"""
         print("\n=== Geofences Endpoint Test ===")
         
         if not self.auth_token:
             self.log_test("Geofences Endpoint", False, "No auth token available")
-            return
+            return []
         
         success, data, status = await self.make_request("GET", "/geofences")
         geofences_list = data if isinstance(data, list) else []
         
+        expected_count = 3  # As mentioned in review request
+        
         self.log_test(
             "GET /api/geofences", 
             success and status == 200,
-            f"Status: {status}, Geofences returned: {len(geofences_list)}",
+            f"Status: {status}, Geofences returned: {len(geofences_list)} (expected: {expected_count})",
             geofences_list[:2] if geofences_list else None
         )
         
         if geofences_list:
             # Check geofence data structure
-            sample_geofence = geofences_list[0]
-            expected_fields = ['id', 'name', 'type', 'risk_level', 'coordinates']
-            missing_fields = [field for field in expected_fields if field not in sample_geofence]
+            valid_geofences = []
+            structure_issues = []
+            
+            required_fields = ['id', 'name', 'type', 'risk_level', 'coordinates', 'active']
+            
+            for i, geofence in enumerate(geofences_list):
+                missing_fields = [field for field in required_fields if field not in geofence]
+                if missing_fields:
+                    structure_issues.append(f"Geofence {i+1} missing: {missing_fields}")
+                    continue
+                
+                # Validate coordinates format (should be array of coordinate pairs for polygon)
+                coordinates = geofence.get('coordinates')
+                if not isinstance(coordinates, list) or len(coordinates) == 0:
+                    structure_issues.append(f"Geofence {i+1} invalid coordinates format")
+                    continue
+                
+                # Check coordinate pairs format
+                try:
+                    for coord_pair in coordinates:
+                        if not isinstance(coord_pair, list) or len(coord_pair) != 2:
+                            raise ValueError("Invalid coordinate pair format")
+                        lon, lat = float(coord_pair[0]), float(coord_pair[1])
+                        if not (-180 <= lon <= 180) or not (-90 <= lat <= 90):
+                            raise ValueError("Coordinate values out of range")
+                except (ValueError, TypeError) as e:
+                    structure_issues.append(f"Geofence {i+1} coordinate validation failed: {str(e)}")
+                    continue
+                
+                valid_geofences.append(geofence)
             
             self.log_test(
                 "Geofence Data Structure", 
-                len(missing_fields) == 0,
-                f"Expected fields present: {len(expected_fields) - len(missing_fields)}/{len(expected_fields)}, Missing: {missing_fields}",
-                sample_geofence
+                len(structure_issues) == 0,
+                f"Valid geofences: {len(valid_geofences)}/{len(geofences_list)}, Issues: {structure_issues[:2]}{'...' if len(structure_issues) > 2 else ''}",
+                geofences_list[0] if geofences_list else None
             )
+            
+            # Log geofence names for verification
+            geofence_names = [gf.get('name', 'Unnamed') for gf in geofences_list]
+            print(f"   🗺️  Geofences: {', '.join(geofence_names)}")
+            
+            return valid_geofences
+        
+        return []
     
     async def test_data_structure_compatibility(self):
         """Test if data structure matches frontend expectations"""
