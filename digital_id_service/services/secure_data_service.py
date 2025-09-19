@@ -3,14 +3,14 @@ from datetime import datetime
 from typing import Optional, Dict, Any, List
 from motor.motor_asyncio import AsyncIOMotorDatabase
 
-from ..database import get_database
-from ..models import (
+from database import get_database
+from models import (
     SecureTouristData, TouristRegistrationRequest, 
     DataAccessRequest, DataAccessResponse, RegistrationResponse,
     TouristKYCData, AccessType, AccessReason, EmergencyContact
 )
-from .encryption_service import encryption_service
-from .blockchain_simulator import blockchain_simulator
+from services.encryption_service import encryption_service
+from services.blockchain_simulator import blockchain_simulator
 import logging
 
 logger = logging.getLogger(__name__)
