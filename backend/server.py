@@ -22,7 +22,7 @@ try:
     from .websocket_manager import manager, handle_location_websocket, handle_dashboard_websocket
     from .background_tasks import task_manager
 except ImportError:
-    from database import connect_to_mongo, close_mongo_connection
+    from database import connect_to_mongo, close_mongo_connection, get_alerts_collection, get_tourists_collection
     from auth import create_access_token, authenticate_user, get_current_user, get_current_admin_or_police_user
     from models import *
     from services.tourist_service import TouristService
