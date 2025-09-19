@@ -1,5 +1,5 @@
 import React from 'react';
-import { X, MapPin, Phone, Calendar, AlertTriangle, Activity, Shield, FileText, PhoneCall, Truck, Users as UsersIcon } from 'lucide-react';
+import { X, MapPin, Phone, Calendar, AlertTriangle, Activity, Shield, FileText, PhoneCall, Truck, Users as UsersIcon, Clock, Globe, CreditCard } from 'lucide-react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from './ui/dialog';
 import { Badge } from './ui/badge';
 import { Button } from './ui/button';
@@ -7,6 +7,7 @@ import { Avatar, AvatarImage, AvatarFallback } from './ui/avatar';
 import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
 import { Progress } from './ui/progress';
 import { mockTourists } from '../mock';
+import MiniMap from './MiniMap';
 
 const TouristDetailModal = ({ tourist, isOpen, onClose }) => {
   // Find full tourist data from mock (in real app, this would be an API call)
@@ -14,9 +15,9 @@ const TouristDetailModal = ({ tourist, isOpen, onClose }) => {
 
   const getStatusColor = (status) => {
     switch (status) {
-      case 'safe': return 'bg-green-100 text-green-800 border-green-200';
-      case 'anomaly': return 'bg-yellow-100 text-yellow-800 border-yellow-200';
-      case 'panic': return 'bg-red-100 text-red-800 border-red-200';
+      case 'safe': return 'status-badge-safe';
+      case 'anomaly': return 'status-badge-anomaly';
+      case 'panic': return 'status-badge-panic';
       default: return 'bg-gray-100 text-gray-800 border-gray-200';
     }
   };
@@ -38,145 +39,175 @@ const TouristDetailModal = ({ tourist, isOpen, onClose }) => {
   };
 
   const getSafetyScoreColor = (score) => {
-    if (score >= 80) return 'text-green-500';
-    if (score >= 50) return 'text-yellow-500';
+    if (score >= 80) return 'text-emerald-500';
+    if (score >= 50) return 'text-amber-500';
     return 'text-red-500';
   };
+
+  const isDataLocked = fullTourist.status === 'safe' && fullTourist.name === 'John Doe';
 
   if (!fullTourist) return null;
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-6xl max-h-[90vh] overflow-y-auto bg-slate-800 border-slate-700 text-white">
-        <DialogHeader>
-          <DialogTitle className="text-xl font-bold text-white">
-            Detailed Tourist Report
-          </DialogTitle>
+      <DialogContent className="max-w-7xl max-h-[95vh] overflow-y-auto bg-slate-800 border-slate-700 text-white">
+        <DialogHeader className="pb-6 border-b border-slate-700">
+          <div className="flex items-center justify-between">
+            <div>
+              <DialogTitle className="page-title">
+                Detailed Tourist Report
+              </DialogTitle>
+              <p className="text-slate-400 text-sm mt-1">
+                Comprehensive overview and real-time monitoring data
+              </p>
+            </div>
+            <div className="flex items-center space-x-3">
+              <Badge className={`${getStatusColor(fullTourist.status)} px-4 py-2 text-sm`}>
+                {fullTourist.status?.toUpperCase() || 'UNKNOWN'}
+              </Badge>
+            </div>
+          </div>
         </DialogHeader>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mt-6">
-          {/* Left Column - Identity & Itinerary */}
-          <div className="space-y-4">
-            <Card className="bg-slate-700 border-slate-600">
-              <CardHeader>
-                <CardTitle className="text-lg text-white">Tourist Identity</CardTitle>
+        <div className="grid grid-cols-12 gap-6 mt-6">
+          {/* Left Column - Identity & Personal Info */}
+          <div className="col-span-12 lg:col-span-4 space-y-6">
+            <Card className="command-card">
+              <CardHeader className="command-card-header">
+                <CardTitle className="modal-section-title">
+                  <CreditCard className="w-5 h-5" />
+                  Tourist Identity
+                </CardTitle>
               </CardHeader>
-              <CardContent className="space-y-4">
+              <CardContent className="command-card-content space-y-4">
                 <div className="flex items-center space-x-4">
-                  <Avatar className="w-16 h-16">
+                  <Avatar className="w-20 h-20 ring-4 ring-slate-600">
                     <AvatarImage src={fullTourist.photo} alt={fullTourist.name} />
-                    <AvatarFallback className="bg-blue-600 text-white text-lg">
+                    <AvatarFallback className="bg-blue-600 text-white text-xl font-bold">
                       {fullTourist.name.split(' ').map(n => n[0]).join('')}
                     </AvatarFallback>
                   </Avatar>
-                  <div>
-                    <h3 className="text-lg font-semibold text-white">{fullTourist.name}</h3>
-                    <p className="text-slate-300">{fullTourist.nationality}</p>
+                  <div className="flex-1">
+                    <h3 className="text-xl font-bold text-white mb-1">{fullTourist.name}</h3>
+                    <div className="flex items-center space-x-2 mb-2">
+                      <Globe className="w-4 h-4 text-slate-400" />
+                      <span className="text-slate-300">{fullTourist.nationality}</span>
+                    </div>
+                    <p className="text-sm text-slate-400 font-mono bg-slate-700 px-2 py-1 rounded">
+                      {fullTourist.digitalId}
+                    </p>
                   </div>
                 </div>
 
-                <div className="space-y-2">
-                  <div className="flex justify-between">
-                    <span className="text-sm text-slate-400">Digital ID:</span>
-                    <span className="text-sm text-white font-mono">{fullTourist.digitalId}</span>
-                  </div>
-                  
-                  {/* QR Code Placeholder */}
-                  <div className="bg-white p-4 rounded-lg flex items-center justify-center">
-                    <div className="w-24 h-24 bg-black flex items-center justify-center text-white text-xs">
-                      QR CODE
-                    </div>
+                {/* QR Code and Verification */}
+                <div className="flex items-center justify-center p-4 bg-white rounded-lg">
+                  <div className="w-28 h-28 bg-black flex items-center justify-center text-white text-xs font-mono border-4 border-slate-300">
+                    QR IDENTITY<br/>VERIFIED
                   </div>
                 </div>
               </CardContent>
             </Card>
 
-            <Card className="bg-slate-700 border-slate-600">
-              <CardHeader>
-                <CardTitle className="text-lg text-white flex items-center">
-                  <Calendar className="w-5 h-5 mr-2" />
-                  Trip Details
+            <Card className="command-card">
+              <CardHeader className="command-card-header">
+                <CardTitle className="modal-section-title">
+                  <Calendar className="w-5 h-5" />
+                  Trip Information
                 </CardTitle>
               </CardHeader>
-              <CardContent className="space-y-3">
+              <CardContent className="command-card-content space-y-4">
                 <div>
-                  <p className="text-sm text-slate-400 mb-1">Itinerary</p>
-                  <p className="text-sm text-white">{fullTourist.itinerary}</p>
+                  <p className="text-sm font-medium text-slate-400 mb-2">Planned Itinerary</p>
+                  <p className="text-sm text-white bg-slate-700 p-3 rounded-lg">{fullTourist.itinerary}</p>
                 </div>
                 <div className="grid grid-cols-2 gap-4">
-                  <div>
-                    <p className="text-sm text-slate-400">Start Date</p>
-                    <p className="text-sm text-white">{new Date(fullTourist.visitStartDate).toLocaleDateString()}</p>
+                  <div className="bg-slate-700 p-3 rounded-lg">
+                    <p className="text-xs text-slate-400 mb-1">Start Date</p>
+                    <p className="text-sm font-semibold text-white">{new Date(fullTourist.visitStartDate).toLocaleDateString()}</p>
                   </div>
-                  <div>
-                    <p className="text-sm text-slate-400">End Date</p>
-                    <p className="text-sm text-white">{new Date(fullTourist.visitEndDate).toLocaleDateString()}</p>
+                  <div className="bg-slate-700 p-3 rounded-lg">
+                    <p className="text-xs text-slate-400 mb-1">End Date</p>
+                    <p className="text-sm font-semibold text-white">{new Date(fullTourist.visitEndDate).toLocaleDateString()}</p>
                   </div>
                 </div>
               </CardContent>
             </Card>
 
-            <Card className="bg-slate-700 border-slate-600">
-              <CardHeader>
-                <CardTitle className="text-lg text-white flex items-center">
-                  <Phone className="w-5 h-5 mr-2" />
+            <Card className="command-card">
+              <CardHeader className="command-card-header">
+                <CardTitle className="modal-section-title">
+                  <Phone className="w-5 h-5" />
                   Emergency Contacts
                 </CardTitle>
               </CardHeader>
-              <CardContent className="space-y-3">
-                {fullTourist.emergencyContacts?.map((contact, index) => (
-                  <div key={index} className="flex justify-between items-center">
-                    <div>
-                      <p className="text-sm text-white font-medium">{contact.name}</p>
-                      <p className="text-xs text-slate-400">{contact.phone}</p>
-                    </div>
-                    <Button size="sm" variant="outline" className="border-slate-600 text-slate-300 hover:bg-slate-600">
-                      <PhoneCall className="w-4 h-4" />
-                    </Button>
+              <CardContent className="command-card-content space-y-3">
+                {isDataLocked ? (
+                  <div className="text-center py-6">
+                    <Shield className="w-12 h-12 text-slate-500 mx-auto mb-3" />
+                    <p className="text-slate-400 text-sm">[DATA LOCKED - No Active Alert]</p>
+                    <p className="text-slate-500 text-xs mt-1">Contact information protected</p>
                   </div>
-                ))}
+                ) : (
+                  fullTourist.emergencyContacts?.map((contact, index) => (
+                    <div key={index} className="flex items-center justify-between p-3 bg-slate-700 rounded-lg">
+                      <div className="flex-1">
+                        <p className="text-sm font-semibold text-white">{contact.name}</p>
+                        <p className="text-xs text-slate-400">{contact.relationship}</p>
+                        <p className="text-xs text-slate-300 font-mono">{contact.phone}</p>
+                      </div>
+                      <Button size="sm" className="action-btn-success">
+                        <PhoneCall className="w-4 h-4" />
+                      </Button>
+                    </div>
+                  ))
+                )}
               </CardContent>
             </Card>
           </div>
 
-          {/* Middle Column - Live Status & History */}
-          <div className="space-y-4">
-            <Card className="bg-slate-700 border-slate-600">
-              <CardHeader>
-                <CardTitle className="text-lg text-white flex items-center">
-                  <Activity className="w-5 h-5 mr-2" />
-                  Live Status
+          {/* Middle Column - Live Status & Safety */}
+          <div className="col-span-12 lg:col-span-4 space-y-6">
+            <Card className="command-card">
+              <CardHeader className="command-card-header">
+                <CardTitle className="modal-section-title">
+                  <Activity className="w-5 h-5" />
+                  Live Safety Status
                 </CardTitle>
               </CardHeader>
-              <CardContent className="space-y-4">
+              <CardContent className="command-card-content space-y-6">
+                {/* Safety Score Circle */}
                 <div className="text-center">
-                  <Badge className={`text-lg px-4 py-2 ${getStatusColor(fullTourist.status)}`}>
-                    {fullTourist.status?.toUpperCase() || 'UNKNOWN'}
-                  </Badge>
-                </div>
-
-                <div className="space-y-3">
-                  <div className="text-center">
-                    <p className="text-sm text-slate-400 mb-2">Current Safety Score</p>
-                    <div className="relative w-24 h-24 mx-auto">
-                      <div className="w-24 h-24 rounded-full border-8 border-slate-600 flex items-center justify-center relative">
-                        <span className={`text-2xl font-bold ${getSafetyScoreColor(fullTourist.safetyScore || 0)}`}>
+                  <div className="relative w-32 h-32 mx-auto mb-4">
+                    <div className="w-32 h-32 rounded-full border-8 border-slate-600 flex items-center justify-center relative bg-gradient-to-br from-slate-700 to-slate-800">
+                      <div className="text-center">
+                        <span className={`text-3xl font-bold ${getSafetyScoreColor(fullTourist.safetyScore || 0)}`}>
                           {fullTourist.safetyScore || 0}
                         </span>
-                        <span className="text-xs text-slate-400 absolute bottom-6">/100</span>
+                        <div className="text-xs text-slate-400">/100</div>
                       </div>
                     </div>
+                    <div className="absolute -bottom-2 left-1/2 transform -translate-x-1/2">
+                      <Badge className={getStatusColor(fullTourist.status)}>
+                        {fullTourist.status?.toUpperCase()}
+                      </Badge>
+                    </div>
                   </div>
+                </div>
 
-                  <div>
-                    <p className="text-sm text-slate-400 mb-1">Last Known Location</p>
-                    <div className="flex items-start space-x-2">
-                      <MapPin className="w-4 h-4 mt-0.5 text-slate-400" />
-                      <div>
-                        <p className="text-sm text-white">{fullTourist.location?.address}</p>
-                        <p className="text-xs text-slate-500">
-                          {fullTourist.location?.timestamp && new Date(fullTourist.location.timestamp).toLocaleString()}
-                        </p>
+                {/* Location Info */}
+                <div className="space-y-3">
+                  <div className="bg-slate-700 p-4 rounded-lg">
+                    <div className="flex items-start space-x-3">
+                      <MapPin className="w-5 h-5 text-blue-400 mt-0.5 flex-shrink-0" />
+                      <div className="flex-1">
+                        <p className="text-sm font-medium text-white mb-1">Current Location</p>
+                        <p className="text-sm text-slate-300">{fullTourist.location?.address || 'Location updating...'}</p>
+                        <div className="flex items-center space-x-2 mt-2">
+                          <Clock className="w-3 h-3 text-slate-400" />
+                          <p className="text-xs text-slate-400">
+                            Last update: {fullTourist.location?.timestamp ? new Date(fullTourist.location.timestamp).toLocaleString() : 'Unknown'}
+                          </p>
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -184,125 +215,95 @@ const TouristDetailModal = ({ tourist, isOpen, onClose }) => {
               </CardContent>
             </Card>
 
-            <Card className="bg-slate-700 border-slate-600">
-              <CardHeader>
-                <CardTitle className="text-lg text-white flex items-center">
-                  <AlertTriangle className="w-5 h-5 mr-2" />
+            <Card className="command-card">
+              <CardHeader className="command-card-header">
+                <CardTitle className="modal-section-title">
+                  <AlertTriangle className="w-5 h-5" />
                   Alert History
                 </CardTitle>
               </CardHeader>
-              <CardContent>
-                <div className="space-y-3 max-h-48 overflow-y-auto">
+              <CardContent className="command-card-content">
+                <div className="space-y-3 max-h-64 overflow-y-auto">
                   {fullTourist.alertHistory?.length > 0 ? (
                     fullTourist.alertHistory.map((alert, index) => (
-                      <div key={index} className="flex items-center justify-between p-3 bg-slate-800 rounded-lg">
-                        <div className="flex-1">
-                          <div className="flex items-center space-x-2 mb-1">
-                            <Badge className={getAlertTypeColor(alert.type)}>
-                              {formatAlertType(alert.type)}
-                            </Badge>
-                            <Badge className={getStatusColor(alert.status)}>
-                              {alert.status}
-                            </Badge>
-                          </div>
-                          <p className="text-xs text-slate-400">{alert.location}</p>
-                          <p className="text-xs text-slate-500">
-                            {new Date(alert.timestamp).toLocaleString()}
-                          </p>
+                      <div key={index} className="p-3 bg-slate-700 rounded-lg border-l-4 border-amber-500">
+                        <div className="flex items-center justify-between mb-2">
+                          <Badge className={getAlertTypeColor(alert.type)}>
+                            {formatAlertType(alert.type)}
+                          </Badge>
+                          <Badge className={getStatusColor(alert.status)}>
+                            {alert.status}
+                          </Badge>
                         </div>
+                        <p className="text-xs text-slate-300 mb-1">{alert.location}</p>
+                        <p className="text-xs text-slate-500">
+                          {new Date(alert.timestamp).toLocaleString()}
+                        </p>
                       </div>
                     ))
                   ) : (
-                    <p className="text-sm text-slate-400">No alerts recorded</p>
+                    <div className="text-center py-6">
+                      <AlertTriangle className="w-8 h-8 text-slate-500 mx-auto mb-2" />
+                      <p className="text-sm text-slate-400">No alerts recorded</p>
+                    </div>
                   )}
                 </div>
               </CardContent>
             </Card>
           </div>
 
-          {/* Right Column - Map & Actions */}
-          <div className="space-y-4">
-            <Card className="bg-slate-700 border-slate-600">
-              <CardHeader>
-                <CardTitle className="text-lg text-white flex items-center">
-                  <MapPin className="w-5 h-5 mr-2" />
-                  Location History
+          {/* Right Column - Map & Response Actions */}
+          <div className="col-span-12 lg:col-span-4 space-y-6">
+            <Card className="command-card">
+              <CardHeader className="command-card-header">
+                <CardTitle className="modal-section-title">
+                  <MapPin className="w-5 h-5" />
+                  Location History Trail
                 </CardTitle>
               </CardHeader>
-              <CardContent>
-                {/* Simulated Mini Map */}
-                <div className="h-48 bg-slate-600 rounded-lg relative overflow-hidden">
-                  <div className="absolute inset-0 opacity-20">
-                    <div className="w-full h-full" style={{
-                      backgroundImage: 'radial-gradient(circle at 1px 1px, rgba(255,255,255,0.15) 1px, transparent 0)',
-                      backgroundSize: '10px 10px'
-                    }}></div>
-                  </div>
-                  
-                  {/* Location Trail */}
-                  <div className="absolute inset-4">
-                    <div className="w-full h-full relative">
-                      {/* Trail points */}
-                      {[...Array(5)].map((_, i) => (
-                        <div
-                          key={i}
-                          className={`absolute w-3 h-3 rounded-full ${
-                            i === 4 ? 'bg-red-500 animate-pulse' : 'bg-blue-400'
-                          }`}
-                          style={{
-                            left: `${20 + i * 15}%`,
-                            top: `${30 + Math.sin(i) * 20}%`
-                          }}
-                        />
-                      ))}
-                      
-                      {/* Trail line */}
-                      <svg className="absolute inset-0 w-full h-full">
-                        <path
-                          d="M20,40 Q35,20 50,45 Q65,60 80,50 Q95,30 110,35"
-                          stroke="#60a5fa"
-                          strokeWidth="2"
-                          fill="none"
-                          strokeDasharray="4,4"
-                        />
-                      </svg>
-                    </div>
-                  </div>
-                  
-                  <div className="absolute bottom-2 left-2 text-xs text-slate-300">
-                    Recent Movement Trail
-                  </div>
+              <CardContent className="command-card-content">
+                <MiniMap 
+                  locationHistory={fullTourist.locationHistory}
+                  currentLocation={fullTourist.location}
+                  className="h-64"
+                />
+                <div className="mt-3 text-xs text-slate-400 text-center">
+                  Interactive trail showing recent movement patterns
                 </div>
               </CardContent>
             </Card>
 
-            <Card className="bg-slate-700 border-slate-600">
-              <CardHeader>
-                <CardTitle className="text-lg text-white flex items-center">
-                  <Shield className="w-5 h-5 mr-2" />
-                  Response Actions
+            <Card className="command-card">
+              <CardHeader className="command-card-header">
+                <CardTitle className="modal-section-title">
+                  <Shield className="w-5 h-5" />
+                  Emergency Response
                 </CardTitle>
               </CardHeader>
-              <CardContent className="space-y-3">
-                <Button className="w-full bg-blue-600 hover:bg-blue-700 text-white" size="sm">
-                  <Truck className="w-4 h-4 mr-2" />
-                  Dispatch Nearest Unit
-                </Button>
-                
-                <Button className="w-full bg-red-600 hover:bg-red-700 text-white" size="sm">
-                  <PhoneCall className="w-4 h-4 mr-2" />
-                  Contact Emergency Services
-                </Button>
-                
-                <Button className="w-full bg-green-600 hover:bg-green-700 text-white" size="sm">
-                  <Shield className="w-4 h-4 mr-2" />
-                  Mark as Resolved
-                </Button>
-                
-                <Button className="w-full bg-amber-600 hover:bg-amber-700 text-white" size="sm">
-                  <FileText className="w-4 h-4 mr-2" />
-                  Generate E-FIR
-                </Button>
+              <CardContent className="command-card-content">
+                <div className="grid grid-cols-1 gap-3">
+                  <Button className="action-btn-primary justify-center py-3">
+                    <Truck className="w-4 h-4 mr-2" />
+                    Dispatch Nearest Unit
+                  </Button>
+                  
+                  <Button className="action-btn-danger justify-center py-3">
+                    <PhoneCall className="w-4 h-4 mr-2" />
+                    Emergency Services
+                  </Button>
+                  
+                  <div className="grid grid-cols-2 gap-2">
+                    <Button className="action-btn-success text-sm py-2">
+                      <Shield className="w-4 h-4 mr-1" />
+                      Mark Safe
+                    </Button>
+                    
+                    <Button className="action-btn-warning text-sm py-2">
+                      <FileText className="w-4 h-4 mr-1" />
+                      E-FIR
+                    </Button>
+                  </div>
+                </div>
               </CardContent>
             </Card>
           </div>
