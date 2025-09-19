@@ -141,7 +141,7 @@ class FocusedAPITester:
                         format_details.append("Alert is not a dictionary")
                         continue
                     
-                    required_fields = ['id', 'alert_id', 'tourist_id', 'alert_type', 'severity', 'status', 'location', 'created_at']
+                    required_fields = ['id', 'alert_id', 'tourist_id', 'alert_type', 'severity', 'status', 'location', 'timestamp']
                     missing_fields = [field for field in required_fields if field not in alert]
                     
                     if missing_fields:
