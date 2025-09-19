@@ -255,10 +255,10 @@ class FocusedAPITester:
         success, data, status = await self.make_request("GET", "/analytics/dashboard")
         
         if success and status == 200 and isinstance(data, dict):
-            # Check required KPI fields
+            # Check required KPI fields (based on actual API response)
             expected_kpis = [
-                'total_active_tourists', 'active_alerts', 'resolved_alerts', 
-                'high_risk_tourists', 'geofence_breaches', 'avg_safety_score'
+                'total_active_tourists', 'active_alerts', 'safe_status', 
+                'high_risk_tourists', 'resolved_alerts_today', 'avg_safety_score'
             ]
             
             present_kpis = [kpi for kpi in expected_kpis if kpi in data]
