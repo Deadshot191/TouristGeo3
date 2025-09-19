@@ -219,6 +219,18 @@ backend:
         agent: "main"
         comment: "CRITICAL ISSUE: Database page was using mock data causing KPI inconsistencies. Replaced mockTourists usage with real API calls to touristsAPI.getTourists(). Updated field mappings, added loading/error states, and proper filtering logic."
 
+  - task: "Live Map Data Integration Issue"
+    implemented: true
+    working: false
+    file: "server.py, services/location_service.py"
+    stuck_count: 1
+    priority: "critical"
+    needs_retesting: false
+    status_history:
+      - working: false
+        agent: "testing"
+        comment: "CRITICAL ROOT CAUSE IDENTIFIED: Database is completely empty - no users (0), no tourists (0), no alerts (0), no location_history (0). Only geofences (3) exist. Backend API endpoints are working correctly and properly protected with authentication. Live Map shows no markers because there is NO DATA in the database. The demo data mentioned in previous agent communications was never actually populated. All Live Map endpoints (/api/location/live, /api/analytics/dashboard, /api/geofences) are functional but return empty results due to empty database. Fixed missing httpcore dependency that was preventing backend startup."
+
   - task: "Admin Geo-fence Management Endpoints"
     implemented: true
     working: true
