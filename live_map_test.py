@@ -1,8 +1,14 @@
 #!/usr/bin/env python3
 """
-Live Map Data Integration Test
-Focused testing for Live Map component data integration issues.
-Tests the specific endpoints and data structures used by the Live Map.
+Live Map Data Integration Test for Tourism Safety System
+Tests the specific endpoints and data structures required for Live Map functionality
+after demo data population.
+
+Focus Areas:
+1. Authentication with demo user credentials (inspector.kumar@tourism.gov.in / password123)
+2. Core Live Map endpoints data verification
+3. Data structure validation for frontend integration
+4. Individual tourist data testing
 """
 
 import asyncio
@@ -10,7 +16,7 @@ import aiohttp
 import json
 import os
 from datetime import datetime
-from typing import Dict, Any, Optional
+from typing import Dict, Any, Optional, List
 
 # Get backend URL from environment
 BACKEND_URL = os.environ.get('REACT_APP_BACKEND_URL', 'https://realtime-tourist.preview.emergentagent.com')
