@@ -264,6 +264,152 @@ async def create_demo_tourists():
     
     return tourist_ids
 
+async def create_demo_alerts(tourist_ids):
+    """Create demo alerts for specific tourist scenarios"""
+    alerts_collection = await get_alerts_collection()
+    
+    # Clear existing alerts for demo
+    await alerts_collection.delete_many({})
+    
+    demo_alerts = [
+        # Scenario 1: Raj Verma - Active Panic Alert (Critical)
+        Alert(
+            alert_id=f"PN-{str(uuid.uuid4())[:4].upper()}",
+            tourist_id=tourist_ids["Raj Verma"],
+            alert_type=AlertType.PANIC_BUTTON,
+            severity=AlertSeverity.CRITICAL,
+            status=AlertStatus.NEW,
+            location=AlertLocation(
+                coordinates=[88.2640, 27.0390],  # Near Mall Road
+                address="Mall Road, Darjeeling, West Bengal"
+            ),
+            description="Tourist activated panic button - immediate assistance required",
+            created_at=datetime.utcnow() - timedelta(minutes=5),
+            response_actions=["Emergency services notified", "Nearest police patrol dispatched"]
+        ),
+        
+        # Scenario 2: Emily Carter - Active Geo-fence Breach (High Severity)
+        Alert(
+            alert_id=f"GB-{str(uuid.uuid4())[:4].upper()}",
+            tourist_id=tourist_ids["Emily Carter"],
+            alert_type=AlertType.GEOFENCE_BREACH,
+            severity=AlertSeverity.HIGH,
+            status=AlertStatus.IN_PROGRESS,
+            location=AlertLocation(
+                coordinates=[88.3000, 27.0300],  # Inside Restricted Forest Area
+                address="Restricted Forest Area, Darjeeling Hills"
+            ),
+            description="Tourist entered restricted forest area - unauthorized access detected",
+            created_at=datetime.utcnow() - timedelta(minutes=12),
+            response_actions=["Forest rangers contacted", "Search team on standby"]
+        ),
+        
+        # Scenario 3: Priya Sharma - Active Route Deviation (Medium Severity)
+        Alert(
+            alert_id=f"RD-{str(uuid.uuid4())[:4].upper()}",
+            tourist_id=tourist_ids["Priya Sharma"],
+            alert_type=AlertType.ROUTE_DEVIATION,
+            severity=AlertSeverity.MEDIUM,
+            status=AlertStatus.NEW,
+            location=AlertLocation(
+                coordinates=[88.2950, 27.0500],  # Far from planned route
+                address="Tiger Hill Road, Darjeeling"
+            ),
+            description="Tourist deviated significantly from planned route - 3.2km off course",
+            created_at=datetime.utcnow() - timedelta(minutes=8),
+            response_actions=["GPS tracking enhanced", "Local guide contacted"]
+        ),
+        
+        # Scenario 5: Aisha Khan - Resolved Alert (For history demonstration)  
+        Alert(
+            alert_id=f"PI-{str(uuid.uuid4())[:4].upper()}",
+            tourist_id=tourist_ids["Aisha Khan"],
+            alert_type=AlertType.PROLONGED_INACTIVITY,
+            severity=AlertSeverity.MEDIUM,
+            status=AlertStatus.RESOLVED,
+            location=AlertLocation(
+                coordinates=[88.2670, 27.0405],
+                address="Chowrasta, Darjeeling"
+            ),
+            description="Tourist showed no movement for 2 hours - communication lost",
+            created_at=datetime.utcnow() - timedelta(hours=6),
+            resolved_at=datetime.utcnow() - timedelta(hours=4),
+            response_actions=[
+                "Local police contacted tourist", 
+                "Tourist confirmed safe - phone battery dead",
+                "Incident resolved - tourist at hotel"
+            ]
+        )
+    ]
+    
+    for alert in demo_alerts:
+        result = await alerts_collection.insert_one(alert.dict(by_alias=True))
+        print(f"Created alert: {alert.alert_id} for {alert.alert_type.value} with ID: {result.inserted_id}")
+
+async def create_demo_location_history(tourist_ids):
+    """Create location history for demo tourists"""
+    location_collection = await get_location_history_collection()
+    
+    # Clear existing location history for demo
+    await location_collection.delete_many({})
+    
+    # Create recent location entries for each tourist
+    location_entries = [
+        # Raj Verma - Last known location (Panic scenario)
+        LocationHistory(
+            tourist_id=tourist_ids["Raj Verma"],
+            coordinates=LocationPoint(type="Point", coordinates=[88.2640, 27.0390]),
+            address="Mall Road, Darjeeling, West Bengal",
+            timestamp=datetime.utcnow() - timedelta(minutes=5),
+            accuracy=5.0,
+            speed=0.0
+        ),
+        
+        # Emily Carter - Inside restricted forest area
+        LocationHistory(
+            tourist_id=tourist_ids["Emily Carter"],
+            coordinates=LocationPoint(type="Point", coordinates=[88.3000, 27.0300]),
+            address="Restricted Forest Area, Darjeeling Hills",
+            timestamp=datetime.utcnow() - timedelta(minutes=12),
+            accuracy=8.0,
+            speed=2.5
+        ),
+        
+        # Priya Sharma - Far from planned route
+        LocationHistory(
+            tourist_id=tourist_ids["Priya Sharma"],
+            coordinates=LocationPoint(type="Point", coordinates=[88.2950, 27.0500]),
+            address="Tiger Hill Road, Darjeeling",
+            timestamp=datetime.utcnow() - timedelta(minutes=8),
+            accuracy=4.0,
+            speed=1.2
+        ),
+        
+        # John Doe - Safe location
+        LocationHistory(
+            tourist_id=tourist_ids["John Doe"],
+            coordinates=LocationPoint(type="Point", coordinates=[88.2650, 27.0395]),
+            address="The Mall, Darjeeling, West Bengal",
+            timestamp=datetime.utcnow() - timedelta(minutes=15),
+            accuracy=3.0,
+            speed=0.8
+        ),
+        
+        # Aisha Khan - Hotel location  
+        LocationHistory(
+            tourist_id=tourist_ids["Aisha Khan"],
+            coordinates=LocationPoint(type="Point", coordinates=[88.2655, 27.0400]),
+            address="Hotel Mayfair, Darjeeling",
+            timestamp=datetime.utcnow() - timedelta(minutes=20),
+            accuracy=2.0,
+            speed=0.0
+        )
+    ]
+    
+    for location in location_entries:
+        result = await location_collection.insert_one(location.dict(by_alias=True))
+        print(f"Created location entry for tourist ID: {location.tourist_id}")
+
 async def main():
     """Main function to initialize sample data"""
     print("Initializing Tourism Safety System with sample data...")
