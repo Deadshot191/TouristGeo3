@@ -84,3 +84,110 @@ code {
     @apply bg-background text-foreground;
     }
 }
+
+/* Enhanced Global Styles for Professional Command Center */
+@layer components {
+  /* Typography Hierarchy */
+  .page-title {
+    @apply text-3xl font-bold tracking-tight text-white;
+  }
+  
+  .section-title {
+    @apply text-xl font-semibold text-white;
+  }
+  
+  .card-title {
+    @apply text-lg font-medium text-white;
+  }
+  
+  .subsection-title {
+    @apply text-base font-medium text-slate-300;
+  }
+  
+  /* Consistent Card Styling */
+  .command-card {
+    @apply bg-slate-800 border-slate-700 rounded-lg shadow-sm;
+  }
+  
+  .command-card-header {
+    @apply p-6 pb-4;
+  }
+  
+  .command-card-content {
+    @apply p-6 pt-0;
+  }
+  
+  /* KPI Card Enhancements */
+  .kpi-card {
+    @apply command-card min-w-[140px];
+  }
+  
+  .kpi-card-content {
+    @apply p-4;
+  }
+  
+  .kpi-value {
+    @apply text-2xl font-bold leading-none;
+  }
+  
+  .kpi-label {
+    @apply text-xs font-medium text-slate-400 uppercase tracking-wide;
+  }
+  
+  /* Tourist Card Layout */
+  .tourist-card {
+    @apply command-card hover:bg-slate-750 transition-all duration-200 hover:shadow-lg hover:scale-[1.02];
+  }
+  
+  .tourist-card-content {
+    @apply p-5;
+  }
+  
+  /* Status Badge Improvements */
+  .status-badge-safe {
+    @apply bg-emerald-100 text-emerald-800 border-emerald-200 px-3 py-1 text-sm font-semibold;
+  }
+  
+  .status-badge-anomaly {
+    @apply bg-amber-100 text-amber-800 border-amber-200 px-3 py-1 text-sm font-semibold;
+  }
+  
+  .status-badge-panic {
+    @apply bg-red-100 text-red-800 border-red-200 px-3 py-1 text-sm font-semibold;
+  }
+  
+  /* Modal Improvements */
+  .modal-section {
+    @apply space-y-4;
+  }
+  
+  .modal-section-title {
+    @apply text-lg font-semibold text-white flex items-center gap-2 mb-3;
+  }
+  
+  /* Action Button Improvements */
+  .action-btn-primary {
+    @apply bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md transition-colors duration-200 flex items-center gap-2 font-medium;
+  }
+  
+  .action-btn-danger {
+    @apply bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-md transition-colors duration-200 flex items-center gap-2 font-medium;
+  }
+  
+  .action-btn-success {
+    @apply bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 rounded-md transition-colors duration-200 flex items-center gap-2 font-medium;
+  }
+  
+  .action-btn-warning {
+    @apply bg-amber-600 hover:bg-amber-700 text-white px-4 py-2 rounded-md transition-colors duration-200 flex items-center gap-2 font-medium;
+  }
+  
+  /* Map Popup Improvements */
+  .map-popup {
+    @apply bg-slate-800 border border-slate-600 rounded-lg shadow-xl p-4 min-w-[280px] max-w-[320px];
+  }
+  
+  .map-popup-compact {
+    @apply bg-slate-800 border border-slate-600 rounded-lg shadow-xl p-3 min-w-[240px] max-w-[280px];
+  }
+}
