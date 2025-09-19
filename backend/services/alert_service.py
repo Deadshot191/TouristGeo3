@@ -167,7 +167,10 @@ class AlertService:
     async def _send_push_notification(alert: Alert, decrypted_data: Dict[str, Any]):
         """Send push notification to dashboard with full details"""
         try:
-            from ..websocket_manager import manager
+            try:
+                from ..websocket_manager import manager
+            except ImportError:
+                from websocket_manager import manager
             
             tourist_name = decrypted_data.get("full_name", "Unknown Tourist")
             
