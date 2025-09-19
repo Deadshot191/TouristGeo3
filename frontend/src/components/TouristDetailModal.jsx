@@ -359,57 +359,101 @@ const TouristDetailModal = ({ tourist, isOpen, onClose }) => {
             </Card>
           </div>
 
-          {/* Right Column - Map & Response Actions */}
+          {/* Right Column - History & Response Actions */}
           <div className="col-span-12 lg:col-span-4 space-y-6">
-            <Card className="command-card">
-              <CardHeader className="command-card-header">
-                <CardTitle className="modal-section-title">
-                  <MapPin className="w-5 h-5" />
-                  Location History Trail
+            {/* Location History Trail */}
+            <Card className="command-card border-2 border-green-500">
+              <CardHeader className="command-card-header pb-4">
+                <CardTitle className="modal-section-title text-lg font-bold">
+                  <MapPin className="w-6 h-6 text-green-400" />
+                  Live Trail Map
                 </CardTitle>
               </CardHeader>
               <CardContent className="command-card-content">
-                <MiniMap 
-                  locationHistory={fullTourist.locationHistory}
-                  currentLocation={fullTourist.location}
-                  className="h-64"
-                />
-                <div className="mt-3 text-xs text-slate-400 text-center">
+                <div className="bg-slate-900 p-2 rounded-lg border-2 border-slate-600">
+                  <MiniMap 
+                    locationHistory={fullTourist.locationHistory}
+                    currentLocation={fullTourist.location}
+                    className="h-72 rounded-lg"
+                  />
+                </div>
+                <div className="mt-3 text-sm text-slate-300 text-center bg-slate-700 p-2 rounded border border-slate-500">
                   Interactive trail showing recent movement patterns
                 </div>
               </CardContent>
             </Card>
 
-            <Card className="command-card">
-              <CardHeader className="command-card-header">
-                <CardTitle className="modal-section-title">
-                  <Shield className="w-5 h-5" />
+            {/* Emergency Response Actions - Operator Focused */}
+            <Card className="command-card border-4 border-orange-500 bg-gradient-to-br from-slate-800 to-slate-900">
+              <CardHeader className="command-card-header pb-4">
+                <CardTitle className="modal-section-title text-xl font-bold text-orange-400">
+                  <Shield className="w-7 h-7" />
                   Emergency Response
                 </CardTitle>
               </CardHeader>
               <CardContent className="command-card-content">
-                <div className="grid grid-cols-1 gap-3">
-                  <Button className="action-btn-primary justify-center py-3">
-                    <Truck className="w-4 h-4 mr-2" />
-                    Dispatch Nearest Unit
-                  </Button>
-                  
-                  <Button className="action-btn-danger justify-center py-3">
-                    <PhoneCall className="w-4 h-4 mr-2" />
-                    Emergency Services
-                  </Button>
-                  
-                  <div className="grid grid-cols-2 gap-2">
-                    <Button className="action-btn-success text-sm py-2">
-                      <Shield className="w-4 h-4 mr-1" />
-                      Mark Safe
+                <div className="space-y-4">
+                  {/* Primary Actions - Large and Prominent */}
+                  <div className="grid grid-cols-1 gap-4">
+                    <Button className="bg-red-600 hover:bg-red-700 text-white font-bold py-4 px-6 rounded-lg border-2 border-red-400 shadow-lg transition-all hover:shadow-xl text-lg">
+                      <Truck className="w-6 h-6 mr-3" />
+                      DISPATCH NEAREST UNIT
                     </Button>
                     
-                    <Button className="action-btn-warning text-sm py-2">
-                      <FileText className="w-4 h-4 mr-1" />
-                      E-FIR
+                    <Button className="bg-red-800 hover:bg-red-900 text-white font-bold py-4 px-6 rounded-lg border-2 border-red-600 shadow-lg transition-all hover:shadow-xl text-lg">
+                      <PhoneCall className="w-6 h-6 mr-3" />
+                      CALL EMERGENCY SERVICES
                     </Button>
                   </div>
+                  
+                  {/* Secondary Actions Grid */}
+                  <div className="grid grid-cols-2 gap-3 mt-6">
+                    <Button className="bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-4 rounded-lg border-2 border-green-400 shadow-lg transition-all hover:shadow-xl">
+                      <Shield className="w-5 h-5 mr-2" />
+                      MARK SAFE
+                    </Button>
+                    
+                    <Button className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded-lg border-2 border-blue-400 shadow-lg transition-all hover:shadow-xl">
+                      <FileText className="w-5 h-5 mr-2" />
+                      CREATE E-FIR
+                    </Button>
+                  </div>
+
+                  {/* Additional Quick Actions */}
+                  <div className="grid grid-cols-1 gap-3 mt-4 pt-4 border-t-2 border-slate-600">
+                    <Button className="bg-yellow-600 hover:bg-yellow-700 text-white font-bold py-3 px-4 rounded-lg border-2 border-yellow-400 shadow-lg transition-all hover:shadow-xl">
+                      <UsersIcon className="w-5 h-5 mr-2" />
+                      NOTIFY CONTACTS
+                    </Button>
+                    
+                    <Button className="bg-purple-600 hover:bg-purple-700 text-white font-bold py-3 px-4 rounded-lg border-2 border-purple-400 shadow-lg transition-all hover:shadow-xl">
+                      <AlertTriangle className="w-5 h-5 mr-2" />
+                      ESCALATE ALERT
+                    </Button>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Quick Status Actions */}
+            <Card className="command-card border-2 border-slate-500">
+              <CardHeader className="command-card-header pb-3">
+                <CardTitle className="modal-section-title text-lg font-bold">
+                  <Activity className="w-6 h-6" />
+                  Quick Status Updates
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="command-card-content">
+                <div className="grid grid-cols-1 gap-2">
+                  <Button variant="outline" className="border-slate-500 text-slate-300 hover:bg-slate-700 font-medium py-2">
+                    Update Location Manually
+                  </Button>
+                  <Button variant="outline" className="border-slate-500 text-slate-300 hover:bg-slate-700 font-medium py-2">
+                    Request Status Check
+                  </Button>
+                  <Button variant="outline" className="border-slate-500 text-slate-300 hover:bg-slate-700 font-medium py-2">
+                    Generate Report
+                  </Button>
                 </div>
               </CardContent>
             </Card>
