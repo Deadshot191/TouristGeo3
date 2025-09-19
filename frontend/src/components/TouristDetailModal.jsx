@@ -72,9 +72,9 @@ const TouristDetailModal = ({ tourist, isOpen, onClose }) => {
   };
 
   const getSafetyScoreColor = (score) => {
-    if (score >= 80) return 'text-emerald-500';
-    if (score >= 50) return 'text-amber-500';
-    return 'text-red-500';
+    if (score >= 80) return 'text-green-400';
+    if (score >= 50) return 'text-yellow-400';
+    return 'text-red-400';
   };
 
   // Check if data should be locked (SAFE status tourists have sensitive data hidden)
