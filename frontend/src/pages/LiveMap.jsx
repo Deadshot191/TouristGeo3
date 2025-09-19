@@ -147,45 +147,48 @@ const LiveMap = ({ onTouristSelect }) => {
 
   return (
     <div className="h-full flex flex-col bg-slate-900">
-      {/* Header Section */}
+      {/* Header Section with Enhanced KPI Cards */}
       <div className="p-6 border-b border-slate-700">
-        <div className="flex justify-between items-center">
-          <h1 className="text-2xl font-bold text-white">Real-time Tourist Monitoring</h1>
+        <div className="flex justify-between items-start">
+          <div>
+            <h1 className="page-title mb-2">Real-time Tourist Monitoring</h1>
+            <p className="text-slate-400 text-sm">Live tracking and safety management dashboard</p>
+          </div>
           
-          {/* KPI Cards */}
-          <div className="flex space-x-4">
-            <Card className="bg-slate-800 border-slate-700">
-              <CardContent className="p-4">
-                <div className="flex items-center space-x-2">
-                  <Users className="w-5 h-5 text-blue-400" />
+          {/* Enhanced KPI Cards */}
+          <div className="grid grid-cols-3 gap-4">
+            <Card className="kpi-card">
+              <CardContent className="kpi-card-content">
+                <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-xs text-slate-400">Total Active</p>
-                    <p className="text-lg font-bold text-white">{kpis.total_active_tourists}</p>
+                    <p className="kpi-label mb-1">Total Active</p>
+                    <p className="kpi-value text-blue-400">{kpis.total_active_tourists || tourists.length}</p>
                   </div>
+                  <Users className="w-8 h-8 text-blue-400 opacity-80" />
                 </div>
               </CardContent>
             </Card>
             
-            <Card className="bg-slate-800 border-slate-700">
-              <CardContent className="p-4">
-                <div className="flex items-center space-x-2">
-                  <AlertTriangle className="w-5 h-5 text-red-400" />
+            <Card className="kpi-card">
+              <CardContent className="kpi-card-content">
+                <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-xs text-slate-400">Active Alerts</p>
-                    <p className="text-lg font-bold text-red-400">{kpis.active_alerts}</p>
+                    <p className="kpi-label mb-1">Active Alerts</p>
+                    <p className="kpi-value text-red-400">{kpis.active_alerts}</p>
                   </div>
+                  <AlertTriangle className="w-8 h-8 text-red-400 opacity-80" />
                 </div>
               </CardContent>
             </Card>
             
-            <Card className="bg-slate-800 border-slate-700">
-              <CardContent className="p-4">
-                <div className="flex items-center space-x-2">
-                  <Shield className="w-5 h-5 text-green-400" />
+            <Card className="kpi-card">
+              <CardContent className="kpi-card-content">
+                <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-xs text-slate-400">Safe Status</p>
-                    <p className="text-lg font-bold text-green-400">{kpis.safe_status}</p>
+                    <p className="kpi-label mb-1">Safe Status</p>
+                    <p className="kpi-value text-emerald-400">{kpis.safe_status}</p>
                   </div>
+                  <Shield className="w-8 h-8 text-emerald-400 opacity-80" />
                 </div>
               </CardContent>
             </Card>
@@ -252,68 +255,67 @@ const LiveMap = ({ onTouristSelect }) => {
             </div>
           ))}
 
-          {/* Map Legend */}
-          <div className="absolute bottom-4 left-4 bg-slate-800 border border-slate-600 rounded-lg p-4">
-            <h3 className="text-sm font-medium text-white mb-2">Legend</h3>
+          {/* Enhanced Map Legend */}
+          <div className="absolute bottom-4 left-4 command-card p-4">
+            <h3 className="subsection-title mb-3">Map Legend</h3>
             <div className="space-y-2">
-              <div className="flex items-center space-x-2">
-                <div className="w-3 h-3 rounded-full bg-green-500"></div>
-                <span className="text-xs text-slate-300">Safe</span>
+              <div className="flex items-center space-x-3">
+                <div className="w-3 h-3 rounded-full bg-emerald-500"></div>
+                <span className="text-sm text-slate-300">Safe Tourist</span>
               </div>
-              <div className="flex items-center space-x-2">
-                <div className="w-3 h-3 rounded-full bg-yellow-500"></div>
-                <span className="text-xs text-slate-300">Anomaly</span>
+              <div className="flex items-center space-x-3">
+                <div className="w-3 h-3 rounded-full bg-amber-500"></div>
+                <span className="text-sm text-slate-300">Anomaly Detected</span>
               </div>
-              <div className="flex items-center space-x-2">
+              <div className="flex items-center space-x-3">
                 <div className="w-3 h-3 rounded-full bg-red-500"></div>
-                <span className="text-xs text-slate-300">Panic Alert</span>
+                <span className="text-sm text-slate-300">Panic Alert</span>
               </div>
-              <div className="flex items-center space-x-2">
+              <div className="flex items-center space-x-3">
                 <div className="w-3 h-3 border-2 border-red-500 border-dashed"></div>
-                <span className="text-xs text-slate-300">Restricted Zone</span>
+                <span className="text-sm text-slate-300">Restricted Zone</span>
               </div>
             </div>
           </div>
         </div>
 
-        {/* Tourist Info Panel */}
+        {/* Compact Tourist Info Popup */}
         {selectedTourist && (
-          <div className="absolute top-4 right-4 w-80 bg-slate-800 border border-slate-600 rounded-lg shadow-xl">
-            <div className="p-4">
-              <div className="flex justify-between items-start mb-3">
-                <div>
-                  <h3 className="font-medium text-white">{selectedTourist.tourist_name}</h3>
-                  <p className="text-sm text-slate-400">{selectedTourist.digital_id}</p>
-                </div>
-                <Badge className={getStatusBadgeColor(selectedTourist.status)}>
-                  {selectedTourist.status.toUpperCase()}
-                </Badge>
+          <div className="absolute top-4 right-4 map-popup-compact">
+            <div className="flex items-start justify-between mb-3">
+              <div className="flex-1">
+                <h3 className="font-semibold text-white text-sm">{selectedTourist.tourist_name}</h3>
+                <p className="text-xs text-slate-400 font-mono">{selectedTourist.digital_id}</p>
               </div>
-              
-              <div className="space-y-2 mb-4">
-                <div className="flex items-center space-x-2 text-sm">
-                  <MapPin className="w-4 h-4 text-slate-400" />
-                  <span className="text-slate-300">
-                    {selectedTourist.address || `${selectedTourist.coordinates?.[1]?.toFixed(4)}, ${selectedTourist.coordinates?.[0]?.toFixed(4)}`}
-                  </span>
-                </div>
-                <p className="text-xs text-slate-500">
-                  Last updated: {selectedTourist.timestamp ? new Date(selectedTourist.timestamp).toLocaleTimeString() : 'Unknown'}
-                </p>
-              </div>
-
-              <Button 
-                onClick={() => onTouristSelect({
-                  id: selectedTourist.tourist_id,
-                  name: selectedTourist.tourist_name,
-                  digital_id: selectedTourist.digital_id,
-                  status: selectedTourist.status
-                })}
-                className="w-full bg-blue-600 hover:bg-blue-700 text-white"
-              >
-                View Details
-              </Button>
+              <Badge className={`ml-2 ${getStatusBadgeColor(selectedTourist.status)} text-xs`}>
+                {selectedTourist.status.toUpperCase()}
+              </Badge>
             </div>
+            
+            <div className="space-y-2 mb-3">
+              <div className="flex items-center space-x-2 text-xs">
+                <MapPin className="w-3 h-3 text-slate-400" />
+                <span className="text-slate-300 truncate">
+                  {selectedTourist.address || `${selectedTourist.coordinates?.[1]?.toFixed(4)}, ${selectedTourist.coordinates?.[0]?.toFixed(4)}`}
+                </span>
+              </div>
+              <p className="text-xs text-slate-500">
+                Updated: {selectedTourist.timestamp ? new Date(selectedTourist.timestamp).toLocaleTimeString() : 'Unknown'}
+              </p>
+            </div>
+
+            <Button 
+              size="sm"
+              onClick={() => onTouristSelect({
+                id: selectedTourist.tourist_id,
+                name: selectedTourist.tourist_name,
+                digital_id: selectedTourist.digital_id,
+                status: selectedTourist.status
+              })}
+              className="w-full action-btn-primary text-xs py-1.5"
+            >
+              View Full Details
+            </Button>
           </div>
         )}
       </div>
