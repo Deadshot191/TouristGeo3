@@ -1,0 +1,443 @@
+#!/usr/bin/env python3
+"""
+Live Map Data Integration Test
+Focused testing for Live Map component data integration issues.
+Tests the specific endpoints and data structures used by the Live Map.
+"""
+
+import asyncio
+import aiohttp
+import json
+import os
+from datetime import datetime
+from typing import Dict, Any, Optional
+
+# Get backend URL from environment
+BACKEND_URL = os.environ.get('REACT_APP_BACKEND_URL', 'https://realtime-tourist.preview.emergentagent.com')
+API_BASE_URL = f"{BACKEND_URL}/api"
+
+class LiveMapDataTester:
+    def __init__(self):
+        self.session = None
+        self.auth_token = None
+        self.test_results = {}
+        
+    async def __aenter__(self):
+        self.session = aiohttp.ClientSession()
+        return self
+        
+    async def __aexit__(self, exc_type, exc_val, exc_tb):
+        if self.session:
+            await self.session.close()
+    
+    def log_test(self, test_name: str, success: bool, details: str = "", response_data: Any = None):
+        """Log test results"""
+        self.test_results[test_name] = {
+            "success": success,
+            "details": details,
+            "response_data": response_data,
+            "timestamp": datetime.now().isoformat()
+        }
+        status = "✅ PASS" if success else "❌ FAIL"
+        print(f"{status} {test_name}: {details}")
+        
+    async def make_request(self, method: str, endpoint: str, data: Dict = None, 
+                          headers: Dict = None, params: Dict = None) -> tuple:
+        """Make HTTP request and return (success, response_data, status_code)"""
+        try:
+            url = f"{API_BASE_URL}{endpoint}"
+            request_headers = headers or {}
+            
+            if self.auth_token and 'Authorization' not in request_headers:
+                request_headers['Authorization'] = f"Bearer {self.auth_token}"
+                
+            async with self.session.request(
+                method, url, json=data, headers=request_headers, params=params
+            ) as response:
+                try:
+                    response_data = await response.json()
+                except:
+                    response_data = await response.text()
+                    
+                return response.status < 400, response_data, response.status
+                
+        except Exception as e:
+            return False, str(e), 0
+    
+    async def authenticate(self):
+        """Authenticate to get access token"""
+        print("\n=== Authentication ===")
+        
+        login_data = {
+            "email": "inspector.kumar@tourism.gov.in",
+            "password": "password123"
+        }
+        
+        success, data, status = await self.make_request("POST", "/auth/login", login_data)
+        
+        if success and status == 200 and isinstance(data, dict) and 'access_token' in data:
+            self.auth_token = data['access_token']
+            self.log_test(
+                "Authentication", 
+                True,
+                f"Successfully authenticated as {data.get('user', {}).get('full_name', 'Unknown')}"
+            )
+            return True
+        else:
+            self.log_test(
+                "Authentication", 
+                False,
+                f"Failed to authenticate. Status: {status}, Response: {data}"
+            )
+            return False
+    
+    async def test_database_data_existence(self):
+        """Test what data exists in the database"""
+        print("\n=== Database Data Existence Check ===")
+        
+        if not self.auth_token:
+            self.log_test("Database Check", False, "No auth token available")
+            return
+        
+        # 1. Check if we have any tourists in the database
+        success, data, status = await self.make_request("GET", "/tourists")
+        tourists_list = data if isinstance(data, list) else []
+        
+        self.log_test(
+            "Tourists in Database", 
+            success and status == 200 and len(tourists_list) > 0,
+            f"Status: {status}, Found {len(tourists_list)} tourists",
+            tourists_list[:2] if tourists_list else None  # Show first 2 tourists
+        )
+        
+        if not tourists_list:
+            print("❌ CRITICAL: No tourists found in database - this explains why Live Map is empty!")
+            return
+        
+        # 2. Check tourist data structure
+        sample_tourist = tourists_list[0]
+        required_fields = ['id', 'digital_id', 'full_name', 'status']
+        missing_fields = [field for field in required_fields if field not in sample_tourist]
+        
+        self.log_test(
+            "Tourist Data Structure", 
+            len(missing_fields) == 0,
+            f"Required fields present: {len(required_fields) - len(missing_fields)}/{len(required_fields)}, Missing: {missing_fields}",
+            sample_tourist
+        )
+        
+        # 3. Check if tourists have location data
+        tourists_with_location = 0
+        for tourist in tourists_list:
+            if 'location' in tourist and tourist['location'] is not None:
+                tourists_with_location += 1
+        
+        self.log_test(
+            "Tourists with Location Data", 
+            tourists_with_location > 0,
+            f"Tourists with location: {tourists_with_location}/{len(tourists_list)}",
+            [t for t in tourists_list if t.get('location')][:2]  # Show first 2 with location
+        )
+        
+        # 4. Check location history for tourists
+        if tourists_list:
+            tourist_id = tourists_list[0]['id']
+            success, location_history, status = await self.make_request("GET", f"/tourists/{tourist_id}/location-history")
+            
+            self.log_test(
+                "Location History Data", 
+                success and status == 200 and isinstance(location_history, list),
+                f"Status: {status}, Location history entries: {len(location_history) if isinstance(location_history, list) else 0}",
+                location_history[:2] if isinstance(location_history, list) else None
+            )
+    
+    async def test_live_locations_endpoint(self):
+        """Test GET /api/location/live endpoint used by Live Map"""
+        print("\n=== Live Locations Endpoint Test ===")
+        
+        if not self.auth_token:
+            self.log_test("Live Locations Endpoint", False, "No auth token available")
+            return
+        
+        success, data, status = await self.make_request("GET", "/location/live")
+        live_locations = data if isinstance(data, list) else []
+        
+        self.log_test(
+            "GET /api/location/live", 
+            success and status == 200,
+            f"Status: {status}, Live locations returned: {len(live_locations)}",
+            live_locations[:2] if live_locations else None
+        )
+        
+        if not live_locations:
+            print("❌ CRITICAL: No live locations returned - this is why Live Map shows no markers!")
+            return
+        
+        # Check data structure of live locations
+        sample_location = live_locations[0]
+        expected_fields = ['tourist_id', 'tourist_name', 'coordinates', 'timestamp']
+        missing_fields = [field for field in expected_fields if field not in sample_location]
+        
+        self.log_test(
+            "Live Location Data Structure", 
+            len(missing_fields) == 0,
+            f"Expected fields present: {len(expected_fields) - len(missing_fields)}/{len(expected_fields)}, Missing: {missing_fields}",
+            sample_location
+        )
+        
+        # Check coordinates format
+        valid_coordinates = 0
+        for location in live_locations:
+            coords = location.get('coordinates')
+            if isinstance(coords, list) and len(coords) == 2 and all(isinstance(c, (int, float)) for c in coords):
+                valid_coordinates += 1
+        
+        self.log_test(
+            "Coordinates Format Validation", 
+            valid_coordinates == len(live_locations),
+            f"Valid coordinates: {valid_coordinates}/{len(live_locations)}",
+            [loc.get('coordinates') for loc in live_locations[:3]]
+        )
+    
+    async def test_dashboard_kpis_endpoint(self):
+        """Test GET /api/analytics/dashboard endpoint used by Live Map"""
+        print("\n=== Dashboard KPIs Endpoint Test ===")
+        
+        if not self.auth_token:
+            self.log_test("Dashboard KPIs Endpoint", False, "No auth token available")
+            return
+        
+        success, data, status = await self.make_request("GET", "/analytics/dashboard")
+        
+        self.log_test(
+            "GET /api/analytics/dashboard", 
+            success and status == 200,
+            f"Status: {status}, KPIs data available: {isinstance(data, dict)}",
+            data
+        )
+        
+        if success and isinstance(data, dict):
+            # Check expected KPI fields
+            expected_kpis = ['total_active_tourists', 'total_alerts', 'critical_alerts', 'safe_tourists']
+            missing_kpis = [kpi for kpi in expected_kpis if kpi not in data]
+            
+            self.log_test(
+                "Dashboard KPIs Structure", 
+                len(missing_kpis) == 0,
+                f"Expected KPIs present: {len(expected_kpis) - len(missing_kpis)}/{len(expected_kpis)}, Missing: {missing_kpis}",
+                {k: v for k, v in data.items() if k in expected_kpis}
+            )
+    
+    async def test_geofences_endpoint(self):
+        """Test GET /api/geofences endpoint used by Live Map"""
+        print("\n=== Geofences Endpoint Test ===")
+        
+        if not self.auth_token:
+            self.log_test("Geofences Endpoint", False, "No auth token available")
+            return
+        
+        success, data, status = await self.make_request("GET", "/geofences")
+        geofences_list = data if isinstance(data, list) else []
+        
+        self.log_test(
+            "GET /api/geofences", 
+            success and status == 200,
+            f"Status: {status}, Geofences returned: {len(geofences_list)}",
+            geofences_list[:2] if geofences_list else None
+        )
+        
+        if geofences_list:
+            # Check geofence data structure
+            sample_geofence = geofences_list[0]
+            expected_fields = ['id', 'name', 'type', 'risk_level', 'coordinates']
+            missing_fields = [field for field in expected_fields if field not in sample_geofence]
+            
+            self.log_test(
+                "Geofence Data Structure", 
+                len(missing_fields) == 0,
+                f"Expected fields present: {len(expected_fields) - len(missing_fields)}/{len(expected_fields)}, Missing: {missing_fields}",
+                sample_geofence
+            )
+    
+    async def test_data_structure_compatibility(self):
+        """Test if data structure matches frontend expectations"""
+        print("\n=== Data Structure Compatibility Test ===")
+        
+        if not self.auth_token:
+            self.log_test("Data Structure Compatibility", False, "No auth token available")
+            return
+        
+        # Get live locations and check against expected frontend structure
+        success, live_data, status = await self.make_request("GET", "/location/live")
+        
+        if success and isinstance(live_data, list) and live_data:
+            sample_location = live_data[0]
+            
+            # Frontend expects: tourist_id, tourist_name, digital_id, status, coordinates, address, timestamp
+            frontend_expected = ['tourist_id', 'tourist_name', 'digital_id', 'status', 'coordinates', 'timestamp']
+            present_fields = [field for field in frontend_expected if field in sample_location]
+            missing_fields = [field for field in frontend_expected if field not in sample_location]
+            
+            compatibility_score = len(present_fields) / len(frontend_expected)
+            
+            self.log_test(
+                "Frontend Data Compatibility", 
+                compatibility_score >= 0.8,  # At least 80% compatibility
+                f"Compatibility: {compatibility_score:.1%} ({len(present_fields)}/{len(frontend_expected)} fields), Missing: {missing_fields}",
+                {k: v for k, v in sample_location.items() if k in frontend_expected}
+            )
+            
+            # Check if coordinates are in the right format [longitude, latitude]
+            coords = sample_location.get('coordinates')
+            if isinstance(coords, list) and len(coords) == 2:
+                lon, lat = coords
+                valid_coords = (-180 <= lon <= 180) and (-90 <= lat <= 90)
+                
+                self.log_test(
+                    "Coordinates Range Validation", 
+                    valid_coords,
+                    f"Coordinates: [{lon}, {lat}], Valid range: {valid_coords}"
+                )
+            else:
+                self.log_test(
+                    "Coordinates Range Validation", 
+                    False,
+                    f"Invalid coordinates format: {coords}"
+                )
+        else:
+            self.log_test(
+                "Frontend Data Compatibility", 
+                False,
+                "No live location data available for compatibility testing"
+            )
+    
+    async def test_specific_tourist_data(self):
+        """Test specific tourist data to understand the issue"""
+        print("\n=== Specific Tourist Data Analysis ===")
+        
+        if not self.auth_token:
+            self.log_test("Tourist Data Analysis", False, "No auth token available")
+            return
+        
+        # Get tourists list
+        success, tourists_data, status = await self.make_request("GET", "/tourists")
+        
+        if not success or not isinstance(tourists_data, list) or not tourists_data:
+            self.log_test("Tourist Data Analysis", False, "No tourists data available")
+            return
+        
+        # Analyze each tourist's data
+        for i, tourist in enumerate(tourists_data[:3]):  # Check first 3 tourists
+            tourist_id = tourist.get('id')
+            tourist_name = tourist.get('full_name', 'Unknown')
+            
+            print(f"\n--- Analyzing Tourist {i+1}: {tourist_name} ---")
+            
+            # Check if tourist has last_known_location
+            has_location = 'location' in tourist and tourist['location'] is not None
+            
+            self.log_test(
+                f"Tourist {i+1} - Has Location", 
+                has_location,
+                f"Tourist: {tourist_name}, Has location: {has_location}",
+                tourist.get('location')
+            )
+            
+            # Get detailed tourist info
+            if tourist_id:
+                success, detailed_tourist, status = await self.make_request("GET", f"/tourists/{tourist_id}")
+                
+                if success and isinstance(detailed_tourist, dict):
+                    location_data = detailed_tourist.get('location')
+                    
+                    self.log_test(
+                        f"Tourist {i+1} - Detailed Location", 
+                        location_data is not None,
+                        f"Detailed location available: {location_data is not None}",
+                        location_data
+                    )
+                    
+                    # Check location history
+                    success, location_history, status = await self.make_request("GET", f"/tourists/{tourist_id}/location-history")
+                    
+                    if success and isinstance(location_history, list):
+                        self.log_test(
+                            f"Tourist {i+1} - Location History", 
+                            len(location_history) > 0,
+                            f"Location history entries: {len(location_history)}",
+                            location_history[0] if location_history else None
+                        )
+    
+    async def run_live_map_tests(self):
+        """Run all Live Map specific tests"""
+        print(f"🗺️  Starting Live Map Data Integration Tests")
+        print(f"📍 Backend URL: {API_BASE_URL}")
+        print("=" * 60)
+        
+        # Authenticate first
+        if not await self.authenticate():
+            print("❌ Authentication failed - cannot proceed with tests")
+            return self.test_results
+        
+        # Run Live Map specific tests
+        await self.test_database_data_existence()
+        await self.test_live_locations_endpoint()
+        await self.test_dashboard_kpis_endpoint()
+        await self.test_geofences_endpoint()
+        await self.test_data_structure_compatibility()
+        await self.test_specific_tourist_data()
+        
+        # Print summary
+        print("\n" + "=" * 60)
+        print("📊 LIVE MAP TEST SUMMARY")
+        print("=" * 60)
+        
+        total_tests = len(self.test_results)
+        passed_tests = sum(1 for result in self.test_results.values() if result['success'])
+        failed_tests = total_tests - passed_tests
+        
+        print(f"Total Tests: {total_tests}")
+        print(f"✅ Passed: {passed_tests}")
+        print(f"❌ Failed: {failed_tests}")
+        print(f"Success Rate: {(passed_tests/total_tests)*100:.1f}%")
+        
+        if failed_tests > 0:
+            print(f"\n🔍 FAILED TESTS:")
+            for test_name, result in self.test_results.items():
+                if not result['success']:
+                    print(f"  ❌ {test_name}: {result['details']}")
+        
+        # Provide diagnosis
+        print(f"\n🔍 LIVE MAP DIAGNOSIS:")
+        
+        # Check key indicators
+        has_tourists = any("Tourists in Database" in name and result['success'] for name, result in self.test_results.items())
+        has_live_locations = any("GET /api/location/live" in name and result['success'] for name, result in self.test_results.items())
+        has_location_data = any("Live locations returned: 0" not in result['details'] for name, result in self.test_results.items() if "GET /api/location/live" in name)
+        
+        if not has_tourists:
+            print("  🚨 ROOT CAUSE: No tourists in database")
+        elif not has_live_locations:
+            print("  🚨 ROOT CAUSE: Live locations endpoint failing")
+        elif not has_location_data:
+            print("  🚨 ROOT CAUSE: No location data available for tourists")
+        else:
+            print("  ✅ Data appears to be available - issue may be in frontend integration")
+        
+        return self.test_results
+
+async def main():
+    """Main test runner for Live Map"""
+    async with LiveMapDataTester() as tester:
+        results = await tester.run_live_map_tests()
+        
+        # Save results to file
+        with open('/app/live_map_test_results.json', 'w') as f:
+            json.dump(results, f, indent=2, default=str)
+        
+        print(f"\n💾 Live Map test results saved to: /app/live_map_test_results.json")
+        
+        return results
+
+if __name__ == "__main__":
+    asyncio.run(main())
