@@ -201,7 +201,7 @@ const TouristDatabase = ({ onTouristSelect }) => {
                   
                   <div className="flex items-center text-sm text-slate-300">
                     <Phone className="w-4 h-4 mr-2 text-slate-400 flex-shrink-0" />
-                    <span className="truncate">{tourist.emergencyContacts?.[0]?.phone || 'N/A'}</span>
+                    <span className="truncate">{tourist.emergency_contacts?.[0]?.phone || 'N/A'}</span>
                   </div>
                 </div>
 
@@ -210,10 +210,10 @@ const TouristDatabase = ({ onTouristSelect }) => {
                   <div className="text-center">
                     <p className="text-xs text-slate-400 mb-1">Safety Score</p>
                     <div className={`text-lg font-bold ${
-                      tourist.safetyScore >= 80 ? 'text-emerald-400' :
-                      tourist.safetyScore >= 50 ? 'text-amber-400' : 'text-red-400'
+                      (tourist.safety_score || 0) >= 80 ? 'text-emerald-400' :
+                      (tourist.safety_score || 0) >= 50 ? 'text-amber-400' : 'text-red-400'
                     }`}>
-                      {tourist.safetyScore}/100
+                      {tourist.safety_score || 0}/100
                     </div>
                   </div>
                   <div className="text-center">
