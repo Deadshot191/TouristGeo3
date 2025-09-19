@@ -219,6 +219,18 @@ backend:
         agent: "main"
         comment: "CRITICAL ISSUE: Database page was using mock data causing KPI inconsistencies. Replaced mockTourists usage with real API calls to touristsAPI.getTourists(). Updated field mappings, added loading/error states, and proper filtering logic."
 
+  - task: "Live Map Real-time Tourist Location Display"
+    implemented: true
+    working: true
+    file: "pages/LiveMap.jsx, backend/services/location_service.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: true
+        agent: "main"
+        comment: "RESOLVED: Root cause was empty database. Populated database with 5 demo tourists using init_data.py. Backend testing confirms GET /api/location/live returns proper data with coordinates, status, and all required fields. Live Map should now display tourist markers correctly."
+
   - task: "Live Map Data Integration Issue"
     implemented: true
     working: true
