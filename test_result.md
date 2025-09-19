@@ -197,27 +197,33 @@ backend:
 
   - task: "Fix Tourist Detail Modal Data Inconsistency"
     implemented: true
-    working: false
+    working: true
     file: "components/TouristDetailModal.jsx"
     stuck_count: 0
     priority: "high"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
       - working: false
         agent: "main"
         comment: "CRITICAL ISSUE: Modal was showing hardcoded mock data instead of real tourist data. Replaced mock data usage with real API calls to touristsAPI.getTourist() and touristsAPI.getTouristAlerts(). Added loading states, error handling, and proper field mappings (full_name, digital_id, emergency_contacts, etc.)"
+      - working: true
+        agent: "testing"
+        comment: "FIELD MAPPING INTEGRATION TESTED: ✅ TouristDetailModal working correctly with real API data. All required fields present and properly mapped: full_name, digital_id, status, emergency_contacts (with phone field), location (with address field), safety_score, itinerary, visit_start_date, visit_end_date. Modal successfully loads real tourist data via touristsAPI.getTourist() and touristsAPI.getTouristAlerts(). Loading states, error handling working. Tested with Raj Verma (DIG-PANIC01) - all data fields populated correctly including 3 emergency contacts and 1 panic alert. Location structure compatible (location.address accessible). Emergency contacts structure compatible (contacts[0].phone accessible). No field mapping issues found in modal component."
 
   - task: "Fix Tourist Database Page Data Inconsistency"
     implemented: true
-    working: false
+    working: true
     file: "pages/TouristDatabase.jsx"
     stuck_count: 0
     priority: "high"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
       - working: false
         agent: "main"
         comment: "CRITICAL ISSUE: Database page was using mock data causing KPI inconsistencies. Replaced mockTourists usage with real API calls to touristsAPI.getTourists(). Updated field mappings, added loading/error states, and proper filtering logic."
+      - working: true
+        agent: "testing"
+        comment: "FIELD MAPPING INTEGRATION TESTED & FIXED: ✅ TouristDatabase page now working correctly with real API data. CRITICAL FIX APPLIED: Fixed field mapping issue in visit duration calculation (lines 246-247) - changed from tourist.visitEndDate/visitStartDate (camelCase) to tourist.visit_end_date/visit_start_date (snake_case) to match backend API response format. All 5 tourists loading correctly via touristsAPI.getTourists(). Field mappings verified: full_name, digital_id, status, nationality, location.address, emergency_contacts[0].phone, safety_score all accessible. Filtering by status/nationality working. Search functionality working. Data completeness: 100% (5/5 tourists have complete data). Visit duration calculation now works correctly (e.g., Raj Verma shows 7 days)."
 
   - task: "Live Map Real-time Tourist Location Display"
     implemented: true
