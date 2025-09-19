@@ -138,101 +138,102 @@ const TouristDetailModal = ({ tourist, isOpen, onClose }) => {
           </div>
         </DialogHeader>
 
-        <div className="grid grid-cols-12 gap-6 mt-6">
-          {/* Left Column - Identity & Personal Info */}
+        <div className="grid grid-cols-12 gap-8 mt-6">
+          {/* Left Column - Identity & Profile */}
           <div className="col-span-12 lg:col-span-4 space-y-6">
-            <Card className="command-card">
-              <CardHeader className="command-card-header">
-                <CardTitle className="modal-section-title">
-                  <CreditCard className="w-5 h-5" />
+            {/* Tourist Identity - Simplified and Clean */}
+            <Card className="command-card border-2 border-slate-600">
+              <CardHeader className="command-card-header pb-4">
+                <CardTitle className="modal-section-title text-lg font-bold">
+                  <CreditCard className="w-6 h-6" />
                   Tourist Identity
                 </CardTitle>
               </CardHeader>
-              <CardContent className="command-card-content space-y-4">
+              <CardContent className="command-card-content space-y-5">
                 <div className="flex items-center space-x-4">
-                  <Avatar className="w-20 h-20 ring-4 ring-slate-600">
+                  <Avatar className="w-24 h-24 ring-4 ring-blue-500 ring-opacity-50">
                     <AvatarImage src={fullTourist.photo_url} alt={fullTourist.full_name} />
-                    <AvatarFallback className="bg-blue-600 text-white text-xl font-bold">
+                    <AvatarFallback className="bg-blue-600 text-white text-2xl font-bold">
                       {fullTourist.full_name ? fullTourist.full_name.split(' ').map(n => n[0]).join('') : 'NA'}
                     </AvatarFallback>
                   </Avatar>
                   <div className="flex-1">
-                    <h3 className="text-xl font-bold text-white mb-1">{fullTourist.full_name || 'Unknown'}</h3>
-                    <div className="flex items-center space-x-2 mb-2">
-                      <Globe className="w-4 h-4 text-slate-400" />
-                      <span className="text-slate-300">{fullTourist.nationality || 'Unknown'}</span>
+                    <h3 className="text-2xl font-bold text-white mb-2">{fullTourist.full_name || 'Unknown'}</h3>
+                    <div className="flex items-center space-x-2 mb-3">
+                      <Globe className="w-5 h-5 text-blue-400" />
+                      <span className="text-lg text-slate-200 font-medium">{fullTourist.nationality || 'Unknown'}</span>
                     </div>
-                    <p className="text-sm text-slate-400 font-mono bg-slate-700 px-2 py-1 rounded">
-                      {fullTourist.digital_id || 'N/A'}
-                    </p>
                   </div>
                 </div>
 
-                {/* QR Code and Verification */}
-                <div className="flex items-center justify-center p-4 bg-white rounded-lg">
-                  <div className="w-28 h-28 bg-black flex items-center justify-center text-white text-xs font-mono border-4 border-slate-300">
-                    QR IDENTITY<br/>VERIFIED
-                  </div>
+                {/* Digital ID - More Prominent */}
+                <div className="bg-gradient-to-r from-blue-900 to-blue-800 p-4 rounded-lg border border-blue-400">
+                  <p className="text-xs text-blue-200 mb-1 uppercase tracking-wide">Digital ID</p>
+                  <p className="text-lg font-mono font-bold text-white">{fullTourist.digital_id || 'N/A'}</p>
                 </div>
               </CardContent>
             </Card>
 
-            <Card className="command-card">
-              <CardHeader className="command-card-header">
-                <CardTitle className="modal-section-title">
-                  <Calendar className="w-5 h-5" />
-                  Trip Information
+            {/* Trip Information - Streamlined */}
+            <Card className="command-card border-2 border-slate-600">
+              <CardHeader className="command-card-header pb-4">
+                <CardTitle className="modal-section-title text-lg font-bold">
+                  <Calendar className="w-6 h-6" />
+                  Planned Itinerary
                 </CardTitle>
               </CardHeader>
               <CardContent className="command-card-content space-y-4">
-                <div>
-                  <p className="text-sm font-medium text-slate-400 mb-2">Planned Itinerary</p>
-                  <p className="text-sm text-white bg-slate-700 p-3 rounded-lg">{fullTourist.itinerary || 'No itinerary available'}</p>
-                </div>
                 <div className="grid grid-cols-2 gap-4">
-                  <div className="bg-slate-700 p-3 rounded-lg">
-                    <p className="text-xs text-slate-400 mb-1">Start Date</p>
-                    <p className="text-sm font-semibold text-white">{fullTourist.visit_start_date ? new Date(fullTourist.visit_start_date).toLocaleDateString() : 'N/A'}</p>
+                  <div className="bg-slate-700 p-4 rounded-lg border border-slate-500">
+                    <p className="text-xs text-slate-400 mb-1 uppercase tracking-wide">Start Date</p>
+                    <p className="text-base font-bold text-white">{fullTourist.visit_start_date ? new Date(fullTourist.visit_start_date).toLocaleDateString() : 'N/A'}</p>
                   </div>
-                  <div className="bg-slate-700 p-3 rounded-lg">
-                    <p className="text-xs text-slate-400 mb-1">End Date</p>
-                    <p className="text-sm font-semibold text-white">{fullTourist.visit_end_date ? new Date(fullTourist.visit_end_date).toLocaleDateString() : 'N/A'}</p>
+                  <div className="bg-slate-700 p-4 rounded-lg border border-slate-500">
+                    <p className="text-xs text-slate-400 mb-1 uppercase tracking-wide">End Date</p>
+                    <p className="text-base font-bold text-white">{fullTourist.visit_end_date ? new Date(fullTourist.visit_end_date).toLocaleDateString() : 'N/A'}</p>
                   </div>
+                </div>
+                <div className="bg-slate-700 p-4 rounded-lg border border-slate-500">
+                  <p className="text-xs text-slate-400 mb-2 uppercase tracking-wide">Route Details</p>
+                  <p className="text-sm text-white leading-relaxed">{fullTourist.itinerary || 'No itinerary available'}</p>
                 </div>
               </CardContent>
             </Card>
 
-            <Card className="command-card">
-              <CardHeader className="command-card-header">
-                <CardTitle className="modal-section-title">
-                  <Phone className="w-5 h-5" />
+            {/* Emergency Contacts - Operator Focused */}
+            <Card className="command-card border-2 border-slate-600">
+              <CardHeader className="command-card-header pb-4">
+                <CardTitle className="modal-section-title text-lg font-bold">
+                  <Phone className="w-6 h-6" />
                   Emergency Contacts
                 </CardTitle>
               </CardHeader>
               <CardContent className="command-card-content space-y-3">
                 {isDataLocked ? (
-                  <div className="text-center py-6">
-                    <Shield className="w-12 h-12 text-slate-500 mx-auto mb-3" />
-                    <p className="text-slate-400 text-sm">[DATA LOCKED - No Active Alert]</p>
-                    <p className="text-slate-500 text-xs mt-1">Contact information protected</p>
+                  <div className="text-center py-8 bg-slate-700 rounded-lg border border-slate-500">
+                    <Shield className="w-16 h-16 text-slate-500 mx-auto mb-4" />
+                    <p className="text-slate-300 text-lg font-medium">[DATA LOCKED]</p>
+                    <p className="text-slate-500 text-sm mt-1">Contact information protected</p>
                   </div>
                 ) : (
                   fullTourist.emergency_contacts?.length > 0 ? (
                     fullTourist.emergency_contacts.map((contact, index) => (
-                      <div key={index} className="flex items-center justify-between p-3 bg-slate-700 rounded-lg">
-                        <div className="flex-1">
-                          <p className="text-sm font-semibold text-white">{contact.name}</p>
-                          <p className="text-xs text-slate-400">{contact.relationship}</p>
-                          <p className="text-xs text-slate-300 font-mono">{contact.phone}</p>
+                      <div key={index} className="bg-slate-700 p-4 rounded-lg border border-slate-500 hover:bg-slate-600 transition-colors">
+                        <div className="flex items-center justify-between">
+                          <div className="flex-1">
+                            <p className="text-lg font-bold text-white mb-1">{contact.name}</p>
+                            <p className="text-sm text-slate-400 mb-2">{contact.relationship}</p>
+                            <p className="text-base font-mono text-blue-300 font-medium">{contact.phone}</p>
+                          </div>
+                          <Button size="lg" className="action-btn-success ml-4 px-4 py-2">
+                            <PhoneCall className="w-5 h-5" />
+                          </Button>
                         </div>
-                        <Button size="sm" className="action-btn-success">
-                          <PhoneCall className="w-4 h-4" />
-                        </Button>
                       </div>
                     ))
                   ) : (
-                    <div className="text-center py-4">
-                      <p className="text-slate-400 text-sm">No emergency contacts available</p>
+                    <div className="text-center py-6 bg-slate-700 rounded-lg border border-slate-500">
+                      <p className="text-slate-400 text-base">No emergency contacts available</p>
                     </div>
                   )
                 )}
