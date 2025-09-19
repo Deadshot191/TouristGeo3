@@ -411,22 +411,48 @@ async def create_demo_location_history(tourist_ids):
         print(f"Created location entry for tourist ID: {location.tourist_id}")
 
 async def main():
-    """Main function to initialize sample data"""
-    print("Initializing Tourism Safety System with sample data...")
+    """Main function to initialize demo data"""
+    print("=" * 80)
+    print("🚀 INITIALIZING SMART TOURIST SAFETY SYSTEM DEMO DATA")
+    print("=" * 80)
     
     # Connect to database
     await connect_to_mongo()
     
-    # Create sample data
+    # Create demo data in sequence
+    print("\n📋 Creating sample users (officers)...")
     await create_sample_users()
-    await create_demo_geofences()
-    await create_demo_tourists()
     
-    print("Sample data initialization completed!")
-    print("\nLogin credentials:")
+    print("\n🗺️  Creating demo geo-fences...")
+    await create_demo_geofences()
+    
+    print("\n👥 Creating demo tourist scenarios...")
+    tourist_ids = await create_demo_tourists()
+    
+    print("\n🚨 Creating demo alerts...")
+    await create_demo_alerts(tourist_ids)
+    
+    print("\n📍 Creating location history...")
+    await create_demo_location_history(tourist_ids)
+    
+    print("\n" + "=" * 80)
+    print("✅ DEMO DATA INITIALIZATION COMPLETED!")
+    print("=" * 80)
+    
+    print("\n🔐 Officer Login Credentials:")
     print("Inspector: inspector.kumar@tourism.gov.in / password123")
     print("Admin: admin.singh@tourism.gov.in / admin123") 
     print("Officer: officer.sharma@tourism.gov.in / officer123")
+    
+    print("\n👥 Demo Tourist Scenarios:")
+    print("1. 🆘 Raj Verma - PANIC ALERT (Critical)")
+    print("2. 🚫 Emily Carter - GEO-FENCE BREACH (High Risk)")
+    print("3. 🗺️  Priya Sharma - ROUTE DEVIATION (Medium Risk)")
+    print("4. ✅ John Doe - SAFE & SECURE (Data Locked)")
+    print("5. 📋 Aisha Khan - RESOLVED INCIDENT (History)")
+    
+    print("\n🎯 System ready for compelling demo presentation!")
+    print("=" * 80)
 
 if __name__ == "__main__":
     asyncio.run(main())
