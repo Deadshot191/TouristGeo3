@@ -119,19 +119,24 @@ const TouristDetailModal = ({ tourist, isOpen, onClose }) => {
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-7xl max-h-[95vh] overflow-y-auto bg-slate-800 border-slate-700 text-white">
-        <DialogHeader className="pb-6 border-b border-slate-700">
+      <DialogContent className="max-w-[95vw] max-h-[95vh] overflow-y-auto bg-slate-800 border-4 border-slate-600 text-white shadow-2xl">
+        <DialogHeader className="pb-6 border-b-2 border-slate-600 bg-gradient-to-r from-slate-800 to-slate-700 -mx-6 -mt-6 px-6 pt-6">
           <div className="flex items-center justify-between">
             <div>
-              <DialogTitle className="page-title">
-                Detailed Tourist Report
+              <DialogTitle className="text-3xl font-black text-white mb-2">
+                🚨 TOURIST MONITORING REPORT
               </DialogTitle>
-              <p className="text-slate-400 text-sm mt-1">
-                Comprehensive overview and real-time monitoring data
+              <p className="text-slate-300 text-lg font-medium">
+                Real-time Emergency Operations Dashboard
               </p>
             </div>
-            <div className="flex items-center space-x-3">
-              <Badge className={`${getStatusColor(fullTourist.status)} px-4 py-2 text-sm`}>
+            <div className="flex items-center space-x-4">
+              {/* Live Status Indicator */}
+              <div className="flex items-center space-x-2 bg-slate-700 px-4 py-2 rounded-lg border-2 border-slate-500">
+                <div className="w-3 h-3 bg-green-500 rounded-full animate-pulse"></div>
+                <span className="text-green-400 font-bold text-sm">LIVE</span>
+              </div>
+              <Badge className={`${getStatusColor(fullTourist.status)} px-6 py-3 text-xl font-black border-4`}>
                 {fullTourist.status?.toUpperCase() || 'UNKNOWN'}
               </Badge>
             </div>
