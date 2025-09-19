@@ -299,21 +299,26 @@ const TouristDetailModal = ({ tourist, isOpen, onClose }) => {
               </CardHeader>
               <CardContent className="command-card-content">
                 <div className="space-y-3 max-h-64 overflow-y-auto">
-                  {fullTourist.alertHistory?.length > 0 ? (
-                    fullTourist.alertHistory.map((alert, index) => (
-                      <div key={index} className="p-3 bg-slate-700 rounded-lg border-l-4 border-amber-500">
+                  {alerts?.length > 0 ? (
+                    alerts.map((alert, index) => (
+                      <div key={alert.id || index} className="p-3 bg-slate-700 rounded-lg border-l-4 border-amber-500">
                         <div className="flex items-center justify-between mb-2">
-                          <Badge className={getAlertTypeColor(alert.type)}>
-                            {formatAlertType(alert.type)}
+                          <Badge className={getAlertTypeColor(alert.alert_type)}>
+                            {formatAlertType(alert.alert_type)}
                           </Badge>
-                          <Badge className={getStatusColor(alert.status)}>
-                            {alert.status}
+                          <Badge className={`${alert.status === 'new' ? 'bg-red-100 text-red-800 border-red-200' : 
+                                              alert.status === 'in_progress' ? 'bg-yellow-100 text-yellow-800 border-yellow-200' : 
+                                              'bg-green-100 text-green-800 border-green-200'}`}>
+                            {alert.status.replace('_', ' ').toUpperCase()}
                           </Badge>
                         </div>
-                        <p className="text-xs text-slate-300 mb-1">{alert.location}</p>
+                        <p className="text-xs text-slate-300 mb-1">{alert.location?.address || 'Location unknown'}</p>
                         <p className="text-xs text-slate-500">
-                          {new Date(alert.timestamp).toLocaleString()}
+                          {alert.created_at ? new Date(alert.created_at).toLocaleString() : 'Unknown time'}
                         </p>
+                        {alert.description && (
+                          <p className="text-xs text-slate-400 mt-1">{alert.description}</p>
+                        )}
                       </div>
                     ))
                   ) : (
