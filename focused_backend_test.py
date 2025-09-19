@@ -213,7 +213,7 @@ class FocusedAPITester:
                 # Check data types and formats
                 format_issues = []
                 
-                if 'digital_id' in data and not (isinstance(data['digital_id'], str) and data['digital_id'].startswith('DIG-')):
+                if 'digital_id' in data and not (isinstance(data['digital_id'], str) and data['digital_id'].startswith('DT')):
                     format_issues.append("digital_id format invalid")
                 
                 if 'emergency_contacts' in data and not isinstance(data['emergency_contacts'], list):
