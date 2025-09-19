@@ -78,8 +78,9 @@ class AlertService:
                         f"Alert: {alert.alert_id}"
                     )
             
-            # Here you would trigger real-time notifications
-            # await NotificationService.send_alert_notification(alert)
+            # For high/critical alerts, get decrypted tourist data for notifications
+            if alert_data.severity in [AlertSeverity.HIGH, AlertSeverity.CRITICAL]:
+                await AlertService._send_emergency_notifications(alert, alert_data.tourist_id)
             
             return alert
             
