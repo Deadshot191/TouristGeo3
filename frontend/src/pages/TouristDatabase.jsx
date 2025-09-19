@@ -243,7 +243,8 @@ const TouristDatabase = ({ onTouristSelect }) => {
                   <div className="text-center">
                     <p className="text-xs text-slate-400 mb-1">Visit Duration</p>
                     <div className="text-lg font-bold text-white">
-                      {Math.ceil((new Date(tourist.visitEndDate) - new Date(tourist.visitStartDate)) / (1000 * 60 * 60 * 24))} days
+                      {tourist.visit_end_date && tourist.visit_start_date ? 
+                        Math.ceil((new Date(tourist.visit_end_date) - new Date(tourist.visit_start_date)) / (1000 * 60 * 60 * 24)) : 0} days
                     </div>
                   </div>
                 </div>
