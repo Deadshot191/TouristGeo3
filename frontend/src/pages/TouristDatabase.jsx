@@ -172,22 +172,22 @@ const TouristDatabase = ({ onTouristSelect }) => {
                 <div className="flex items-start justify-between mb-4">
                   <div className="flex items-center space-x-3 flex-1">
                     <Avatar className="w-12 h-12 ring-2 ring-slate-600">
-                      <AvatarImage src={tourist.photo} alt={tourist.name} />
+                      <AvatarImage src={tourist.photo_url} alt={tourist.full_name} />
                       <AvatarFallback className="bg-blue-600 text-white font-semibold">
-                        {tourist.name.split(' ').map(n => n[0]).join('')}
+                        {tourist.full_name ? tourist.full_name.split(' ').map(n => n[0]).join('') : 'NA'}
                       </AvatarFallback>
                     </Avatar>
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center space-x-2">
-                        <h3 className="font-semibold text-white truncate">{tourist.name}</h3>
+                        <h3 className="font-semibold text-white truncate">{tourist.full_name || 'Unknown'}</h3>
                         <Badge className={getStatusBadge(tourist.status)}>
-                          {tourist.status.toUpperCase()}
+                          {tourist.status?.toUpperCase() || 'UNKNOWN'}
                         </Badge>
                       </div>
                       <p className="text-sm text-slate-400 flex items-center">
-                        {tourist.nationality}
+                        {tourist.nationality || 'Unknown'}
                       </p>
-                      <p className="text-xs text-slate-500 font-mono">{tourist.digitalId}</p>
+                      <p className="text-xs text-slate-500 font-mono">{tourist.digital_id || 'N/A'}</p>
                     </div>
                   </div>
                 </div>
