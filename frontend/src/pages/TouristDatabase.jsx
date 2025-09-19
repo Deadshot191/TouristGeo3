@@ -269,16 +269,6 @@ const TouristDatabase = ({ onTouristSelect }) => {
               </CardContent>
             </Card>
           ))}
-        </div>
-
-        {/* Enhanced Empty State */}
-        {filteredTourists.length === 0 && (
-          <div className="text-center py-16">
-            <div className="w-16 h-16 bg-slate-800 rounded-full flex items-center justify-center mx-auto mb-4">
-              <Users className="w-8 h-8 text-slate-400" />
-            </div>
-            <div className="text-slate-400 text-lg font-medium mb-2">No tourists found</div>
-            <div className="text-slate-500 text-sm">Try adjusting your search criteria or filters</div>
           </div>
         )}
       </div>
