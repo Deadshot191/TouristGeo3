@@ -197,6 +197,56 @@ async def get_tourist_location_history(
     history = await TouristService.get_tourist_location_history(tourist_id, limit)
     return history
 
+@api_router.get("/tourists/{tourist_id}/alerts", response_model=List[AlertResponse])
+async def get_tourist_alerts(
+    tourist_id: str,
+    limit: int = Query(100, ge=1, le=1000),
+    current_user: User = Depends(get_current_user)
+):
+    """Get alerts for a specific tourist"""
+    # Create filters for this specific tourist
+    filters = AlertFilters(
+        search=tourist_id,  # This will search in tourist_id field
+        skip=0,
+        limit=limit
+    )
+    
+    # Get all alerts and filter by tourist_id
+    alerts_collection = await get_alerts_collection()
+    pipeline = [
+        {"$match": {"tourist_id": ObjectId(tourist_id)}},
+        {"$sort": {"created_at": -1}},
+        {"$limit": limit}
+    ]
+    
+    alerts = []
+    async for alert_doc in alerts_collection.aggregate(pipeline):
+        # Get tourist name
+        tourists_collection = await get_tourists_collection()
+        tourist = await tourists_collection.find_one({"_id": alert_doc["tourist_id"]})
+        tourist_name = tourist["full_name"] if tourist else "Unknown"
+        
+        alerts.append(AlertResponse(
+            id=str(alert_doc["_id"]),
+            alert_id=alert_doc["alert_id"],
+            tourist_id=str(alert_doc["tourist_id"]),
+            tourist_name=tourist_name,
+            alert_type=alert_doc["alert_type"],
+            severity=alert_doc["severity"],
+            status=alert_doc["status"],
+            location=AlertLocation(
+                coordinates=alert_doc["location"]["coordinates"],
+                address=alert_doc["location"].get("address")
+            ),
+            description=alert_doc.get("description", ""),
+            created_at=alert_doc["created_at"],
+            resolved_at=alert_doc.get("resolved_at"),
+            resolved_by=alert_doc.get("resolved_by"),
+            resolution_notes=alert_doc.get("resolution_notes")
+        ))
+    
+    return alerts
+
 # ============================================================================
 # LOCATION TRACKING ROUTES
 # ============================================================================
