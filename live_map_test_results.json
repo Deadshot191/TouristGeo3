@@ -1,0 +1,8 @@
+{
+  "Authentication": {
+    "success": false,
+    "details": "Failed to authenticate. Status: 502, Response: ",
+    "response_data": null,
+    "timestamp": "2025-09-19T07:13:30.031499"
+  }
+}
