@@ -7,7 +7,7 @@ from ..database import get_database
 from ..models import (
     SecureTouristData, TouristRegistrationRequest, 
     DataAccessRequest, DataAccessResponse, RegistrationResponse,
-    TouristKYCData, AccessType, AccessReason
+    TouristKYCData, AccessType, AccessReason, EmergencyContact
 )
 from .encryption_service import encryption_service
 from .blockchain_simulator import blockchain_simulator
