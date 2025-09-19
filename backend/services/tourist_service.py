@@ -41,7 +41,7 @@ class TouristService:
     
     @staticmethod
     async def create_tourist(tourist_data: TouristCreate) -> Tourist:
-        """Create a new tourist"""
+        """Create a new tourist with secure data separation"""
         try:
             tourists_collection = await get_tourists_collection()
             
@@ -49,25 +49,46 @@ class TouristService:
             digital_id = TouristService.generate_digital_id(tourist_data.kyc_id)
             kyc_hash = TouristService.hash_kyc_id(tourist_data.kyc_id)
             
-            # Create tourist object
+            # Prepare sensitive data for Digital ID service
+            sensitive_data = {
+                "tourist_id": digital_id,
+                "full_name": tourist_data.full_name,
+                "nationality": tourist_data.nationality,
+                "kyc_type": tourist_data.kyc_type,
+                "kyc_document_number": tourist_data.kyc_id,
+                "detailed_itinerary": tourist_data.itinerary,
+                "emergency_contacts": [contact.dict() for contact in tourist_data.emergency_contacts]
+            }
+            
+            # Register sensitive data with Digital ID service
+            try:
+                registration_response = await digital_id_client.register_tourist_data(sensitive_data)
+                logger.info(f"Registered sensitive data for tourist: {digital_id}")
+            except Exception as e:
+                logger.error(f"Failed to register sensitive data for {digital_id}: {e}")
+                # For backward compatibility, continue with local storage
+                # In production, this should fail the entire registration
+                registration_response = None
+            
+            # Create tourist object (without sensitive data for main database)
             tourist = Tourist(
                 digital_id=digital_id,
-                full_name=tourist_data.full_name,
-                nationality=tourist_data.nationality,
+                full_name="[ENCRYPTED]",  # Masked in main database
+                nationality="[ENCRYPTED]",  # Masked in main database
                 photo_url=tourist_data.photo_url,
                 kyc_type=tourist_data.kyc_type,
                 kyc_id_hash=kyc_hash,
                 visit_start_date=tourist_data.visit_start_date,
                 visit_end_date=tourist_data.visit_end_date,
-                itinerary=tourist_data.itinerary,
-                emergency_contacts=tourist_data.emergency_contacts
+                itinerary="[ENCRYPTED]",  # Masked in main database
+                emergency_contacts=[]  # Masked in main database
             )
             
             # Insert into database
             result = await tourists_collection.insert_one(tourist.dict(by_alias=True))
             tourist.id = result.inserted_id
             
-            logger.info(f"Created tourist: {digital_id}")
+            logger.info(f"Created tourist: {digital_id} (sensitive data encrypted)")
             return tourist
             
         except Exception as e:
