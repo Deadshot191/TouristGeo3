@@ -180,6 +180,45 @@ backend:
         agent: "testing"
         comment: "TESTED: Background AI anomaly detection service fully operational. Background task status endpoint (/api/ai/background-tasks/status) shows service running and monitoring 2 active tourists. AI safety score calculation (/api/ai/safety-score/{tourist_id}) working with risk factor analysis. Manual anomaly check (/api/ai/anomaly-check/{tourist_id}) performs route deviation and prolonged inactivity checks successfully. Background task restart functionality working. Route deviation detection successfully triggered when tourist moved >2km from planned route. New alert types (route_deviation, prolonged_inactivity) properly created and broadcast via WebSocket."
 
+  - task: "Tourist Alerts API Endpoint"
+    implemented: true
+    working: true
+    file: "server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: "NA"
+        agent: "main"
+        comment: "Created new API endpoint GET /api/tourists/{tourist_id}/alerts to fetch tourist-specific alerts for modal data consistency fix"
+      - working: true
+        agent: "testing"
+        comment: "TESTED: New tourist alerts endpoint working correctly. Returns alerts in proper JSON format with all required fields. Handles invalid tourist IDs properly (returns empty array). Fixed AlertResponse model bug where created_at was used instead of timestamp."
+
+  - task: "Fix Tourist Detail Modal Data Inconsistency"
+    implemented: true
+    working: false
+    file: "components/TouristDetailModal.jsx"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: false
+        agent: "main"
+        comment: "CRITICAL ISSUE: Modal was showing hardcoded mock data instead of real tourist data. Replaced mock data usage with real API calls to touristsAPI.getTourist() and touristsAPI.getTouristAlerts(). Added loading states, error handling, and proper field mappings (full_name, digital_id, emergency_contacts, etc.)"
+
+  - task: "Fix Tourist Database Page Data Inconsistency"
+    implemented: true
+    working: false
+    file: "pages/TouristDatabase.jsx"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: false
+        agent: "main"
+        comment: "CRITICAL ISSUE: Database page was using mock data causing KPI inconsistencies. Replaced mockTourists usage with real API calls to touristsAPI.getTourists(). Updated field mappings, added loading/error states, and proper filtering logic."
+
   - task: "Admin Geo-fence Management Endpoints"
     implemented: true
     working: true
