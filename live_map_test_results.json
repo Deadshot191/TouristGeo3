@@ -3,7 +3,7 @@
     "success": true,
     "details": "Successfully authenticated as Inspector Raj Kumar",
     "response_data": null,
-    "timestamp": "2025-09-19T07:20:43.805637"
+    "timestamp": "2025-09-19T07:21:20.826882"
   },
   "GET /api/location/live": {
     "success": true,
@@ -36,7 +36,7 @@
         "timestamp": "2025-09-19T07:01:32.567000"
       }
     ],
-    "timestamp": "2025-09-19T07:20:43.821178"
+    "timestamp": "2025-09-19T07:21:20.878905"
   },
   "Live Location Data Structure": {
     "success": true,
@@ -54,7 +54,7 @@
       "address": "Restricted Forest Area, Darjeeling Hills",
       "timestamp": "2025-09-19T07:04:32.567000"
     },
-    "timestamp": "2025-09-19T07:20:43.821233"
+    "timestamp": "2025-09-19T07:21:20.878965"
   },
   "GET /api/analytics/dashboard": {
     "success": true,
@@ -67,7 +67,7 @@
       "resolved_alerts_today": 1,
       "avg_safety_score": 57.6
     },
-    "timestamp": "2025-09-19T07:20:43.874399"
+    "timestamp": "2025-09-19T07:21:20.933105"
   },
   "Dashboard KPIs Structure": {
     "success": true,
@@ -78,7 +78,7 @@
       "safe_status": 2,
       "high_risk_tourists": 2
     },
-    "timestamp": "2025-09-19T07:20:43.874450"
+    "timestamp": "2025-09-19T07:21:20.933171"
   },
   "GET /api/geofences": {
     "success": true,
@@ -155,11 +155,11 @@
         "active": true
       }
     ],
-    "timestamp": "2025-09-19T07:20:44.195709"
+    "timestamp": "2025-09-19T07:21:20.944351"
   },
   "Geofence Data Structure": {
-    "success": false,
-    "details": "Valid geofences: 0/3, Issues: ['Geofence 1 invalid coordinates format', 'Geofence 2 invalid coordinates format']...",
+    "success": true,
+    "details": "Valid geofences: 3/3, Issues: []",
     "response_data": {
       "id": "68cd03502eebb9ece57b39e5",
       "name": "Restricted Forest Area",
@@ -195,29 +195,29 @@
       "description": "Protected forest area - entry strictly prohibited. High risk of wildlife encounters and getting lost.",
       "active": true
     },
-    "timestamp": "2025-09-19T07:20:44.195764"
+    "timestamp": "2025-09-19T07:21:20.944406"
   },
   "Frontend Data Compatibility": {
     "success": true,
     "details": "Compatibility: 100.0% (6/6 fields), Missing: []",
     "response_data": {
-      "tourist_id": "68cd03502eebb9ece57b39e8",
-      "tourist_name": "Raj Verma",
-      "digital_id": "DIG-PANIC01",
-      "status": "panic",
+      "tourist_id": "68cd03502eebb9ece57b39e9",
+      "tourist_name": "Emily Carter",
+      "digital_id": "DIG-BREACH02",
+      "status": "anomaly",
       "coordinates": [
-        88.264,
-        27.039
+        88.3,
+        27.03
       ],
-      "timestamp": "2025-09-19T07:11:32.567000"
+      "timestamp": "2025-09-19T07:04:32.567000"
     },
-    "timestamp": "2025-09-19T07:20:44.208341"
+    "timestamp": "2025-09-19T07:21:20.959070"
   },
   "Coordinates Range Validation": {
     "success": true,
-    "details": "Coordinates: [88.264, 27.039], Valid range: True",
+    "details": "Coordinates: [88.3, 27.03], Valid range: True",
     "response_data": null,
-    "timestamp": "2025-09-19T07:20:44.208392"
+    "timestamp": "2025-09-19T07:21:20.959110"
   },
   "GET /api/tourists/{tourist_id}": {
     "success": true,
@@ -247,7 +247,7 @@
       "status": "anomaly",
       "safety_score": 35
     },
-    "timestamp": "2025-09-19T07:20:44.220779"
+    "timestamp": "2025-09-19T07:21:21.008056"
   },
   "GET /api/tourists/{tourist_id}/alerts": {
     "success": true,
@@ -272,7 +272,7 @@
       "resolved_at": null,
       "response_actions": []
     },
-    "timestamp": "2025-09-19T07:20:44.271360"
+    "timestamp": "2025-09-19T07:21:21.019108"
   },
   "GET /api/tourists/{tourist_id}/location-history": {
     "success": true,
@@ -292,6 +292,6 @@
       "accuracy": 8.0,
       "speed": 2.5
     },
-    "timestamp": "2025-09-19T07:20:44.285995"
+    "timestamp": "2025-09-19T07:21:21.026323"
   }
 }
