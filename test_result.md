@@ -257,7 +257,9 @@ test_plan:
   current_focus:
     - "Fix Tourist Detail Modal Data Inconsistency"
     - "Fix Tourist Database Page Data Inconsistency"
-  stuck_tasks: []
+    - "Live Map Data Integration Issue"
+  stuck_tasks: 
+    - "Live Map Data Integration Issue"
   test_all: false
   test_priority: "high_first"
 
