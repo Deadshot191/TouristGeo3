@@ -9,7 +9,7 @@ import json
 import os
 
 # Get backend URL from environment
-BACKEND_URL = os.environ.get('REACT_APP_BACKEND_URL', 'https://realtime-tourist.preview.emergentagent.com')
+BACKEND_URL = os.environ.get('REACT_APP_BACKEND_URL', 'https://safety-dashboard-5.preview.emergentagent.com')
 API_BASE_URL = f"{BACKEND_URL}/api"
 
 async def test_endpoints_without_auth():
