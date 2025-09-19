@@ -11,12 +11,14 @@ try:
         TouristStatus, LocationData, LocationPoint
     )
     from ..database import get_tourists_collection, get_location_history_collection
+    from .digital_id_client import digital_id_client
 except ImportError:
     from models import (
         Tourist, TouristCreate, TouristResponse, TouristFilters, 
         TouristStatus, LocationData, LocationPoint
     )
     from database import get_tourists_collection, get_location_history_collection
+    from services.digital_id_client import digital_id_client
 
 logger = logging.getLogger(__name__)
 
