@@ -228,12 +228,12 @@ class LiveMapDataTester:
         return valid_tourists
     
     async def test_dashboard_kpis_endpoint(self):
-        """Test GET /api/analytics/dashboard endpoint used by Live Map"""
+        """Test GET /api/analytics/dashboard endpoint - should return KPIs with proper counts"""
         print("\n=== Dashboard KPIs Endpoint Test ===")
         
         if not self.auth_token:
             self.log_test("Dashboard KPIs Endpoint", False, "No auth token available")
-            return
+            return {}
         
         success, data, status = await self.make_request("GET", "/analytics/dashboard")
         
@@ -245,16 +245,39 @@ class LiveMapDataTester:
         )
         
         if success and isinstance(data, dict):
-            # Check expected KPI fields
-            expected_kpis = ['total_active_tourists', 'total_alerts', 'critical_alerts', 'safe_tourists']
-            missing_kpis = [kpi for kpi in expected_kpis if kpi not in data]
+            # Check required KPI fields as mentioned in review request
+            required_kpis = ['total_active_tourists', 'active_alerts', 'safe_status', 'high_risk_tourists']
+            present_kpis = [kpi for kpi in required_kpis if kpi in data]
+            missing_kpis = [kpi for kpi in required_kpis if kpi not in data]
+            
+            # Validate data types and reasonable values
+            validation_issues = []
+            for kpi in present_kpis:
+                value = data[kpi]
+                if not isinstance(value, (int, float)):
+                    validation_issues.append(f"{kpi} is not numeric: {type(value)}")
+                elif value < 0:
+                    validation_issues.append(f"{kpi} is negative: {value}")
+            
+            # Check if all values are zero (indicates empty database)
+            all_zero = all(data.get(kpi, 0) == 0 for kpi in required_kpis)
+            if all_zero:
+                validation_issues.append("All KPI values are zero - may indicate empty database")
             
             self.log_test(
                 "Dashboard KPIs Structure", 
-                len(missing_kpis) == 0,
-                f"Expected KPIs present: {len(expected_kpis) - len(missing_kpis)}/{len(expected_kpis)}, Missing: {missing_kpis}",
-                {k: v for k, v in data.items() if k in expected_kpis}
+                len(missing_kpis) == 0 and len(validation_issues) == 0,
+                f"Present KPIs: {len(present_kpis)}/{len(required_kpis)}, Missing: {missing_kpis}, Issues: {validation_issues}",
+                {k: v for k, v in data.items() if k in required_kpis}
             )
+            
+            # Log actual KPI values for verification
+            kpi_values = {kpi: data.get(kpi, 'missing') for kpi in required_kpis}
+            print(f"   📊 KPI Values: {kpi_values}")
+            
+            return data
+        
+        return {}
     
     async def test_geofences_endpoint(self):
         """Test GET /api/geofences endpoint used by Live Map"""
