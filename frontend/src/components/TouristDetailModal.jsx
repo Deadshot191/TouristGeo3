@@ -217,18 +217,24 @@ const TouristDetailModal = ({ tourist, isOpen, onClose }) => {
                     <p className="text-slate-500 text-xs mt-1">Contact information protected</p>
                   </div>
                 ) : (
-                  fullTourist.emergencyContacts?.map((contact, index) => (
-                    <div key={index} className="flex items-center justify-between p-3 bg-slate-700 rounded-lg">
-                      <div className="flex-1">
-                        <p className="text-sm font-semibold text-white">{contact.name}</p>
-                        <p className="text-xs text-slate-400">{contact.relationship}</p>
-                        <p className="text-xs text-slate-300 font-mono">{contact.phone}</p>
+                  fullTourist.emergency_contacts?.length > 0 ? (
+                    fullTourist.emergency_contacts.map((contact, index) => (
+                      <div key={index} className="flex items-center justify-between p-3 bg-slate-700 rounded-lg">
+                        <div className="flex-1">
+                          <p className="text-sm font-semibold text-white">{contact.name}</p>
+                          <p className="text-xs text-slate-400">{contact.relationship}</p>
+                          <p className="text-xs text-slate-300 font-mono">{contact.phone}</p>
+                        </div>
+                        <Button size="sm" className="action-btn-success">
+                          <PhoneCall className="w-4 h-4" />
+                        </Button>
                       </div>
-                      <Button size="sm" className="action-btn-success">
-                        <PhoneCall className="w-4 h-4" />
-                      </Button>
+                    ))
+                  ) : (
+                    <div className="text-center py-4">
+                      <p className="text-slate-400 text-sm">No emergency contacts available</p>
                     </div>
-                  ))
+                  )
                 )}
               </CardContent>
             </Card>
