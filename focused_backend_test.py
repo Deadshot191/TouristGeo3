@@ -332,7 +332,7 @@ class FocusedAPITester:
             dashboard_tourists = dash_data.get('total_active_tourists', 0)
             actual_tourists = len(tourists_data)
             
-            dashboard_alerts = dash_data.get('active_alerts', 0) + dash_data.get('resolved_alerts', 0)
+            dashboard_alerts = dash_data.get('active_alerts', 0) + dash_data.get('resolved_alerts_today', 0)
             actual_alerts = len(alerts_data)
             
             # Allow some tolerance for active vs total counts
