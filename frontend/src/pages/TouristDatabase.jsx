@@ -83,9 +83,9 @@ const TouristDatabase = ({ onTouristSelect }) => {
     
     if (newFilters.search) {
       filtered = filtered.filter(tourist => 
-        tourist.name.toLowerCase().includes(newFilters.search.toLowerCase()) ||
-        tourist.digitalId.toLowerCase().includes(newFilters.search.toLowerCase()) ||
-        tourist.nationality.toLowerCase().includes(newFilters.search.toLowerCase())
+        (tourist.full_name || '').toLowerCase().includes(newFilters.search.toLowerCase()) ||
+        (tourist.digital_id || '').toLowerCase().includes(newFilters.search.toLowerCase()) ||
+        (tourist.nationality || '').toLowerCase().includes(newFilters.search.toLowerCase())
       );
     }
     
