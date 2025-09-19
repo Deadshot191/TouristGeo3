@@ -240,10 +240,8 @@ async def get_tourist_alerts(
                 address=alert_doc["location"].get("address")
             ),
             description=alert_doc.get("description", ""),
-            created_at=alert_doc["created_at"],
-            resolved_at=alert_doc.get("resolved_at"),
-            resolved_by=alert_doc.get("resolved_by"),
-            resolution_notes=alert_doc.get("resolution_notes")
+            timestamp=alert_doc["created_at"],
+            resolved_at=alert_doc.get("resolved_at")
         ))
     
     return alerts
