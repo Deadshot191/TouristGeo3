@@ -41,6 +41,12 @@ class SecureDataService:
                 issuing_authority=request.issuing_authority
             )
             
+            # Generate integrity hashes (for blockchain simulation)
+            kyc_hash = encryption_service.generate_hash(
+                f"{request.kyc_type}:{request.kyc_document_number}"
+            )
+            itinerary_hash = encryption_service.generate_hash(request.detailed_itinerary)
+            
             # Create the secure data model
             secure_data = SecureTouristData(
                 tourist_id=request.tourist_id,
@@ -53,17 +59,10 @@ class SecureDataService:
                 detailed_itinerary=request.detailed_itinerary,
                 accommodation_details=request.accommodation_details,
                 local_guide_contact=request.local_guide_contact,
-                travel_insurance_details=request.travel_insurance_details
+                travel_insurance_details=request.travel_insurance_details,
+                kyc_hash=kyc_hash,
+                itinerary_hash=itinerary_hash
             )
-            
-            # Generate integrity hashes (for blockchain simulation)
-            kyc_hash = encryption_service.generate_hash(
-                f"{request.kyc_type}:{request.kyc_document_number}"
-            )
-            itinerary_hash = encryption_service.generate_hash(request.detailed_itinerary)
-            
-            secure_data.kyc_hash = kyc_hash
-            secure_data.itinerary_hash = itinerary_hash
             
             # Prepare data for encryption
             sensitive_data = {
