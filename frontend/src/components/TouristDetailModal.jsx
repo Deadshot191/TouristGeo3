@@ -255,8 +255,8 @@ const TouristDetailModal = ({ tourist, isOpen, onClose }) => {
                   <div className="relative w-32 h-32 mx-auto mb-4">
                     <div className="w-32 h-32 rounded-full border-8 border-slate-600 flex items-center justify-center relative bg-gradient-to-br from-slate-700 to-slate-800">
                       <div className="text-center">
-                        <span className={`text-3xl font-bold ${getSafetyScoreColor(fullTourist.safetyScore || 0)}`}>
-                          {fullTourist.safetyScore || 0}
+                        <span className={`text-3xl font-bold ${getSafetyScoreColor(fullTourist.safety_score || 0)}`}>
+                          {fullTourist.safety_score || 0}
                         </span>
                         <div className="text-xs text-slate-400">/100</div>
                       </div>
