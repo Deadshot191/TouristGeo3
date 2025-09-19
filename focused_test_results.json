@@ -1,8 +1,86 @@
 {
   "Authentication": {
-    "success": false,
-    "details": "Status: 401, Response: {'detail': 'Incorrect email or password'}",
+    "success": true,
+    "details": "Successfully logged in as Inspector Kumar",
     "response_data": null,
-    "timestamp": "2025-09-19T06:48:35.214922"
+    "timestamp": "2025-09-19T06:49:23.584221"
+  },
+  "Get Tourist IDs": {
+    "success": true,
+    "details": "Found 3 tourists in database",
+    "response_data": null,
+    "timestamp": "2025-09-19T06:49:23.598933"
+  },
+  "Tourist Alerts - Tourist 1 (ID: 68ccfced...)": {
+    "success": true,
+    "details": "Status: 200, Alerts count: 0, Format valid: True",
+    "response_data": null,
+    "timestamp": "2025-09-19T06:49:23.609391"
+  },
+  "Tourist Alerts - Tourist 2 (ID: 68ccfced...)": {
+    "success": true,
+    "details": "Status: 200, Alerts count: 0, Format valid: True",
+    "response_data": null,
+    "timestamp": "2025-09-19T06:49:23.620410"
+  },
+  "Tourist Alerts - Tourist 3 (ID: 68ccfced...)": {
+    "success": true,
+    "details": "Status: 200, Alerts count: 0, Format valid: True",
+    "response_data": null,
+    "timestamp": "2025-09-19T06:49:23.667038"
+  },
+  "Tourist Alerts - Invalid ID": {
+    "success": true,
+    "details": "Status: 200, Response: [], Expected empty list for invalid ID",
+    "response_data": null,
+    "timestamp": "2025-09-19T06:49:23.680868"
+  },
+  "Tourist Alerts - Malformed ID": {
+    "success": true,
+    "details": "Status: 500, Expected error for malformed ID",
+    "response_data": null,
+    "timestamp": "2025-09-19T06:49:23.687329"
+  },
+  "Tourist Detail - Tourist 1 (ID: 68ccfced...)": {
+    "success": false,
+    "details": "Status: 200, Present fields: 9/9, Missing: [], Format issues: ['digital_id format invalid'], Has location: False",
+    "response_data": null,
+    "timestamp": "2025-09-19T06:49:23.695404"
+  },
+  "Tourist Detail - Tourist 2 (ID: 68ccfced...)": {
+    "success": false,
+    "details": "Status: 200, Present fields: 9/9, Missing: [], Format issues: ['digital_id format invalid'], Has location: False",
+    "response_data": null,
+    "timestamp": "2025-09-19T06:49:23.713018"
+  },
+  "Tourist Detail - Tourist 3 (ID: 68ccfced...)": {
+    "success": false,
+    "details": "Status: 200, Present fields: 9/9, Missing: [], Format issues: ['digital_id format invalid'], Has location: False",
+    "response_data": null,
+    "timestamp": "2025-09-19T06:49:23.721298"
+  },
+  "Tourist Detail - Invalid ID": {
+    "success": true,
+    "details": "Status: 404, Expected 404 for non-existent tourist",
+    "response_data": null,
+    "timestamp": "2025-09-19T06:49:23.769305"
+  },
+  "Dashboard KPIs": {
+    "success": false,
+    "details": "Status: 200, Present KPIs: 4/6, Missing: ['resolved_alerts', 'geofence_breaches'], Issues: []",
+    "response_data": null,
+    "timestamp": "2025-09-19T06:49:23.780763"
+  },
+  "Dashboard Consistency": {
+    "success": false,
+    "details": "Dashboard tourists: 2, Actual: 3, Dashboard alerts: 0, Actual: 0",
+    "response_data": null,
+    "timestamp": "2025-09-19T06:49:23.851930"
+  },
+  "Data Format Consistency": {
+    "success": true,
+    "details": "Tourist ID consistency: True, Name consistency: True, Tourist name: Rajesh Sharma, Alerts count: 0",
+    "response_data": null,
+    "timestamp": "2025-09-19T06:49:23.907726"
   }
 }
