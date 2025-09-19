@@ -287,9 +287,7 @@ metadata:
   run_ui: false
 
 test_plan:
-  current_focus:
-    - "Fix Tourist Detail Modal Data Inconsistency"
-    - "Fix Tourist Database Page Data Inconsistency"
+  current_focus: []
   stuck_tasks: []
   test_all: false
   test_priority: "high_first"
