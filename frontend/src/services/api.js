@@ -84,6 +84,13 @@ export const touristsAPI = {
       params: { limit }
     });
     return response.data;
+  },
+  
+  getTouristAlerts: async (touristId, limit = 100) => {
+    const response = await api.get(`/tourists/${touristId}/alerts`, {
+      params: { limit }
+    });
+    return response.data;
   }
 };
 
