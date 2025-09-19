@@ -399,62 +399,136 @@ class LiveMapDataTester:
                 "No live location data available for compatibility testing"
             )
     
-    async def test_specific_tourist_data(self):
-        """Test specific tourist data to understand the issue"""
-        print("\n=== Specific Tourist Data Analysis ===")
+    async def test_individual_tourist_data(self, tourist_ids: List[str]):
+        """Test individual tourist data endpoints as requested in review"""
+        print("\n=== Individual Tourist Data Testing ===")
         
         if not self.auth_token:
-            self.log_test("Tourist Data Analysis", False, "No auth token available")
+            self.log_test("Individual Tourist Data", False, "No auth token available")
             return
         
-        # Get tourists list
-        success, tourists_data, status = await self.make_request("GET", "/tourists")
-        
-        if not success or not isinstance(tourists_data, list) or not tourists_data:
-            self.log_test("Tourist Data Analysis", False, "No tourists data available")
+        if not tourist_ids:
+            self.log_test("Individual Tourist Data", False, "No tourist IDs available for testing")
             return
         
-        # Analyze each tourist's data
-        for i, tourist in enumerate(tourists_data[:3]):  # Check first 3 tourists
-            tourist_id = tourist.get('id')
-            tourist_name = tourist.get('full_name', 'Unknown')
-            
-            print(f"\n--- Analyzing Tourist {i+1}: {tourist_name} ---")
-            
-            # Check if tourist has last_known_location
-            has_location = 'location' in tourist and tourist['location'] is not None
+        # Test first tourist from the list
+        tourist_id = tourist_ids[0]
+        
+        # Test GET /api/tourists/{tourist_id}
+        success, data, status = await self.make_request("GET", f"/tourists/{tourist_id}")
+        
+        if success and status == 200 and isinstance(data, dict):
+            required_fields = ['id', 'digital_id', 'full_name', 'nationality', 'status', 'safety_score', 'emergency_contacts']
+            missing_fields = [field for field in required_fields if field not in data]
             
             self.log_test(
-                f"Tourist {i+1} - Has Location", 
-                has_location,
-                f"Tourist: {tourist_name}, Has location: {has_location}",
-                tourist.get('location')
+                "GET /api/tourists/{tourist_id}", 
+                len(missing_fields) == 0,
+                f"Status: {status}, Tourist: {data.get('full_name', 'Unknown')} ({data.get('digital_id', 'No ID')}), Missing fields: {missing_fields}",
+                {k: v for k, v in data.items() if k in required_fields}
             )
             
-            # Get detailed tourist info
-            if tourist_id:
-                success, detailed_tourist, status = await self.make_request("GET", f"/tourists/{tourist_id}")
+            # Log key tourist details for verification
+            print(f"   👤 Tourist Details: {data.get('full_name', 'Unknown')} - {data.get('digital_id', 'No ID')} - Status: {data.get('status', 'Unknown')}")
+        else:
+            self.log_test(
+                "GET /api/tourists/{tourist_id}", 
+                False,
+                f"Status: {status}, Response type: {type(data)}",
+                {"status": status, "response": data}
+            )
+        
+        # Test GET /api/tourists/{tourist_id}/alerts
+        success, data, status = await self.make_request("GET", f"/tourists/{tourist_id}/alerts")
+        
+        if success and status == 200 and isinstance(data, list):
+            alerts_count = len(data)
+            
+            # Validate alert structure if alerts exist
+            structure_valid = True
+            if alerts_count > 0:
+                required_alert_fields = ['id', 'alert_id', 'tourist_id', 'alert_type', 'severity', 'status', 'location', 'timestamp']
+                sample_alert = data[0]
+                missing_fields = [field for field in required_alert_fields if field not in sample_alert]
+                structure_valid = len(missing_fields) == 0
                 
-                if success and isinstance(detailed_tourist, dict):
-                    location_data = detailed_tourist.get('location')
-                    
-                    self.log_test(
-                        f"Tourist {i+1} - Detailed Location", 
-                        location_data is not None,
-                        f"Detailed location available: {location_data is not None}",
-                        location_data
-                    )
-                    
-                    # Check location history
-                    success, location_history, status = await self.make_request("GET", f"/tourists/{tourist_id}/location-history")
-                    
-                    if success and isinstance(location_history, list):
-                        self.log_test(
-                            f"Tourist {i+1} - Location History", 
-                            len(location_history) > 0,
-                            f"Location history entries: {len(location_history)}",
-                            location_history[0] if location_history else None
-                        )
+                if not structure_valid:
+                    print(f"   ⚠️  Alert structure issues: Missing {missing_fields}")
+            
+            self.log_test(
+                "GET /api/tourists/{tourist_id}/alerts", 
+                structure_valid,
+                f"Status: {status}, Alerts count: {alerts_count}, Structure valid: {structure_valid}",
+                data[0] if data else None
+            )
+            
+            # Log alert details for verification
+            if data:
+                alert_types = [alert.get('alert_type', 'Unknown') for alert in data]
+                print(f"   🚨 Tourist Alerts: {alerts_count} alerts - Types: {', '.join(set(alert_types))}")
+        else:
+            self.log_test(
+                "GET /api/tourists/{tourist_id}/alerts", 
+                False,
+                f"Status: {status}, Response type: {type(data)}",
+                {"status": status, "response": data}
+            )
+        
+        # Test GET /api/tourists/{tourist_id}/location-history
+        success, data, status = await self.make_request("GET", f"/tourists/{tourist_id}/location-history")
+        
+        if success and status == 200 and isinstance(data, list):
+            history_count = len(data)
+            
+            # Validate location history structure if entries exist
+            structure_valid = True
+            coordinates_valid = True
+            
+            if history_count > 0:
+                sample_location = data[0]
+                
+                # Check for required fields in location history
+                if 'coordinates' not in sample_location:
+                    structure_valid = False
+                else:
+                    # Validate coordinates format
+                    coords = sample_location['coordinates']
+                    if isinstance(coords, dict) and 'coordinates' in coords:
+                        # GeoJSON format
+                        coord_array = coords['coordinates']
+                        if not isinstance(coord_array, list) or len(coord_array) != 2:
+                            coordinates_valid = False
+                    elif isinstance(coords, list) and len(coords) == 2:
+                        # Direct array format
+                        try:
+                            lon, lat = float(coords[0]), float(coords[1])
+                            if not (-180 <= lon <= 180) or not (-90 <= lat <= 90):
+                                coordinates_valid = False
+                        except (ValueError, TypeError):
+                            coordinates_valid = False
+                    else:
+                        coordinates_valid = False
+            
+            self.log_test(
+                "GET /api/tourists/{tourist_id}/location-history", 
+                structure_valid and coordinates_valid,
+                f"Status: {status}, History entries: {history_count}, Structure valid: {structure_valid}, Coordinates valid: {coordinates_valid}",
+                data[0] if data else None
+            )
+            
+            # Log location history details for verification
+            if data:
+                latest_location = data[0]
+                coords = latest_location.get('coordinates', 'No coordinates')
+                timestamp = latest_location.get('timestamp', 'No timestamp')
+                print(f"   📍 Latest Location: {coords} at {timestamp}")
+        else:
+            self.log_test(
+                "GET /api/tourists/{tourist_id}/location-history", 
+                False,
+                f"Status: {status}, Response type: {type(data)}",
+                {"status": status, "response": data}
+            )
     
     async def run_live_map_tests(self):
         """Run all Live Map specific tests"""
