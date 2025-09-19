@@ -187,16 +187,16 @@ const TouristDetailModal = ({ tourist, isOpen, onClose }) => {
               <CardContent className="command-card-content space-y-4">
                 <div>
                   <p className="text-sm font-medium text-slate-400 mb-2">Planned Itinerary</p>
-                  <p className="text-sm text-white bg-slate-700 p-3 rounded-lg">{fullTourist.itinerary}</p>
+                  <p className="text-sm text-white bg-slate-700 p-3 rounded-lg">{fullTourist.itinerary || 'No itinerary available'}</p>
                 </div>
                 <div className="grid grid-cols-2 gap-4">
                   <div className="bg-slate-700 p-3 rounded-lg">
                     <p className="text-xs text-slate-400 mb-1">Start Date</p>
-                    <p className="text-sm font-semibold text-white">{new Date(fullTourist.visitStartDate).toLocaleDateString()}</p>
+                    <p className="text-sm font-semibold text-white">{fullTourist.visit_start_date ? new Date(fullTourist.visit_start_date).toLocaleDateString() : 'N/A'}</p>
                   </div>
                   <div className="bg-slate-700 p-3 rounded-lg">
                     <p className="text-xs text-slate-400 mb-1">End Date</p>
-                    <p className="text-sm font-semibold text-white">{new Date(fullTourist.visitEndDate).toLocaleDateString()}</p>
+                    <p className="text-sm font-semibold text-white">{fullTourist.visit_end_date ? new Date(fullTourist.visit_end_date).toLocaleDateString() : 'N/A'}</p>
                   </div>
                 </div>
               </CardContent>
