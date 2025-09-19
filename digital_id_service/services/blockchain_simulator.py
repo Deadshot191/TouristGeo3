@@ -2,8 +2,8 @@ import hashlib
 import json
 from datetime import datetime
 from typing import Optional, Dict, Any
-from ..database import get_database
-from ..models import DataAccessLog
+from database import get_database
+from models import DataAccessLog
 import logging
 
 logger = logging.getLogger(__name__)
