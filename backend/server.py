@@ -10,7 +10,7 @@ from typing import List, Optional
 
 # Import our modules
 try:
-    from .database import connect_to_mongo, close_mongo_connection
+    from .database import connect_to_mongo, close_mongo_connection, get_alerts_collection, get_tourists_collection
     from .auth import create_access_token, authenticate_user, get_current_user, get_current_admin_or_police_user
     from .models import *
     from .services.tourist_service import TouristService
