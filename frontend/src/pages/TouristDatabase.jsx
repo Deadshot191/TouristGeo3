@@ -164,8 +164,32 @@ const TouristDatabase = ({ onTouristSelect }) => {
 
       {/* Enhanced Tourist Grid */}
       <div className="flex-1 overflow-auto p-6">
-        <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
-          {filteredTourists.map((tourist) => (
+        {loading ? (
+          <div className="flex items-center justify-center h-64">
+            <div className="text-center">
+              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500 mx-auto mb-4"></div>
+              <p className="text-slate-400">Loading tourists...</p>
+            </div>
+          </div>
+        ) : error ? (
+          <div className="flex items-center justify-center h-64">
+            <div className="text-center">
+              <div className="text-red-500 mb-4">❌</div>
+              <p className="text-slate-400">{error}</p>
+              <Button onClick={loadTourists} className="mt-4">
+                Try Again
+              </Button>
+            </div>
+          </div>
+        ) : filteredTourists.length === 0 ? (
+          <div className="flex items-center justify-center h-64">
+            <div className="text-center">
+              <p className="text-slate-400">No tourists found</p>
+            </div>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
+            {filteredTourists.map((tourist) => (
             <Card key={tourist.id} className="tourist-card">
               <CardContent className="tourist-card-content">
                 {/* Header with Avatar, Name, and Status Badge */}
