@@ -241,49 +241,75 @@ const TouristDetailModal = ({ tourist, isOpen, onClose }) => {
             </Card>
           </div>
 
-          {/* Middle Column - Live Status & Safety */}
+          {/* Center Column - LIVE STATUS & ALERTS (Primary Focus) */}
           <div className="col-span-12 lg:col-span-4 space-y-6">
-            <Card className="command-card">
-              <CardHeader className="command-card-header">
-                <CardTitle className="modal-section-title">
-                  <Activity className="w-5 h-5" />
-                  Live Safety Status
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="command-card-content space-y-6">
-                {/* Safety Score Circle */}
-                <div className="text-center">
-                  <div className="relative w-32 h-32 mx-auto mb-4">
-                    <div className="w-32 h-32 rounded-full border-8 border-slate-600 flex items-center justify-center relative bg-gradient-to-br from-slate-700 to-slate-800">
-                      <div className="text-center">
-                        <span className={`text-3xl font-bold ${getSafetyScoreColor(fullTourist.safety_score || 0)}`}>
-                          {fullTourist.safety_score || 0}
-                        </span>
-                        <div className="text-xs text-slate-400">/100</div>
-                      </div>
-                    </div>
-                    <div className="absolute -bottom-2 left-1/2 transform -translate-x-1/2">
-                      <Badge className={getStatusColor(fullTourist.status)}>
-                        {fullTourist.status?.toUpperCase()}
-                      </Badge>
-                    </div>
-                  </div>
+            {/* MASSIVE STATUS BADGE - Primary Visual Anchor */}
+            <Card className="command-card border-4 border-yellow-500 bg-gradient-to-br from-slate-800 to-slate-900 shadow-2xl">
+              <CardContent className="command-card-content text-center py-8">
+                {/* HUGE Status Badge */}
+                <div className="mb-6">
+                  <Badge className={`${getStatusColor(fullTourist.status)} px-8 py-4 text-4xl font-black uppercase tracking-wider shadow-lg text-center block w-full border-4`} 
+                         style={{
+                           fontSize: '2.5rem',
+                           padding: '1.5rem 2rem',
+                           borderRadius: '1rem',
+                           textShadow: '2px 2px 4px rgba(0,0,0,0.5)'
+                         }}>
+                    {fullTourist.status?.toUpperCase() || 'UNKNOWN'}
+                  </Badge>
                 </div>
 
-                {/* Location Info */}
-                <div className="space-y-3">
-                  <div className="bg-slate-700 p-4 rounded-lg">
-                    <div className="flex items-start space-x-3">
-                      <MapPin className="w-5 h-5 text-blue-400 mt-0.5 flex-shrink-0" />
-                      <div className="flex-1">
-                        <p className="text-sm font-medium text-white mb-1">Current Location</p>
-                        <p className="text-sm text-slate-300">{fullTourist.location?.address || 'Location updating...'}</p>
-                        <div className="flex items-center space-x-2 mt-2">
-                          <Clock className="w-3 h-3 text-slate-400" />
-                          <p className="text-xs text-slate-400">
-                            Last update: {fullTourist.location?.timestamp ? new Date(fullTourist.location.timestamp).toLocaleString() : 'Unknown'}
-                          </p>
-                        </div>
+                {/* Large Safety Score Circle */}
+                <div className="relative w-40 h-40 mx-auto mb-6">
+                  <div className="w-40 h-40 rounded-full border-8 border-slate-500 flex items-center justify-center relative bg-gradient-to-br from-slate-700 to-slate-900 shadow-2xl">
+                    <div className="text-center">
+                      <span className={`text-5xl font-black ${getSafetyScoreColor(fullTourist.safety_score || 0)}`} 
+                            style={{textShadow: '2px 2px 4px rgba(0,0,0,0.5)'}}>
+                        {fullTourist.safety_score || 0}
+                      </span>
+                      <div className="text-lg text-slate-400 font-bold">/100</div>
+                    </div>
+                  </div>
+                  {/* Status Ring Indicator */}
+                  <div className={`absolute inset-0 rounded-full border-4 ${
+                    fullTourist.status === 'panic' ? 'border-red-500 animate-pulse' :
+                    fullTourist.status === 'anomaly' ? 'border-yellow-500 animate-pulse' :
+                    'border-green-500'
+                  }`}></div>
+                </div>
+
+                {/* Status Description */}
+                <div className="bg-slate-700 p-4 rounded-lg border-2 border-slate-500">
+                  <p className="text-xs text-slate-400 uppercase tracking-wider mb-1">Current Status</p>
+                  <p className="text-lg font-bold text-white">
+                    {fullTourist.status === 'panic' ? 'EMERGENCY ALERT ACTIVE' :
+                     fullTourist.status === 'anomaly' ? 'MONITORING ANOMALY' :
+                     fullTourist.status === 'safe' ? 'ALL SYSTEMS NORMAL' :
+                     'STATUS UNKNOWN'}
+                  </p>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Current Location - High Priority Info */}
+            <Card className="command-card border-2 border-blue-500">
+              <CardHeader className="command-card-header pb-3">
+                <CardTitle className="modal-section-title text-lg font-bold">
+                  <MapPin className="w-6 h-6 text-blue-400" />
+                  Current Location
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="command-card-content">
+                <div className="bg-slate-700 p-6 rounded-lg border-2 border-slate-500">
+                  <div className="flex items-start space-x-4">
+                    <MapPin className="w-8 h-8 text-blue-400 mt-1 flex-shrink-0" />
+                    <div className="flex-1">
+                      <p className="text-lg font-bold text-white mb-2">{fullTourist.location?.address || 'Location updating...'}</p>
+                      <div className="flex items-center space-x-2 text-slate-300">
+                        <Clock className="w-4 h-4 text-slate-400" />
+                        <p className="text-sm">
+                          Last update: {fullTourist.location?.timestamp ? new Date(fullTourist.location.timestamp).toLocaleString() : 'Unknown'}
+                        </p>
                       </div>
                     </div>
                   </div>
@@ -291,41 +317,41 @@ const TouristDetailModal = ({ tourist, isOpen, onClose }) => {
               </CardContent>
             </Card>
 
-            <Card className="command-card">
-              <CardHeader className="command-card-header">
-                <CardTitle className="modal-section-title">
-                  <AlertTriangle className="w-5 h-5" />
-                  Alert History
+            {/* Active Alerts - Critical Information */}
+            <Card className="command-card border-2 border-red-500">
+              <CardHeader className="command-card-header pb-3">
+                <CardTitle className="modal-section-title text-lg font-bold">
+                  <AlertTriangle className="w-6 h-6 text-red-400" />
+                  Active Alerts
                 </CardTitle>
               </CardHeader>
               <CardContent className="command-card-content">
-                <div className="space-y-3 max-h-64 overflow-y-auto">
-                  {alerts?.length > 0 ? (
-                    alerts.map((alert, index) => (
-                      <div key={alert.id || index} className="p-3 bg-slate-700 rounded-lg border-l-4 border-amber-500">
-                        <div className="flex items-center justify-between mb-2">
-                          <Badge className={getAlertTypeColor(alert.alert_type)}>
+                <div className="space-y-4 max-h-80 overflow-y-auto">
+                  {alerts?.filter(alert => alert.status === 'new' || alert.status === 'in_progress')?.length > 0 ? (
+                    alerts.filter(alert => alert.status === 'new' || alert.status === 'in_progress').map((alert, index) => (
+                      <div key={alert.id || index} className="p-4 bg-red-900 rounded-lg border-2 border-red-500 shadow-lg">
+                        <div className="flex items-center justify-between mb-3">
+                          <Badge className="bg-red-200 text-red-900 border-red-400 px-3 py-1 text-sm font-bold">
                             {formatAlertType(alert.alert_type)}
                           </Badge>
-                          <Badge className={`${alert.status === 'new' ? 'bg-red-100 text-red-800 border-red-200' : 
-                                              alert.status === 'in_progress' ? 'bg-yellow-100 text-yellow-800 border-yellow-200' : 
-                                              'bg-green-100 text-green-800 border-green-200'}`}>
+                          <Badge className="bg-yellow-200 text-yellow-900 border-yellow-400 px-3 py-1 text-sm font-bold">
                             {alert.status.replace('_', ' ').toUpperCase()}
                           </Badge>
                         </div>
-                        <p className="text-xs text-slate-300 mb-1">{alert.location?.address || 'Location unknown'}</p>
-                        <p className="text-xs text-slate-500">
+                        <p className="text-white font-medium mb-2">{alert.location?.address || 'Location unknown'}</p>
+                        <p className="text-red-200 text-sm">
                           {alert.created_at ? new Date(alert.created_at).toLocaleString() : 'Unknown time'}
                         </p>
                         {alert.description && (
-                          <p className="text-xs text-slate-400 mt-1">{alert.description}</p>
+                          <p className="text-red-100 text-sm mt-2 bg-red-800 p-2 rounded">{alert.description}</p>
                         )}
                       </div>
                     ))
                   ) : (
-                    <div className="text-center py-6">
-                      <AlertTriangle className="w-8 h-8 text-slate-500 mx-auto mb-2" />
-                      <p className="text-sm text-slate-400">No alerts recorded</p>
+                    <div className="text-center py-8 bg-green-900 rounded-lg border-2 border-green-500">
+                      <Shield className="w-12 h-12 text-green-400 mx-auto mb-3" />
+                      <p className="text-lg font-bold text-green-100">No Active Alerts</p>
+                      <p className="text-green-300 text-sm">All systems normal</p>
                     </div>
                   )}
                 </div>
