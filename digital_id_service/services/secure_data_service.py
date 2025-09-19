@@ -175,6 +175,14 @@ class SecureDataService:
             kyc_data_dict = decrypted_data.get("kyc_data", {})
             kyc_data = TouristKYCData(**kyc_data_dict)
             
+            # Reconstruct emergency contacts
+            emergency_contacts = []
+            for contact_data in decrypted_data.get("emergency_contacts", []):
+                if isinstance(contact_data, dict):
+                    emergency_contacts.append(EmergencyContact(**contact_data))
+                else:
+                    emergency_contacts.append(contact_data)
+            
             # Prepare response
             response = DataAccessResponse(
                 tourist_id=request.tourist_id,
@@ -184,9 +192,7 @@ class SecureDataService:
                 date_of_birth=date_of_birth,
                 passport_country=decrypted_data.get("passport_country"),
                 kyc_data=kyc_data,
-                emergency_contacts=[
-                    request.emergency_contacts[i] for i in range(len(decrypted_data.get("emergency_contacts", [])))
-                ] if decrypted_data.get("emergency_contacts") else [],
+                emergency_contacts=emergency_contacts,
                 detailed_itinerary=decrypted_data.get("detailed_itinerary", ""),
                 accommodation_details=decrypted_data.get("accommodation_details"),
                 local_guide_contact=decrypted_data.get("local_guide_contact"),
