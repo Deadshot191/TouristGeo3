@@ -374,7 +374,8 @@ async def main():
     
     # Create sample data
     await create_sample_users()
-    await create_sample_tourists()
+    await create_demo_geofences()
+    await create_demo_tourists()
     
     print("Sample data initialization completed!")
     print("\nLogin credentials:")
