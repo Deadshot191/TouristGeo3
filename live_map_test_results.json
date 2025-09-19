@@ -1,8 +1,297 @@
 {
   "Authentication": {
-    "success": false,
-    "details": "Failed to authenticate. Status: 401, Response: {'detail': 'Incorrect email or password'}",
+    "success": true,
+    "details": "Successfully authenticated as Inspector Raj Kumar",
     "response_data": null,
-    "timestamp": "2025-09-19T07:14:09.985236"
+    "timestamp": "2025-09-19T07:20:43.805637"
+  },
+  "GET /api/location/live": {
+    "success": true,
+    "details": "Status: 200, Live locations returned: 5 (expected: 5)",
+    "response_data": [
+      {
+        "tourist_id": "68cd03502eebb9ece57b39e9",
+        "tourist_name": "Emily Carter",
+        "digital_id": "DIG-BREACH02",
+        "status": "anomaly",
+        "safety_score": 35,
+        "coordinates": [
+          88.3,
+          27.03
+        ],
+        "address": "Restricted Forest Area, Darjeeling Hills",
+        "timestamp": "2025-09-19T07:04:32.567000"
+      },
+      {
+        "tourist_id": "68cd03502eebb9ece57b39eb",
+        "tourist_name": "John Doe",
+        "digital_id": "DIG-SAFE04",
+        "status": "safe",
+        "safety_score": 95,
+        "coordinates": [
+          88.265,
+          27.0395
+        ],
+        "address": "The Mall, Darjeeling, West Bengal",
+        "timestamp": "2025-09-19T07:01:32.567000"
+      }
+    ],
+    "timestamp": "2025-09-19T07:20:43.821178"
+  },
+  "Live Location Data Structure": {
+    "success": true,
+    "details": "Valid tourists: 5/5, Issues: []",
+    "response_data": {
+      "tourist_id": "68cd03502eebb9ece57b39e9",
+      "tourist_name": "Emily Carter",
+      "digital_id": "DIG-BREACH02",
+      "status": "anomaly",
+      "safety_score": 35,
+      "coordinates": [
+        88.3,
+        27.03
+      ],
+      "address": "Restricted Forest Area, Darjeeling Hills",
+      "timestamp": "2025-09-19T07:04:32.567000"
+    },
+    "timestamp": "2025-09-19T07:20:43.821233"
+  },
+  "GET /api/analytics/dashboard": {
+    "success": true,
+    "details": "Status: 200, KPIs data available: True",
+    "response_data": {
+      "total_active_tourists": 0,
+      "active_alerts": 3,
+      "safe_status": 2,
+      "high_risk_tourists": 2,
+      "resolved_alerts_today": 1,
+      "avg_safety_score": 57.6
+    },
+    "timestamp": "2025-09-19T07:20:43.874399"
+  },
+  "Dashboard KPIs Structure": {
+    "success": true,
+    "details": "Present KPIs: 4/4, Missing: [], Issues: []",
+    "response_data": {
+      "total_active_tourists": 0,
+      "active_alerts": 3,
+      "safe_status": 2,
+      "high_risk_tourists": 2
+    },
+    "timestamp": "2025-09-19T07:20:43.874450"
+  },
+  "GET /api/geofences": {
+    "success": true,
+    "details": "Status: 200, Geofences returned: 3 (expected: 3)",
+    "response_data": [
+      {
+        "id": "68cd03502eebb9ece57b39e5",
+        "name": "Restricted Forest Area",
+        "type": "restricted",
+        "risk_level": "critical",
+        "coordinates": {
+          "type": "Polygon",
+          "coordinates": [
+            [
+              [
+                88.29,
+                27.02
+              ],
+              [
+                88.31,
+                27.02
+              ],
+              [
+                88.31,
+                27.04
+              ],
+              [
+                88.29,
+                27.04
+              ],
+              [
+                88.29,
+                27.02
+              ]
+            ]
+          ]
+        },
+        "description": "Protected forest area - entry strictly prohibited. High risk of wildlife encounters and getting lost.",
+        "active": true
+      },
+      {
+        "id": "68cd03502eebb9ece57b39e6",
+        "name": "Military Restricted Zone",
+        "type": "restricted",
+        "risk_level": "critical",
+        "coordinates": {
+          "type": "Polygon",
+          "coordinates": [
+            [
+              [
+                88.275,
+                27.045
+              ],
+              [
+                88.285,
+                27.045
+              ],
+              [
+                88.285,
+                27.048
+              ],
+              [
+                88.275,
+                27.048
+              ],
+              [
+                88.275,
+                27.045
+              ]
+            ]
+          ]
+        },
+        "description": "Military installation - strictly prohibited",
+        "active": true
+      }
+    ],
+    "timestamp": "2025-09-19T07:20:44.195709"
+  },
+  "Geofence Data Structure": {
+    "success": false,
+    "details": "Valid geofences: 0/3, Issues: ['Geofence 1 invalid coordinates format', 'Geofence 2 invalid coordinates format']...",
+    "response_data": {
+      "id": "68cd03502eebb9ece57b39e5",
+      "name": "Restricted Forest Area",
+      "type": "restricted",
+      "risk_level": "critical",
+      "coordinates": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              88.29,
+              27.02
+            ],
+            [
+              88.31,
+              27.02
+            ],
+            [
+              88.31,
+              27.04
+            ],
+            [
+              88.29,
+              27.04
+            ],
+            [
+              88.29,
+              27.02
+            ]
+          ]
+        ]
+      },
+      "description": "Protected forest area - entry strictly prohibited. High risk of wildlife encounters and getting lost.",
+      "active": true
+    },
+    "timestamp": "2025-09-19T07:20:44.195764"
+  },
+  "Frontend Data Compatibility": {
+    "success": true,
+    "details": "Compatibility: 100.0% (6/6 fields), Missing: []",
+    "response_data": {
+      "tourist_id": "68cd03502eebb9ece57b39e8",
+      "tourist_name": "Raj Verma",
+      "digital_id": "DIG-PANIC01",
+      "status": "panic",
+      "coordinates": [
+        88.264,
+        27.039
+      ],
+      "timestamp": "2025-09-19T07:11:32.567000"
+    },
+    "timestamp": "2025-09-19T07:20:44.208341"
+  },
+  "Coordinates Range Validation": {
+    "success": true,
+    "details": "Coordinates: [88.264, 27.039], Valid range: True",
+    "response_data": null,
+    "timestamp": "2025-09-19T07:20:44.208392"
+  },
+  "GET /api/tourists/{tourist_id}": {
+    "success": true,
+    "details": "Status: 200, Tourist: Emily Carter (DIG-BREACH02), Missing fields: []",
+    "response_data": {
+      "id": "68cd03502eebb9ece57b39e9",
+      "digital_id": "DIG-BREACH02",
+      "full_name": "Emily Carter",
+      "nationality": "USA",
+      "emergency_contacts": [
+        {
+          "name": "Michael Carter",
+          "phone": "+1-555-0198",
+          "relationship": "husband"
+        },
+        {
+          "name": "Embassy USA",
+          "phone": "+91-33-2419-8000",
+          "relationship": "embassy"
+        },
+        {
+          "name": "Sarah Johnson",
+          "phone": "+1-555-0199",
+          "relationship": "sister"
+        }
+      ],
+      "status": "anomaly",
+      "safety_score": 35
+    },
+    "timestamp": "2025-09-19T07:20:44.220779"
+  },
+  "GET /api/tourists/{tourist_id}/alerts": {
+    "success": true,
+    "details": "Status: 200, Alerts count: 1, Structure valid: True",
+    "response_data": {
+      "id": "68cd03502eebb9ece57b39ee",
+      "alert_id": "GB-4FEB",
+      "tourist_name": "Emily Carter",
+      "tourist_id": "68cd03502eebb9ece57b39e9",
+      "alert_type": "geofence_breach",
+      "severity": "high",
+      "status": "in_progress",
+      "location": {
+        "coordinates": [
+          88.3,
+          27.03
+        ],
+        "address": "Restricted Forest Area, Darjeeling Hills"
+      },
+      "description": "Tourist entered restricted forest area - unauthorized access detected",
+      "timestamp": "2025-09-19T07:04:32.563000",
+      "resolved_at": null,
+      "response_actions": []
+    },
+    "timestamp": "2025-09-19T07:20:44.271360"
+  },
+  "GET /api/tourists/{tourist_id}/location-history": {
+    "success": true,
+    "details": "Status: 200, History entries: 1, Structure valid: True, Coordinates valid: True",
+    "response_data": {
+      "_id": "68cd03502eebb9ece57b39f2",
+      "tourist_id": "68cd03502eebb9ece57b39e9",
+      "coordinates": {
+        "type": "Point",
+        "coordinates": [
+          88.3,
+          27.03
+        ]
+      },
+      "address": "Restricted Forest Area, Darjeeling Hills",
+      "timestamp": "2025-09-19T07:04:32.567000",
+      "accuracy": 8.0,
+      "speed": 2.5
+    },
+    "timestamp": "2025-09-19T07:20:44.285995"
   }
 }
