@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Search, Filter, Download, Plus, MapPin, Phone } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/card';
 import { Badge } from '../components/ui/badge';
@@ -6,16 +6,40 @@ import { Button } from '../components/ui/button';
 import { Input } from '../components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../components/ui/select';
 import { Avatar, AvatarImage, AvatarFallback } from '../components/ui/avatar';
-import { mockTourists } from '../mock';
+import { touristsAPI } from '../services/api';
 
 const TouristDatabase = ({ onTouristSelect }) => {
-  const [tourists, setTourists] = useState(mockTourists);
-  const [filteredTourists, setFilteredTourists] = useState(mockTourists);
+  const [tourists, setTourists] = useState([]);
+  const [filteredTourists, setFilteredTourists] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const [filters, setFilters] = useState({
     status: 'all',
     nationality: 'all',
     search: ''
   });
+
+  // Load tourists when component mounts
+  useEffect(() => {
+    loadTourists();
+  }, []);
+
+  const loadTourists = async () => {
+    try {
+      setLoading(true);
+      setError(null);
+      const data = await touristsAPI.getTourists({ limit: 100 });
+      setTourists(data);
+      setFilteredTourists(data);
+    } catch (err) {
+      console.error('Error loading tourists:', err);
+      setError('Failed to load tourists');
+      setTourists([]);
+      setFilteredTourists([]);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const statusTypes = [
     { value: 'all', label: 'All Status' },
