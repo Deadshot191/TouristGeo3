@@ -1,18 +1,26 @@
 """
-Initialize sample data for Tourism Safety System
-Run this script to populate the database with sample users and tourists
+Initialize demo data for Smart Tourist Safety System
+Creates a compelling demonstration with hardcoded scenarios for non-technical audience
 """
 import asyncio
 import hashlib
 from datetime import datetime, timedelta
 from bson import ObjectId
+import uuid
 
 import sys
 import os
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
-from database import connect_to_mongo, get_users_collection, get_tourists_collection
-from models import User, Tourist, UserRole, TouristStatus, EmergencyContact
+from database import (
+    connect_to_mongo, get_users_collection, get_tourists_collection, 
+    get_alerts_collection, get_geofences_collection, get_location_history_collection
+)
+from models import (
+    User, Tourist, UserRole, TouristStatus, EmergencyContact, Alert, AlertType, 
+    AlertSeverity, AlertStatus, Geofence, GeofenceType, RiskLevel, GeofencePolygon,
+    PlannedItinerary, LocationHistory, LocationPoint, AlertLocation
+)
 from auth import hash_password
 
 async def create_sample_users():
