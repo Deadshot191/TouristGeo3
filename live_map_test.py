@@ -312,22 +312,36 @@ class LiveMapDataTester:
                     structure_issues.append(f"Geofence {i+1} missing: {missing_fields}")
                     continue
                 
-                # Validate coordinates format (should be array of coordinate pairs for polygon)
+                # Validate coordinates format (GeoJSON format expected)
                 coordinates = geofence.get('coordinates')
-                if not isinstance(coordinates, list) or len(coordinates) == 0:
-                    structure_issues.append(f"Geofence {i+1} invalid coordinates format")
+                if not isinstance(coordinates, dict):
+                    structure_issues.append(f"Geofence {i+1} coordinates not in GeoJSON format")
                     continue
                 
-                # Check coordinate pairs format
+                # Check GeoJSON structure
                 try:
-                    for coord_pair in coordinates:
+                    if coordinates.get('type') != 'Polygon':
+                        raise ValueError("GeoJSON type is not Polygon")
+                    
+                    coord_array = coordinates.get('coordinates')
+                    if not isinstance(coord_array, list) or len(coord_array) == 0:
+                        raise ValueError("GeoJSON coordinates array is invalid")
+                    
+                    # Check first ring of polygon
+                    first_ring = coord_array[0]
+                    if not isinstance(first_ring, list) or len(first_ring) < 4:
+                        raise ValueError("Polygon ring has insufficient points")
+                    
+                    # Validate coordinate pairs in the ring
+                    for coord_pair in first_ring:
                         if not isinstance(coord_pair, list) or len(coord_pair) != 2:
                             raise ValueError("Invalid coordinate pair format")
                         lon, lat = float(coord_pair[0]), float(coord_pair[1])
                         if not (-180 <= lon <= 180) or not (-90 <= lat <= 90):
                             raise ValueError("Coordinate values out of range")
+                            
                 except (ValueError, TypeError) as e:
-                    structure_issues.append(f"Geofence {i+1} coordinate validation failed: {str(e)}")
+                    structure_issues.append(f"Geofence {i+1} GeoJSON validation failed: {str(e)}")
                     continue
                 
                 valid_geofences.append(geofence)
