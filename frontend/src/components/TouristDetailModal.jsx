@@ -151,19 +151,19 @@ const TouristDetailModal = ({ tourist, isOpen, onClose }) => {
               <CardContent className="command-card-content space-y-4">
                 <div className="flex items-center space-x-4">
                   <Avatar className="w-20 h-20 ring-4 ring-slate-600">
-                    <AvatarImage src={fullTourist.photo} alt={fullTourist.name} />
+                    <AvatarImage src={fullTourist.photo_url} alt={fullTourist.full_name} />
                     <AvatarFallback className="bg-blue-600 text-white text-xl font-bold">
-                      {fullTourist.name.split(' ').map(n => n[0]).join('')}
+                      {fullTourist.full_name ? fullTourist.full_name.split(' ').map(n => n[0]).join('') : 'NA'}
                     </AvatarFallback>
                   </Avatar>
                   <div className="flex-1">
-                    <h3 className="text-xl font-bold text-white mb-1">{fullTourist.name}</h3>
+                    <h3 className="text-xl font-bold text-white mb-1">{fullTourist.full_name || 'Unknown'}</h3>
                     <div className="flex items-center space-x-2 mb-2">
                       <Globe className="w-4 h-4 text-slate-400" />
-                      <span className="text-slate-300">{fullTourist.nationality}</span>
+                      <span className="text-slate-300">{fullTourist.nationality || 'Unknown'}</span>
                     </div>
                     <p className="text-sm text-slate-400 font-mono bg-slate-700 px-2 py-1 rounded">
-                      {fullTourist.digitalId}
+                      {fullTourist.digital_id || 'N/A'}
                     </p>
                   </div>
                 </div>
