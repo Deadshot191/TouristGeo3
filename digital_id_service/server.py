@@ -11,11 +11,11 @@ from typing import List, Optional, Dict, Any
 
 # Import our modules
 try:
-    from .database import connect_to_mongo, close_mongo_connection
-    from .models import *
-    from .services.secure_data_service import secure_data_service
-    from .services.blockchain_simulator import blockchain_simulator
-    from .services.encryption_service import encryption_service
+    from database import connect_to_mongo, close_mongo_connection
+    from models import *
+    from services.secure_data_service import secure_data_service
+    from services.blockchain_simulator import blockchain_simulator
+    from services.encryption_service import encryption_service
 except ImportError:
     from database import connect_to_mongo, close_mongo_connection
     from models import *
