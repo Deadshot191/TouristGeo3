@@ -126,6 +126,34 @@ class TouristService:
             return None
     
     @staticmethod
+    async def get_decrypted_tourist_data(digital_id: str, authority_id: str, authority_name: str, 
+                                       authority_department: str, access_reason: str, 
+                                       alert_id: str = None) -> Optional[Dict[str, Any]]:
+        """
+        Get decrypted tourist data during emergency situations
+        This creates an immutable audit log entry
+        """
+        try:
+            # Request emergency access from Digital ID service
+            access_request = {
+                "tourist_id": digital_id,
+                "authority_id": authority_id,
+                "authority_name": authority_name,
+                "authority_department": authority_department,
+                "access_reason": access_reason,
+                "alert_id": alert_id
+            }
+            
+            decrypted_data = await digital_id_client.request_emergency_access(access_request)
+            
+            logger.info(f"Emergency access granted for tourist: {digital_id} by {authority_name}")
+            return decrypted_data
+            
+        except Exception as e:
+            logger.error(f"Error getting decrypted tourist data for {digital_id}: {e}")
+            return None
+    
+    @staticmethod
     async def get_tourists(filters: TouristFilters) -> List[TouristResponse]:
         """Get tourists with filters"""
         try:
