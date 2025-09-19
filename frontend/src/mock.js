@@ -1,96 +1,153 @@
-// Mock data for Tourism Safety Dashboard
+// Mock data for Tourism Safety Dashboard - Demo Scenarios
 
 export const mockTourists = [
   {
-    id: "TST-001",
-    name: "John Smith",
-    nationality: "USA",
+    id: "DIG-PANIC01",
+    name: "Raj Verma",
+    nationality: "India",
     photo: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop&crop=face",
-    digitalId: "DIG-001-USA",
-    status: "safe",
-    safetyScore: 95,
+    digitalId: "DIG-PANIC01",
+    status: "panic",
+    safetyScore: 15,
     location: {
-      lat: 27.0360,
-      lng: 88.2627,
-      address: "Mall Road, Darjeeling",
-      timestamp: "2025-01-09T10:30:00Z"
+      lat: 27.0390,
+      lng: 88.2640,
+      address: "Mall Road, Darjeeling, West Bengal",
+      timestamp: "2025-01-09T15:25:00Z"
     },
-    itinerary: "Kolkata -> Darjeeling -> Gangtok",
-    visitStartDate: "2025-01-08",
-    visitEndDate: "2025-01-15",
+    itinerary: "Delhi -> Darjeeling -> Kalimpong",
+    visitStartDate: "2025-01-10",
+    visitEndDate: "2025-01-17",
     emergencyContacts: [
-      { name: "Sarah Smith", phone: "+1-555-0123" },
-      { name: "Embassy USA", phone: "+91-33-2419-8000" }
+      { name: "Sunita Verma", phone: "+91-9876543210", relationship: "wife" },
+      { name: "Dr. Amit Verma", phone: "+91-9876543211", relationship: "brother" },
+      { name: "Delhi Police", phone: "+91-11-23454321", relationship: "emergency" }
     ],
     alertHistory: [
       {
-        id: "ALT-001",
-        type: "route_deviation",
-        location: "Tiger Hill Road",
-        timestamp: "2025-01-08T14:20:00Z",
-        status: "resolved"
+        id: "PN-852E",
+        type: "panic_button",
+        location: "Mall Road, Darjeeling, West Bengal",
+        timestamp: "2025-01-09T15:25:00Z",
+        status: "new"
       }
     ]
   },
   {
-    id: "TST-002",
-    name: "Maria Garcia",
-    nationality: "Spain",
-    photo: "https://images.unsplash.com/photo-1494790108755-2616b612b5e5?w=150&h=150&fit=crop&crop=face",
-    digitalId: "DIG-002-ESP",
+    id: "DIG-BREACH02",
+    name: "Emily Carter",
+    nationality: "USA",
+    photo: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=150&h=150&fit=crop&crop=face",
+    digitalId: "DIG-BREACH02",
     status: "anomaly",
-    safetyScore: 72,
+    safetyScore: 35,
     location: {
-      lat: 27.0410,
-      lng: 88.2690,
-      address: "Chowrasta Mall, Darjeeling",
-      timestamp: "2025-01-09T10:25:00Z"
+      lat: 27.0300,
+      lng: 88.3000,
+      address: "Restricted Forest Area, Darjeeling Hills",
+      timestamp: "2025-01-09T15:18:00Z"
     },
-    itinerary: "Delhi -> Darjeeling -> Sikkim",
-    visitStartDate: "2025-01-07",
-    visitEndDate: "2025-01-20",
+    itinerary: "Kolkata -> Darjeeling -> Sikkim -> Gangtok",
+    visitStartDate: "2025-01-08",
+    visitEndDate: "2025-01-16",
     emergencyContacts: [
-      { name: "Pedro Garcia", phone: "+34-600-123456" },
-      { name: "Embassy Spain", phone: "+91-11-4127-9000" }
+      { name: "Michael Carter", phone: "+1-555-0198", relationship: "husband" },
+      { name: "Embassy USA", phone: "+91-33-2419-8000", relationship: "embassy" },
+      { name: "Sarah Johnson", phone: "+1-555-0199", relationship: "sister" }
     ],
     alertHistory: [
       {
-        id: "ALT-002",
-        type: "prolonged_inactivity",
-        location: "Batasia Loop",
-        timestamp: "2025-01-09T09:45:00Z",
+        id: "GB-F72F",
+        type: "geofence_breach",
+        location: "Restricted Forest Area, Darjeeling Hills",
+        timestamp: "2025-01-09T15:18:00Z",
         status: "in_progress"
       }
     ]
   },
   {
-    id: "TST-003",
-    name: "Hiroshi Tanaka",
-    nationality: "Japan",
-    photo: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&h=150&fit=crop&crop=face",
-    digitalId: "DIG-003-JPN",
-    status: "panic",
-    safetyScore: 25,
+    id: "DIG-DEVIATE03",
+    name: "Priya Sharma",
+    nationality: "India",
+    photo: "https://images.unsplash.com/photo-1494790108755-2616b612b5e5?w=150&h=150&fit=crop&crop=face",
+    digitalId: "DIG-DEVIATE03",
+    status: "anomaly",
+    safetyScore: 55,
     location: {
       lat: 27.0500,
-      lng: 88.2800,
-      address: "Happy Valley Tea Estate",
-      timestamp: "2025-01-09T10:15:00Z"
+      lng: 88.2950,
+      address: "Tiger Hill Road, Darjeeling",
+      timestamp: "2025-01-09T15:22:00Z"
     },
     itinerary: "Mumbai -> Darjeeling -> Kalimpong",
     visitStartDate: "2025-01-09",
-    visitEndDate: "2025-01-18",
+    visitEndDate: "2025-01-14",
     emergencyContacts: [
-      { name: "Yuki Tanaka", phone: "+81-90-1234-5678" },
-      { name: "Embassy Japan", phone: "+91-11-2687-6581" }
+      { name: "Rakesh Sharma", phone: "+91-9123456789", relationship: "father" },
+      { name: "Meera Sharma", phone: "+91-9123456790", relationship: "mother" },
+      { name: "Mumbai Police", phone: "+91-22-22621855", relationship: "emergency" }
     ],
     alertHistory: [
       {
-        id: "ALT-003",
-        type: "panic_button",
-        location: "Happy Valley Tea Estate",
-        timestamp: "2025-01-09T10:15:00Z",
+        id: "RD-F9B4",
+        type: "route_deviation",
+        location: "Tiger Hill Road, Darjeeling",
+        timestamp: "2025-01-09T15:22:00Z",
         status: "new"
+      }
+    ]
+  },
+  {
+    id: "DIG-SAFE04",
+    name: "John Doe",
+    nationality: "UK",
+    photo: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&h=150&fit=crop&crop=face",
+    digitalId: "DIG-SAFE04",
+    status: "safe",
+    safetyScore: 95,
+    location: {
+      lat: 27.0395,
+      lng: 88.2650,
+      address: "The Mall, Darjeeling, West Bengal",
+      timestamp: "2025-01-09T15:15:00Z"
+    },
+    itinerary: "London -> Kolkata -> Darjeeling -> Gangtok",
+    visitStartDate: "2025-01-07",
+    visitEndDate: "2025-01-19",
+    emergencyContacts: [
+      { name: "Jane Doe", phone: "+44-20-7946-0958", relationship: "wife" },
+      { name: "British High Commission", phone: "+91-11-2419-2100", relationship: "embassy" }
+    ],
+    alertHistory: []
+  },
+  {
+    id: "DIG-RESOLVED05",
+    name: "Aisha Khan",
+    nationality: "Bangladesh",
+    photo: "https://images.unsplash.com/photo-1489424731084-a5d8b219a5bb?w=150&h=150&fit=crop&crop=face",
+    digitalId: "DIG-RESOLVED05",
+    status: "safe",
+    safetyScore: 88,
+    location: {
+      lat: 27.0400,
+      lng: 88.2655,
+      address: "Hotel Mayfair, Darjeeling",
+      timestamp: "2025-01-09T15:10:00Z"
+    },
+    itinerary: "Dhaka -> Kolkata -> Darjeeling -> Kalimpong",
+    visitStartDate: "2025-01-06",
+    visitEndDate: "2025-01-13",
+    emergencyContacts: [
+      { name: "Omar Khan", phone: "+880-1712345678", relationship: "brother" },
+      { name: "Bangladesh High Commission", phone: "+91-11-2419-6389", relationship: "embassy" }
+    ],
+    alertHistory: [
+      {
+        id: "PI-2B85",
+        type: "prolonged_inactivity",
+        location: "Chowrasta, Darjeeling",
+        timestamp: "2025-01-09T09:30:00Z",
+        status: "resolved"
       }
     ]
   }
@@ -98,70 +155,85 @@ export const mockTourists = [
 
 export const mockAlerts = [
   {
-    id: "PN-9812",
-    touristName: "Hiroshi Tanaka",
-    touristId: "TST-003",
+    id: "PN-852E",
+    touristName: "Raj Verma",
+    touristId: "DIG-PANIC01",
     type: "panic_button",
-    location: "Happy Valley Tea Estate",
-    timestamp: "2025-01-09T10:15:00Z",
-    status: "new"
+    severity: "critical",
+    location: "Mall Road, Darjeeling, West Bengal",
+    timestamp: "2025-01-09T15:25:00Z",
+    status: "new",
+    description: "Tourist activated panic button - immediate assistance required"
   },
   {
-    id: "PN-9811",
-    touristName: "Maria Garcia",
-    touristId: "TST-002",
-    type: "prolonged_inactivity",
-    location: "Batasia Loop",
-    timestamp: "2025-01-09T09:45:00Z",
-    status: "in_progress"
-  },
-  {
-    id: "PN-9810",
-    touristName: "John Smith",
-    touristId: "TST-001",
-    type: "route_deviation",
-    location: "Tiger Hill Road",
-    timestamp: "2025-01-08T14:20:00Z",
-    status: "resolved"
-  },
-  {
-    id: "PN-9809",
-    touristName: "Emma Wilson",
-    touristId: "TST-004",
+    id: "GB-F72F",
+    touristName: "Emily Carter",
+    touristId: "DIG-BREACH02",
     type: "geofence_breach",
-    location: "Restricted Military Zone",
-    timestamp: "2025-01-08T11:30:00Z",
-    status: "resolved"
+    severity: "high",
+    location: "Restricted Forest Area, Darjeeling Hills",
+    timestamp: "2025-01-09T15:18:00Z",
+    status: "in_progress",
+    description: "Tourist entered restricted forest area - unauthorized access detected"
   },
   {
-    id: "PN-9808",
-    touristName: "David Brown",
-    touristId: "TST-005",
-    type: "panic_button",
-    location: "Ghum Railway Station",
-    timestamp: "2025-01-08T08:45:00Z",
-    status: "resolved"
+    id: "RD-F9B4",
+    touristName: "Priya Sharma",
+    touristId: "DIG-DEVIATE03",
+    type: "route_deviation",
+    severity: "medium",
+    location: "Tiger Hill Road, Darjeeling",
+    timestamp: "2025-01-09T15:22:00Z",
+    status: "new",
+    description: "Tourist deviated significantly from planned route - 3.2km off course"
+  },
+  {
+    id: "PI-2B85",
+    touristName: "Aisha Khan",
+    touristId: "DIG-RESOLVED05",
+    type: "prolonged_inactivity",
+    severity: "medium",
+    location: "Chowrasta, Darjeeling",
+    timestamp: "2025-01-09T09:30:00Z",
+    status: "resolved",
+    description: "Tourist showed no movement for 2 hours - communication lost",
+    resolvedAt: "2025-01-09T11:30:00Z"
   }
 ];
 
 export const mockKPIs = {
-  totalActiveTourists: 1482,
-  activeAlerts: 5,
-  safeStatus: 1477
+  totalActiveTourists: 5,
+  activeAlerts: 3,
+  safeStatus: 2,
+  highRiskTourists: 1,
+  avgSafetyScore: 65.6
 };
 
 export const mockOfficer = {
-  name: "Inspector Raj Kumar",
-  department: "Tourism Police",
-  badge: "TP-001",
-  avatar: "https://images.unsplash.com/photo-1560250097-0b93528c311a?w=100&h=100&fit=crop&crop=face"
+  name: "Admin Priya Singh",
+  department: "Tourism Department",
+  badge: "TD-001",
+  avatar: "https://images.unsplash.com/photo-1494790108755-2616b612b5e5?w=100&h=100&fit=crop&crop=face"
 };
 
 export const mockGeoFences = [
   {
     id: "GF-001",
+    name: "Restricted Forest Area",
+    type: "restricted",
+    risk_level: "critical",
+    coordinates: [
+      [27.0200, 88.2900],
+      [27.0400, 88.2900],
+      [27.0400, 88.3100],
+      [27.0200, 88.3100]
+    ]
+  },
+  {
+    id: "GF-002",
     name: "Military Restricted Zone",
     type: "restricted",
+    risk_level: "critical",
     coordinates: [
       [27.0450, 88.2750],
       [27.0480, 88.2750],
@@ -170,14 +242,15 @@ export const mockGeoFences = [
     ]
   },
   {
-    id: "GF-002",
-    name: "Landslide Prone Area",
-    type: "high_risk",
+    id: "GF-003",
+    name: "Tourist Safe Zone - Mall Road",
+    type: "safe_zone",
+    risk_level: "low",
     coordinates: [
-      [27.0300, 88.2500],
-      [27.0350, 88.2500],
-      [27.0350, 88.2600],
-      [27.0300, 88.2600]
+      [27.0380, 88.2600],
+      [27.0420, 88.2600],
+      [27.0420, 88.2700],
+      [27.0380, 88.2700]
     ]
   }
 ];
