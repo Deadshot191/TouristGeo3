@@ -45,7 +45,7 @@ class BlockchainSimulator:
             "authority_id": log_entry.get("authority_id"),
             "access_type": log_entry.get("access_type"),
             "access_reason": log_entry.get("access_reason"),
-            "timestamp": log_entry.get("timestamp").isoformat() if log_entry.get("timestamp") else None,
+            "timestamp": log_entry.get("timestamp").isoformat() if hasattr(log_entry.get("timestamp"), 'isoformat') else str(log_entry.get("timestamp")),
             "block_number": log_entry.get("block_number"),
             "previous_log_hash": log_entry.get("previous_log_hash")
         }
