@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { X, MapPin, Phone, Calendar, AlertTriangle, Activity, Shield, FileText, PhoneCall, Truck, Users as UsersIcon, Clock, Globe, CreditCard } from 'lucide-react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from './ui/dialog';
 import { Badge } from './ui/badge';
@@ -6,12 +6,45 @@ import { Button } from './ui/button';
 import { Avatar, AvatarImage, AvatarFallback } from './ui/avatar';
 import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
 import { Progress } from './ui/progress';
-import { mockTourists } from '../mock';
+import { touristsAPI } from '../services/api';
 import MiniMap from './MiniMap';
 
 const TouristDetailModal = ({ tourist, isOpen, onClose }) => {
-  // Find full tourist data from mock (in real app, this would be an API call)
-  const fullTourist = mockTourists.find(t => t.id === tourist.id) || tourist;
+  const [fullTourist, setFullTourist] = useState(null);
+  const [alerts, setAlerts] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  // Fetch full tourist data when modal opens
+  useEffect(() => {
+    if (isOpen && tourist?.id) {
+      fetchTouristData();
+    }
+  }, [isOpen, tourist?.id]);
+
+  const fetchTouristData = async () => {
+    try {
+      setLoading(true);
+      setError(null);
+      
+      // Fetch tourist details and alerts in parallel
+      const [touristData, alertsData] = await Promise.all([
+        touristsAPI.getTourist(tourist.id),
+        touristsAPI.getTouristAlerts(tourist.id, 50)
+      ]);
+      
+      setFullTourist(touristData);
+      setAlerts(alertsData);
+    } catch (err) {
+      console.error('Error fetching tourist data:', err);
+      setError('Failed to load tourist data');
+      // Fallback to passed tourist data
+      setFullTourist(tourist);
+      setAlerts([]);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const getStatusColor = (status) => {
     switch (status) {
