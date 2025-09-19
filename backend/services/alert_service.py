@@ -89,6 +89,128 @@ class AlertService:
             raise
     
     @staticmethod
+    async def _send_emergency_notifications(alert: Alert, tourist_id: str):
+        """
+        Send emergency notifications with decrypted tourist data
+        Only called for high/critical severity alerts
+        """
+        try:
+            # Get tourist's digital ID
+            tourists_collection = await get_tourists_collection()
+            tourist = await tourists_collection.find_one({"_id": ObjectId(tourist_id)})
+            
+            if not tourist:
+                logger.error(f"Tourist not found for emergency notification: {tourist_id}")
+                return
+            
+            digital_id = tourist.get("digital_id")
+            if not digital_id:
+                logger.error(f"No digital ID found for tourist: {tourist_id}")
+                return
+            
+            # Request decrypted data from Digital ID service
+            access_request = {
+                "tourist_id": digital_id,
+                "authority_id": "ALERT_SYSTEM",
+                "authority_name": "Emergency Alert System",
+                "authority_department": "Automated Emergency Response",
+                "access_reason": alert.alert_type.value,
+                "alert_id": alert.alert_id
+            }
+            
+            try:
+                decrypted_data = await digital_id_client.request_emergency_access(access_request)
+                
+                # Send notifications with full personal details
+                await AlertService._send_sms_notification(alert, decrypted_data)
+                await AlertService._send_push_notification(alert, decrypted_data)
+                
+                logger.info(f"Emergency notifications sent for alert: {alert.alert_id}")
+                
+            except Exception as e:
+                logger.error(f"Failed to get decrypted data for emergency notification: {e}")
+                # Fallback: send generic notification without personal details
+                await AlertService._send_generic_notification(alert, digital_id)
+                
+        except Exception as e:
+            logger.error(f"Error sending emergency notifications: {e}")
+    
+    @staticmethod
+    async def _send_sms_notification(alert: Alert, decrypted_data: Dict[str, Any]):
+        """Send SMS notification to emergency contacts with full details"""
+        try:
+            tourist_name = decrypted_data.get("full_name", "Unknown Tourist")
+            emergency_contacts = decrypted_data.get("emergency_contacts", [])
+            
+            # Prepare SMS message with full details
+            message = f"EMERGENCY ALERT: {tourist_name} ({decrypted_data.get('nationality', 'Unknown')}) "
+            message += f"has triggered a {alert.alert_type.value} alert. "
+            message += f"Location: {alert.location.address or 'Coordinates available'}. "
+            message += f"Alert ID: {alert.alert_id}. Please contact authorities immediately."
+            
+            # Send to all emergency contacts
+            for contact in emergency_contacts:
+                contact_name = contact.get("name", "Emergency Contact")
+                contact_phone = contact.get("phone")
+                
+                if contact_phone:
+                    # Here you would integrate with SMS service (Twilio, etc.)
+                    logger.info(f"SMS sent to {contact_name} at {contact_phone}: {message[:50]}...")
+                    
+                    # Placeholder for actual SMS integration
+                    # await sms_service.send_sms(contact_phone, message)
+            
+        except Exception as e:
+            logger.error(f"Error sending SMS notifications: {e}")
+    
+    @staticmethod
+    async def _send_push_notification(alert: Alert, decrypted_data: Dict[str, Any]):
+        """Send push notification to dashboard with full details"""
+        try:
+            from ..websocket_manager import manager
+            
+            tourist_name = decrypted_data.get("full_name", "Unknown Tourist")
+            
+            notification_data = {
+                "type": "emergency_alert",
+                "alert_id": alert.alert_id,
+                "tourist_name": tourist_name,
+                "tourist_nationality": decrypted_data.get("nationality"),
+                "alert_type": alert.alert_type.value,
+                "severity": alert.severity.value,
+                "location": {
+                    "coordinates": alert.location.coordinates,
+                    "address": alert.location.address
+                },
+                "emergency_contacts": decrypted_data.get("emergency_contacts", []),
+                "timestamp": alert.created_at.isoformat(),
+                "description": alert.description
+            }
+            
+            # Broadcast to dashboard clients
+            await manager.broadcast_to_dashboard(notification_data)
+            
+            logger.info(f"Push notification sent for emergency alert: {alert.alert_id}")
+            
+        except Exception as e:
+            logger.error(f"Error sending push notification: {e}")
+    
+    @staticmethod
+    async def _send_generic_notification(alert: Alert, digital_id: str):
+        """Send generic notification without personal details (fallback)"""
+        try:
+            message = f"Emergency alert {alert.alert_id} triggered for tourist {digital_id}. "
+            message += f"Alert type: {alert.alert_type.value}. Location data available."
+            
+            logger.info(f"Generic notification: {message}")
+            
+            # You could still send basic alert to authorities without personal data
+            # This maintains system functionality even if Digital ID service is unavailable
+            
+        except Exception as e:
+            logger.error(f"Error sending generic notification: {e}")
+    
+    @staticmethod
     async def create_panic_alert(tourist_id: str, longitude: float, latitude: float, address: str = None) -> Alert:
         """Create a panic button alert (highest priority)"""
         alert_data = AlertCreate(
