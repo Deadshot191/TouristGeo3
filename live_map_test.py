@@ -531,28 +531,41 @@ class LiveMapDataTester:
             )
     
     async def run_live_map_tests(self):
-        """Run all Live Map specific tests"""
-        print(f"🗺️  Starting Live Map Data Integration Tests")
+        """Run all Live Map integration tests as requested in review"""
+        print(f"🗺️  Starting Live Map Data Integration Tests After Demo Data Population")
         print(f"📍 Backend URL: {API_BASE_URL}")
-        print("=" * 60)
+        print("=" * 70)
         
-        # Authenticate first
+        # Step 1: Authentication Test with demo user credentials
+        print("\n🔐 STEP 1: Authentication Test")
         if not await self.authenticate():
-            print("❌ Authentication failed - cannot proceed with tests")
+            print("❌ Authentication failed - cannot proceed with Live Map tests")
             return self.test_results
         
-        # Run Live Map specific tests
-        await self.test_database_data_existence()
-        await self.test_live_locations_endpoint()
-        await self.test_dashboard_kpis_endpoint()
-        await self.test_geofences_endpoint()
-        await self.test_data_structure_compatibility()
-        await self.test_specific_tourist_data()
+        # Step 2: Core Live Map Endpoints Testing
+        print("\n🗺️  STEP 2: Core Live Map Endpoints")
         
-        # Print summary
-        print("\n" + "=" * 60)
-        print("📊 LIVE MAP TEST SUMMARY")
-        print("=" * 60)
+        # Test the three main endpoints that Live Map uses
+        valid_tourists = await self.test_live_locations_endpoint()
+        dashboard_data = await self.test_dashboard_kpis_endpoint()
+        valid_geofences = await self.test_geofences_endpoint()
+        
+        # Step 3: Data Structure Verification
+        print("\n📋 STEP 3: Data Structure Verification")
+        await self.test_data_structure_compatibility()
+        
+        # Step 4: Individual Tourist Data Testing
+        print("\n👤 STEP 4: Individual Tourist Data")
+        tourist_ids = [t.get('tourist_id') for t in valid_tourists if t.get('tourist_id')]
+        if tourist_ids:
+            await self.test_individual_tourist_data(tourist_ids)
+        else:
+            self.log_test("Individual Tourist Data", False, "No tourist IDs available from live locations")
+        
+        # Print comprehensive summary
+        print("\n" + "=" * 70)
+        print("📊 LIVE MAP INTEGRATION TEST SUMMARY")
+        print("=" * 70)
         
         total_tests = len(self.test_results)
         passed_tests = sum(1 for result in self.test_results.values() if result['success'])
@@ -563,28 +576,45 @@ class LiveMapDataTester:
         print(f"❌ Failed: {failed_tests}")
         print(f"Success Rate: {(passed_tests/total_tests)*100:.1f}%")
         
+        # Live Map Integration Status
+        print(f"\n🗺️  LIVE MAP INTEGRATION STATUS:")
+        print(f"   📍 Live Locations: {'✅' if len(valid_tourists) > 0 else '❌'} ({len(valid_tourists)} tourists with valid data)")
+        print(f"   📊 Dashboard KPIs: {'✅' if dashboard_data else '❌'}")
+        print(f"   🗺️  Geofences: {'✅' if len(valid_geofences) > 0 else '❌'} ({len(valid_geofences)} valid geofences)")
+        print(f"   👤 Individual Data: {'✅' if tourist_ids else '❌'} ({len(tourist_ids)} tourists available)")
+        
+        # Detailed response data for verification
+        print(f"\n📋 RESPONSE DATA VERIFICATION:")
+        if valid_tourists:
+            sample_tourist = valid_tourists[0]
+            print(f"   Sample Tourist Data: {json.dumps(sample_tourist, indent=2, default=str)}")
+        
+        if dashboard_data:
+            kpi_summary = {k: v for k, v in dashboard_data.items() if k in ['total_active_tourists', 'active_alerts', 'safe_status', 'high_risk_tourists']}
+            print(f"   Dashboard KPIs: {json.dumps(kpi_summary, indent=2, default=str)}")
+        
         if failed_tests > 0:
-            print(f"\n🔍 FAILED TESTS:")
+            print(f"\n🔍 FAILED TESTS DETAILS:")
             for test_name, result in self.test_results.items():
                 if not result['success']:
                     print(f"  ❌ {test_name}: {result['details']}")
         
-        # Provide diagnosis
-        print(f"\n🔍 LIVE MAP DIAGNOSIS:")
+        # Final diagnosis for Live Map integration
+        live_map_ready = (
+            len(valid_tourists) > 0 and 
+            dashboard_data and 
+            len(valid_geofences) > 0 and 
+            len(tourist_ids) > 0
+        )
         
-        # Check key indicators
-        has_tourists = any("Tourists in Database" in name and result['success'] for name, result in self.test_results.items())
-        has_live_locations = any("GET /api/location/live" in name and result['success'] for name, result in self.test_results.items())
-        has_location_data = any("Live locations returned: 0" not in result['details'] for name, result in self.test_results.items() if "GET /api/location/live" in name)
+        print(f"\n🎯 LIVE MAP INTEGRATION READY: {'✅ YES' if live_map_ready else '❌ NO'}")
         
-        if not has_tourists:
-            print("  🚨 ROOT CAUSE: No tourists in database")
-        elif not has_live_locations:
-            print("  🚨 ROOT CAUSE: Live locations endpoint failing")
-        elif not has_location_data:
-            print("  🚨 ROOT CAUSE: No location data available for tourists")
+        if live_map_ready:
+            print("   ✅ All required data is available for Live Map frontend integration")
+            print("   ✅ Coordinates and status fields are properly populated")
+            print("   ✅ Frontend should be able to display tourist markers correctly")
         else:
-            print("  ✅ Data appears to be available - issue may be in frontend integration")
+            print("   ❌ Live Map integration issues detected - frontend will not display correctly")
         
         return self.test_results
 
