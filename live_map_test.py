@@ -158,52 +158,74 @@ class LiveMapDataTester:
             )
     
     async def test_live_locations_endpoint(self):
-        """Test GET /api/location/live endpoint used by Live Map"""
+        """Test GET /api/location/live endpoint - should return 5 tourists with locations"""
         print("\n=== Live Locations Endpoint Test ===")
         
         if not self.auth_token:
             self.log_test("Live Locations Endpoint", False, "No auth token available")
-            return
+            return []
         
         success, data, status = await self.make_request("GET", "/location/live")
         live_locations = data if isinstance(data, list) else []
         
+        expected_count = 5  # As mentioned in review request
+        
         self.log_test(
             "GET /api/location/live", 
             success and status == 200,
-            f"Status: {status}, Live locations returned: {len(live_locations)}",
+            f"Status: {status}, Live locations returned: {len(live_locations)} (expected: {expected_count})",
             live_locations[:2] if live_locations else None
         )
         
         if not live_locations:
             print("❌ CRITICAL: No live locations returned - this is why Live Map shows no markers!")
-            return
+            return []
         
-        # Check data structure of live locations
-        sample_location = live_locations[0]
-        expected_fields = ['tourist_id', 'tourist_name', 'coordinates', 'timestamp']
-        missing_fields = [field for field in expected_fields if field not in sample_location]
+        # Check data structure matches frontend requirements
+        # Frontend expects: tourist_id, tourist_name, digital_id, status, coordinates (array), address, timestamp
+        required_fields = ['tourist_id', 'tourist_name', 'digital_id', 'status', 'coordinates', 'address', 'timestamp']
+        
+        valid_tourists = []
+        structure_issues = []
+        
+        for i, location in enumerate(live_locations):
+            missing_fields = [field for field in required_fields if field not in location]
+            if missing_fields:
+                structure_issues.append(f"Tourist {i+1} missing: {missing_fields}")
+                continue
+            
+            # Validate coordinates format (must be array)
+            coords = location.get('coordinates')
+            if not isinstance(coords, list) or len(coords) != 2:
+                structure_issues.append(f"Tourist {i+1} invalid coordinates format: {coords}")
+                continue
+            
+            # Validate coordinates are numeric and in valid range
+            try:
+                lon, lat = float(coords[0]), float(coords[1])
+                if not (-180 <= lon <= 180) or not (-90 <= lat <= 90):
+                    structure_issues.append(f"Tourist {i+1} coordinates out of range: [{lon}, {lat}]")
+                    continue
+            except (ValueError, TypeError):
+                structure_issues.append(f"Tourist {i+1} non-numeric coordinates: {coords}")
+                continue
+            
+            valid_tourists.append(location)
         
         self.log_test(
             "Live Location Data Structure", 
-            len(missing_fields) == 0,
-            f"Expected fields present: {len(expected_fields) - len(missing_fields)}/{len(expected_fields)}, Missing: {missing_fields}",
-            sample_location
+            len(structure_issues) == 0,
+            f"Valid tourists: {len(valid_tourists)}/{len(live_locations)}, Issues: {structure_issues[:3]}{'...' if len(structure_issues) > 3 else ''}",
+            live_locations[0] if live_locations else None
         )
         
-        # Check coordinates format
-        valid_coordinates = 0
-        for location in live_locations:
-            coords = location.get('coordinates')
-            if isinstance(coords, list) and len(coords) == 2 and all(isinstance(c, (int, float)) for c in coords):
-                valid_coordinates += 1
+        # Log sample data for verification
+        if live_locations:
+            sample = live_locations[0]
+            print(f"   📍 Sample Tourist: {sample.get('tourist_name', 'Unknown')} " +
+                  f"({sample.get('digital_id', 'No ID')}) at {sample.get('coordinates', 'No coords')} - {sample.get('status', 'No status')}")
         
-        self.log_test(
-            "Coordinates Format Validation", 
-            valid_coordinates == len(live_locations),
-            f"Valid coordinates: {valid_coordinates}/{len(live_locations)}",
-            [loc.get('coordinates') for loc in live_locations[:3]]
-        )
+        return valid_tourists
     
     async def test_dashboard_kpis_endpoint(self):
         """Test GET /api/analytics/dashboard endpoint used by Live Map"""
