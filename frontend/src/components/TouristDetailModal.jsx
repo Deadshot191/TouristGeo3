@@ -77,7 +77,43 @@ const TouristDetailModal = ({ tourist, isOpen, onClose }) => {
     return 'text-red-500';
   };
 
-  const isDataLocked = fullTourist.status === 'safe' && fullTourist.name === 'John Doe';
+  // Check if data should be locked (SAFE status tourists have sensitive data hidden)
+  const isDataLocked = fullTourist?.status === 'safe';
+
+  // Show loading state
+  if (loading) {
+    return (
+      <Dialog open={isOpen} onOpenChange={onClose}>
+        <DialogContent className="max-w-7xl max-h-[95vh] overflow-y-auto bg-slate-800 border-slate-700 text-white">
+          <div className="flex items-center justify-center p-8">
+            <div className="text-center">
+              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500 mx-auto mb-4"></div>
+              <p className="text-slate-400">Loading tourist details...</p>
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
+    );
+  }
+
+  // Show error state
+  if (error) {
+    return (
+      <Dialog open={isOpen} onOpenChange={onClose}>
+        <DialogContent className="max-w-7xl max-h-[95vh] overflow-y-auto bg-slate-800 border-slate-700 text-white">
+          <div className="flex items-center justify-center p-8">
+            <div className="text-center">
+              <AlertTriangle className="h-12 w-12 text-red-500 mx-auto mb-4" />
+              <p className="text-slate-400">{error}</p>
+              <Button onClick={fetchTouristData} className="mt-4">
+                Try Again
+              </Button>
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
+    );
+  }
 
   if (!fullTourist) return null;
 
