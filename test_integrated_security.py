@@ -38,7 +38,7 @@ async def test_integrated_security_system():
         
         # Connect to main database
         print("Connecting to main database...")
-        await connect_to_mongo()
+        await backend_db.connect_to_mongo()
         print("✓ Main database connected")
         
         # Test Digital ID service health
