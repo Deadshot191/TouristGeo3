@@ -48,10 +48,10 @@ const TouristDetailModal = ({ tourist, isOpen, onClose }) => {
 
   const getStatusColor = (status) => {
     switch (status) {
-      case 'safe': return 'status-badge-safe';
-      case 'anomaly': return 'status-badge-anomaly';
-      case 'panic': return 'status-badge-panic';
-      default: return 'bg-gray-100 text-gray-800 border-gray-200';
+      case 'safe': return 'bg-green-600 text-white border-green-400 shadow-lg';
+      case 'anomaly': return 'bg-yellow-500 text-black border-yellow-300 shadow-lg animate-pulse';
+      case 'panic': return 'bg-red-600 text-white border-red-400 shadow-lg animate-pulse';
+      default: return 'bg-gray-600 text-white border-gray-400 shadow-lg';
     }
   };
 
