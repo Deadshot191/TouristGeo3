@@ -36,9 +36,9 @@ const TouristDatabase = ({ onTouristSelect }) => {
 
   const getStatusBadge = (status) => {
     const configs = {
-      safe: 'bg-green-100 text-green-800 border-green-200',
-      anomaly: 'bg-yellow-100 text-yellow-800 border-yellow-200',
-      panic: 'bg-red-100 text-red-800 border-red-200'
+      safe: 'status-badge-safe',
+      anomaly: 'status-badge-anomaly', 
+      panic: 'status-badge-panic'
     };
     return configs[status] || 'bg-gray-100 text-gray-800 border-gray-200';
   };
