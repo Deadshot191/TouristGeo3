@@ -3,84 +3,84 @@
     "success": true,
     "details": "Successfully logged in as Inspector Kumar",
     "response_data": null,
-    "timestamp": "2025-09-19T06:49:23.584221"
+    "timestamp": "2025-09-19T06:52:04.762705"
   },
   "Get Tourist IDs": {
     "success": true,
     "details": "Found 3 tourists in database",
     "response_data": null,
-    "timestamp": "2025-09-19T06:49:23.598933"
+    "timestamp": "2025-09-19T06:52:04.776168"
   },
   "Tourist Alerts - Tourist 1 (ID: 68ccfced...)": {
-    "success": true,
-    "details": "Status: 200, Alerts count: 0, Format valid: True",
+    "success": false,
+    "details": "Status: 200, Alerts count: 1, Format valid: False, Issues: Missing fields: ['created_at']",
     "response_data": null,
-    "timestamp": "2025-09-19T06:49:23.609391"
+    "timestamp": "2025-09-19T06:52:04.787087"
   },
   "Tourist Alerts - Tourist 2 (ID: 68ccfced...)": {
     "success": true,
     "details": "Status: 200, Alerts count: 0, Format valid: True",
     "response_data": null,
-    "timestamp": "2025-09-19T06:49:23.620410"
+    "timestamp": "2025-09-19T06:52:04.797315"
   },
   "Tourist Alerts - Tourist 3 (ID: 68ccfced...)": {
     "success": true,
     "details": "Status: 200, Alerts count: 0, Format valid: True",
     "response_data": null,
-    "timestamp": "2025-09-19T06:49:23.667038"
+    "timestamp": "2025-09-19T06:52:04.844520"
   },
   "Tourist Alerts - Invalid ID": {
     "success": true,
     "details": "Status: 200, Response: [], Expected empty list for invalid ID",
     "response_data": null,
-    "timestamp": "2025-09-19T06:49:23.680868"
+    "timestamp": "2025-09-19T06:52:04.851965"
   },
   "Tourist Alerts - Malformed ID": {
     "success": true,
     "details": "Status: 500, Expected error for malformed ID",
     "response_data": null,
-    "timestamp": "2025-09-19T06:49:23.687329"
+    "timestamp": "2025-09-19T06:52:04.857644"
   },
   "Tourist Detail - Tourist 1 (ID: 68ccfced...)": {
-    "success": false,
-    "details": "Status: 200, Present fields: 9/9, Missing: [], Format issues: ['digital_id format invalid'], Has location: False",
+    "success": true,
+    "details": "Status: 200, Present fields: 9/9, Missing: [], Format issues: [], Has location: False",
     "response_data": null,
-    "timestamp": "2025-09-19T06:49:23.695404"
+    "timestamp": "2025-09-19T06:52:04.906814"
   },
   "Tourist Detail - Tourist 2 (ID: 68ccfced...)": {
-    "success": false,
-    "details": "Status: 200, Present fields: 9/9, Missing: [], Format issues: ['digital_id format invalid'], Has location: False",
+    "success": true,
+    "details": "Status: 200, Present fields: 9/9, Missing: [], Format issues: [], Has location: False",
     "response_data": null,
-    "timestamp": "2025-09-19T06:49:23.713018"
+    "timestamp": "2025-09-19T06:52:04.936374"
   },
   "Tourist Detail - Tourist 3 (ID: 68ccfced...)": {
-    "success": false,
-    "details": "Status: 200, Present fields: 9/9, Missing: [], Format issues: ['digital_id format invalid'], Has location: False",
+    "success": true,
+    "details": "Status: 200, Present fields: 9/9, Missing: [], Format issues: [], Has location: False",
     "response_data": null,
-    "timestamp": "2025-09-19T06:49:23.721298"
+    "timestamp": "2025-09-19T06:52:04.944060"
   },
   "Tourist Detail - Invalid ID": {
     "success": true,
     "details": "Status: 404, Expected 404 for non-existent tourist",
     "response_data": null,
-    "timestamp": "2025-09-19T06:49:23.769305"
+    "timestamp": "2025-09-19T06:52:04.991325"
   },
   "Dashboard KPIs": {
-    "success": false,
-    "details": "Status: 200, Present KPIs: 4/6, Missing: ['resolved_alerts', 'geofence_breaches'], Issues: []",
+    "success": true,
+    "details": "Status: 200, Present KPIs: 6/6, Missing: [], Issues: []",
     "response_data": null,
-    "timestamp": "2025-09-19T06:49:23.780763"
+    "timestamp": "2025-09-19T06:52:05.010389"
   },
   "Dashboard Consistency": {
     "success": false,
-    "details": "Dashboard tourists: 2, Actual: 3, Dashboard alerts: 0, Actual: 0",
+    "details": "Dashboard tourists: 2, Actual: 3, Dashboard alerts: 1, Actual: 1",
     "response_data": null,
-    "timestamp": "2025-09-19T06:49:23.851930"
+    "timestamp": "2025-09-19T06:52:05.080296"
   },
   "Data Format Consistency": {
     "success": true,
-    "details": "Tourist ID consistency: True, Name consistency: True, Tourist name: Rajesh Sharma, Alerts count: 0",
+    "details": "Tourist ID consistency: True, Name consistency: True, Tourist name: Rajesh Sharma, Alerts count: 1",
     "response_data": null,
-    "timestamp": "2025-09-19T06:49:23.907726"
+    "timestamp": "2025-09-19T06:52:05.137246"
   }
 }
