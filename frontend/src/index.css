@@ -136,7 +136,7 @@ code {
   
   /* Tourist Card Layout */
   .tourist-card {
-    @apply command-card hover:bg-slate-750 transition-all duration-200 hover:shadow-lg hover:scale-[1.02];
+    @apply command-card hover:bg-slate-700 transition-all duration-200 hover:shadow-lg hover:scale-[1.02];
   }
   
   .tourist-card-content {
