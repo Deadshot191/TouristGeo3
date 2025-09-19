@@ -140,7 +140,7 @@ async def test_integrated_security_system():
             print(f"  Emergency contacts: {len(retrieved_tourist.emergency_contacts)}")  # Should be 0
         
         # Cleanup
-        await close_mongo_connection()
+        await backend_db.close_mongo_connection()
         print("\n✓ All integrated security tests passed successfully!")
         print("\n🔒 Security Summary:")
         print("  - Sensitive data encrypted and separated from operational data")
