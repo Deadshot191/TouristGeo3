@@ -23,14 +23,14 @@ const Sidebar = () => {
   if (!user) return null;
 
   return (
-    <div className="flex flex-col w-64 bg-slate-800 border-r border-slate-700">
+    <div className="flex flex-col w-64 border-r" style={{backgroundColor: '#1F2937', borderColor: '#374151'}}>
       {/* Logo Section */}
-      <div className="flex items-center justify-center h-16 px-4 border-b border-slate-700">
+      <div className="flex items-center justify-center h-16 px-4 border-b" style={{borderColor: '#374151'}}>
         <div className="flex items-center space-x-2">
-          <Shield className="w-8 h-8 text-blue-400" />
+          <Shield className="w-8 h-8" style={{color: '#3B82F6'}} />
           <div>
-            <h1 className="text-lg font-bold text-white">Tourism Safety</h1>
-            <p className="text-xs text-slate-400">Command Center</p>
+            <h1 className="text-lg font-bold" style={{color: '#F3F4F6'}}>Tourism Safety</h1>
+            <p className="text-xs" style={{color: '#9CA3AF'}}>Command Center</p>
           </div>
         </div>
       </div>
@@ -46,10 +46,26 @@ const Sidebar = () => {
               className={`
                 flex items-center px-4 py-3 text-sm font-medium rounded-lg transition-colors
                 ${item.current
-                  ? 'bg-blue-600 text-white shadow-lg'
-                  : 'text-slate-300 hover:text-white hover:bg-slate-700'
+                  ? 'shadow-lg'
+                  : 'hover:bg-opacity-50'
                 }
               `}
+              style={{
+                backgroundColor: item.current ? '#3B82F6' : 'transparent',
+                color: item.current ? '#FFFFFF' : '#9CA3AF'
+              }}
+              onMouseEnter={(e) => {
+                if (!item.current) {
+                  e.target.style.backgroundColor = '#374151';
+                  e.target.style.color = '#F3F4F6';
+                }
+              }}
+              onMouseLeave={(e) => {
+                if (!item.current) {
+                  e.target.style.backgroundColor = 'transparent';
+                  e.target.style.color = '#9CA3AF';
+                }
+              }}
             >
               <Icon className="w-5 h-5 mr-3" />
               {item.name}
@@ -59,22 +75,22 @@ const Sidebar = () => {
       </nav>
 
       {/* Officer Profile */}
-      <div className="p-4 border-t border-slate-700">
+      <div className="p-4 border-t" style={{borderColor: '#374151'}}>
         <div className="flex items-center space-x-3 mb-4">
           <Avatar className="w-10 h-10">
-            <AvatarFallback className="bg-blue-600 text-white">
+            <AvatarFallback style={{backgroundColor: '#3B82F6', color: '#FFFFFF'}}>
               {user.full_name.split(' ').map(n => n[0]).join('')}
             </AvatarFallback>
           </Avatar>
           <div className="flex-1 min-w-0">
-            <p className="text-sm font-medium text-white truncate">
+            <p className="text-sm font-medium truncate" style={{color: '#F3F4F6'}}>
               {user.full_name}
             </p>
-            <p className="text-xs text-slate-400 truncate">
+            <p className="text-xs truncate" style={{color: '#9CA3AF'}}>
               {user.department}
             </p>
             {user.badge_number && (
-              <p className="text-xs text-slate-500">
+              <p className="text-xs" style={{color: '#9CA3AF'}}>
                 Badge: {user.badge_number}
               </p>
             )}
@@ -84,7 +100,20 @@ const Sidebar = () => {
           variant="outline" 
           size="sm" 
           onClick={handleLogout}
-          className="w-full border-slate-600 text-slate-300 hover:bg-slate-700 hover:text-white"
+          className="w-full transition-colors"
+          style={{
+            borderColor: '#374151',
+            color: '#9CA3AF',
+            backgroundColor: 'transparent'
+          }}
+          onMouseEnter={(e) => {
+            e.target.style.backgroundColor = '#374151';
+            e.target.style.color = '#F3F4F6';
+          }}
+          onMouseLeave={(e) => {
+            e.target.style.backgroundColor = 'transparent';
+            e.target.style.color = '#9CA3AF';
+          }}
         >
           <LogOut className="w-4 h-4 mr-2" />
           Logout
