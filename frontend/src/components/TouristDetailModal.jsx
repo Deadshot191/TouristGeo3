@@ -484,7 +484,7 @@ const TouristDetailModal = ({ tourist, isOpen, onClose }) => {
             </Card>
 
             {/* Quick Status Actions */}
-            <Card className="command-card border-2 border-slate-500">
+            <Card className="command-card border-2 border-slate-500" style={{backgroundColor: '#1F2937'}}>
               <CardHeader className="command-card-header pb-3">
                 <CardTitle className="modal-section-title text-lg font-bold">
                   <Activity className="w-6 h-6" />
