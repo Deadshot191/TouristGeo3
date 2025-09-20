@@ -364,7 +364,7 @@ const TouristDetailModal = ({ tourist, isOpen, onClose }) => {
             </Card>
 
             {/* Active Alerts - Critical Information */}
-            <Card className="command-card border-2 border-red-500">
+            <Card className="command-card border-2 border-red-500" style={{backgroundColor: '#1F2937'}}>
               <CardHeader className="command-card-header pb-3">
                 <CardTitle className="modal-section-title text-lg font-bold">
                   <AlertTriangle className="w-6 h-6 text-red-400" />
