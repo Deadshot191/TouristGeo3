@@ -400,8 +400,8 @@ const EFIRDetail = () => {
                   {efir.incident_location?.address || 'No address provided'}
                   {efir.incident_location?.coordinates && (
                     <span className="block text-xs text-gray-400 font-mono">
-                      {efir.incident_location.coordinates.coordinates[1]:.6f}, 
-                      {efir.incident_location.coordinates.coordinates[0]:.6f}
+                      {efir.incident_location.coordinates.coordinates[1].toFixed(6)}, 
+                      {efir.incident_location.coordinates.coordinates[0].toFixed(6)}
                     </span>
                   )}
                 </p>
