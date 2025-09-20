@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Map, AlertTriangle, Users, Settings, LogOut, Shield } from 'lucide-react';
+import { Map, AlertTriangle, Users, Settings, LogOut, Shield, FileText } from 'lucide-react';
 import { Avatar, AvatarImage, AvatarFallback } from './ui/avatar';
 import { Button } from './ui/button';
 import { useAuth } from '../contexts/AuthContext';
