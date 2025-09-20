@@ -413,6 +413,32 @@ async def check_geofences(
     intersecting_fences = await GeofenceService.check_point_in_geofences(longitude, latitude)
     return intersecting_fences
 
+@api_router.get("/geofences/static/stats")
+async def get_static_geofences_stats(current_user: User = Depends(get_current_user)):
+    """Get statistics about loaded static geofences"""
+    try:
+        from .services.static_geofence_loader import StaticGeofenceLoader
+    except ImportError:
+        from services.static_geofence_loader import StaticGeofenceLoader
+    
+    stats = await StaticGeofenceLoader.get_static_geofences_stats()
+    return stats
+
+@api_router.post("/geofences/static/reload")
+async def reload_static_geofences(current_user: User = Depends(get_current_admin_or_police_user)):
+    """Reload static geofences from configuration (admin only)"""
+    try:
+        from .services.static_geofence_loader import StaticGeofenceLoader
+    except ImportError:
+        from services.static_geofence_loader import StaticGeofenceLoader
+    
+    success = await StaticGeofenceLoader.reload_static_geofences()
+    
+    if success:
+        return {"message": "Static geofences reloaded successfully"}
+    else:
+        raise HTTPException(status_code=500, detail="Failed to reload static geofences")
+
 # ============================================================================
 # ANALYTICS & DASHBOARD ROUTES
 # ============================================================================
