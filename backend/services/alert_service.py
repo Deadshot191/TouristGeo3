@@ -231,7 +231,7 @@ class AlertService:
     @staticmethod
     async def create_geofence_breach_alert(tourist_id: str, longitude: float, latitude: float, 
                                          fence_name: str, risk_level: str) -> Alert:
-        """Create a geo-fence breach alert"""
+        """Create a geo-fence breach alert with Geoapify address enrichment"""
         severity_map = {
             "low": AlertSeverity.LOW,
             "medium": AlertSeverity.MEDIUM,
@@ -239,13 +239,30 @@ class AlertService:
             "critical": AlertSeverity.CRITICAL
         }
         
+        # Use Geoapify to get readable address for richer alert
+        readable_address = None
+        try:
+            from .geoapify_service import geoapify_service
+            address_info = await geoapify_service.reverse_geocode(longitude, latitude)
+            if address_info:
+                readable_address = address_info.get("readable_address")
+                logger.info(f"Geoapify address for breach alert: {readable_address}")
+        except Exception as e:
+            logger.error(f"Error getting address from Geoapify: {e}")
+        
+        # Create enhanced description with location context
+        description = f"GEO-FENCE BREACH: Tourist entered {fence_name}"
+        if readable_address:
+            description += f" at {readable_address}"
+        
         alert_data = AlertCreate(
             tourist_id=tourist_id,
             alert_type=AlertType.GEOFENCE_BREACH,
             severity=severity_map.get(risk_level, AlertSeverity.MEDIUM),
             longitude=longitude,
             latitude=latitude,
-            description=f"Entered restricted area: {fence_name}"
+            address=readable_address,
+            description=description
         )
         
         return await AlertService.create_alert(alert_data)
