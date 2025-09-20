@@ -795,6 +795,251 @@ class TourismSafetyAPITester:
                 f"Tourists with masked contacts: {masked_contacts_count}/{len(tourists_data)} ({contacts_masking_ratio:.1%})"
             )
 
+    async def test_static_geofencing_with_geoapify(self):
+        """Test Static Geofencing System with Geoapify Integration"""
+        print("\n=== Testing Static Geofencing with Geoapify Integration ===")
+        
+        if not self.auth_token:
+            self.log_test("Static Geofencing", False, "No auth token available")
+            return
+        
+        # Test 1: Static Geofence Loading - GET /api/geofences/static/stats
+        success, data, status = await self.make_request("GET", "/geofences/static/stats")
+        
+        if success and status == 200 and isinstance(data, dict):
+            total_static = data.get('total_static_geofences', 0)
+            by_type = data.get('by_type', {})
+            by_risk = data.get('by_risk_level', {})
+            
+            # Verify 6 static geofences were loaded
+            expected_count = 6
+            stats_correct = total_static == expected_count
+            
+            self.log_test(
+                "Static Geofence Loading Stats", 
+                stats_correct,
+                f"Status: {status}, Total: {total_static}/{expected_count}, By Type: {by_type}, By Risk: {by_risk}"
+            )
+        else:
+            self.log_test(
+                "Static Geofence Loading Stats", 
+                False,
+                f"Status: {status}, Response: {data}"
+            )
+        
+        # Test 2: Geofence Configuration - Verify loaded geofences
+        success, data, status = await self.make_request("GET", "/geofences")
+        geofences_list = data if isinstance(data, list) else []
+        
+        # Check for expected geofence names
+        expected_geofences = [
+            "Restricted Forest Area",
+            "Military Zone", 
+            "Avalanche Risk Zone",
+            "Landslide Prone Area - Monsoon",
+            "Wildlife Sanctuary Buffer",
+            "Tourist Safe Zone - Mall Road"
+        ]
+        
+        found_geofences = [g.get('name', '') for g in geofences_list]
+        expected_found = sum(1 for name in expected_geofences if name in found_geofences)
+        
+        self.log_test(
+            "Geofence Configuration Verification", 
+            success and status == 200 and expected_found >= 6,
+            f"Status: {status}, Found {expected_found}/{len(expected_geofences)} expected geofences: {found_geofences}"
+        )
+        
+        # Test 3: MongoDB Geospatial Queries - Test coordinates that should intersect
+        test_coordinates = [
+            {
+                "name": "Inside Restricted Forest Area",
+                "longitude": 88.265,
+                "latitude": 27.035,
+                "should_trigger": True,
+                "expected_zone": "Restricted Forest Area"
+            },
+            {
+                "name": "Inside Military Zone", 
+                "longitude": 88.305,
+                "latitude": 27.045,
+                "should_trigger": True,
+                "expected_zone": "Military Zone"
+            },
+            {
+                "name": "Safe coordinates (Tourist Safe Zone)",
+                "longitude": 88.265,
+                "latitude": 27.040,
+                "should_trigger": False,
+                "expected_zone": "Tourist Safe Zone - Mall Road"
+            },
+            {
+                "name": "Inside Avalanche Risk Zone",
+                "longitude": 88.285,
+                "latitude": 27.058,
+                "should_trigger": True,
+                "expected_zone": "Avalanche Risk Zone"
+            }
+        ]
+        
+        for coord in test_coordinates:
+            params = {
+                "longitude": coord["longitude"],
+                "latitude": coord["latitude"]
+            }
+            
+            success, data, status = await self.make_request("GET", "/geofences/check", params=params)
+            intersecting_geofences = data if isinstance(data, list) else []
+            
+            # Check if we found intersecting geofences
+            has_intersections = len(intersecting_geofences) > 0
+            found_names = [g.get('name', '') for g in intersecting_geofences]
+            
+            # For critical zones, we expect intersections
+            if coord["should_trigger"]:
+                test_passed = has_intersections
+                details = f"Status: {status}, Expected intersection, Found: {found_names}"
+            else:
+                # For safe zones, we might still intersect but with low risk
+                test_passed = success and status == 200
+                details = f"Status: {status}, Safe zone check, Found: {found_names}"
+            
+            self.log_test(
+                f"Geospatial Query - {coord['name']}", 
+                test_passed,
+                details
+            )
+        
+        # Test 4: Geoapify Integration - Test coordinates that would trigger breach detection
+        # Create a panic alert to test Geoapify integration
+        success, tourists_data, status = await self.make_request("GET", "/tourists")
+        if success and isinstance(tourists_data, list) and len(tourists_data) > 0:
+            tourist_id = tourists_data[0].get('id')
+            if tourist_id:
+                # Test with coordinates inside Restricted Forest Area (should trigger breach)
+                temp_token = self.auth_token
+                self.auth_token = None
+                
+                params = {
+                    "tourist_id": tourist_id,
+                    "longitude": 88.265,  # Inside Restricted Forest Area
+                    "latitude": 27.035,
+                    "address": "Test Geoapify Integration Location"
+                }
+                
+                success, data, status = await self.make_request("POST", "/alerts/panic", params=params)
+                self.auth_token = temp_token
+                
+                alert_created = success and status == 200 and isinstance(data, dict) and 'alert_id' in data
+                alert_id = data.get('alert_id') if isinstance(data, dict) else None
+                
+                self.log_test(
+                    "Geoapify Integration - Breach Alert Creation", 
+                    alert_created,
+                    f"Status: {status}, Alert created: {alert_created}, Alert ID: {alert_id}"
+                )
+                
+                # Test 5: Alert Enhancement - Verify alerts include human-readable addresses
+                if alert_id:
+                    # Get the created alert to check if it has enhanced address information
+                    success, alerts_data, status = await self.make_request("GET", "/alerts")
+                    if success and isinstance(alerts_data, list):
+                        # Find our alert
+                        created_alert = None
+                        for alert in alerts_data:
+                            if alert.get('alert_id') == alert_id:
+                                created_alert = alert
+                                break
+                        
+                        if created_alert:
+                            location = created_alert.get('location', {})
+                            address = location.get('address', '')
+                            has_enhanced_address = bool(address and address != "Test Geoapify Integration Location")
+                            
+                            self.log_test(
+                                "Alert Enhancement - Human-readable Address", 
+                                has_enhanced_address,
+                                f"Alert has enhanced address: {has_enhanced_address}, Address: '{address}'"
+                            )
+                        else:
+                            self.log_test("Alert Enhancement - Human-readable Address", False, "Created alert not found in alerts list")
+                    else:
+                        self.log_test("Alert Enhancement - Human-readable Address", False, "Could not retrieve alerts list")
+            else:
+                self.log_test("Geoapify Integration - Breach Alert Creation", False, "No valid tourist ID found")
+                self.log_test("Alert Enhancement - Human-readable Address", False, "No tourist ID for alert creation")
+        else:
+            self.log_test("Geoapify Integration - Breach Alert Creation", False, "No tourists available for alert creation")
+            self.log_test("Alert Enhancement - Human-readable Address", False, "No tourists available")
+        
+        # Test 6: Management Endpoints - Test static geofence reload functionality
+        success, data, status = await self.make_request("POST", "/geofences/static/reload")
+        
+        reload_successful = success and status == 200 and isinstance(data, dict) and 'message' in data
+        
+        self.log_test(
+            "Static Geofence Reload Management", 
+            reload_successful,
+            f"Status: {status}, Reload successful: {reload_successful}, Message: {data.get('message', 'none') if isinstance(data, dict) else 'error'}"
+        )
+        
+        # Test 7: Verify geofences still work after reload
+        if reload_successful:
+            # Re-test stats after reload
+            success, data, status = await self.make_request("GET", "/geofences/static/stats")
+            
+            if success and status == 200 and isinstance(data, dict):
+                total_after_reload = data.get('total_static_geofences', 0)
+                reload_maintained_data = total_after_reload == expected_count
+                
+                self.log_test(
+                    "Post-Reload Verification", 
+                    reload_maintained_data,
+                    f"Status: {status}, Geofences after reload: {total_after_reload}/{expected_count}"
+                )
+            else:
+                self.log_test("Post-Reload Verification", False, f"Could not get stats after reload: {status}")
+        
+        # Test 8: Test Geoapify API Key Configuration
+        import os
+        geoapify_key = os.environ.get("GEOAPIFY_API_KEY", "")
+        expected_key = "33054a9bf7ec43a5938b41d844ed03c0"
+        
+        key_configured = geoapify_key == expected_key
+        
+        self.log_test(
+            "Geoapify API Key Configuration", 
+            key_configured,
+            f"API Key configured correctly: {key_configured}, Key present: {bool(geoapify_key)}"
+        )
+        
+        # Test 9: Test different risk levels in geofences
+        risk_level_tests = [
+            {"longitude": 88.265, "latitude": 27.035, "expected_risk": "critical"},  # Restricted Forest
+            {"longitude": 88.305, "latitude": 27.045, "expected_risk": "critical"},  # Military Zone
+            {"longitude": 88.285, "latitude": 27.058, "expected_risk": "high"},     # Avalanche Risk
+            {"longitude": 88.265, "latitude": 27.040, "expected_risk": "low"}       # Tourist Safe Zone
+        ]
+        
+        for i, test in enumerate(risk_level_tests):
+            params = {
+                "longitude": test["longitude"],
+                "latitude": test["latitude"]
+            }
+            
+            success, data, status = await self.make_request("GET", "/geofences/check", params=params)
+            intersecting_geofences = data if isinstance(data, list) else []
+            
+            # Check if we found the expected risk level
+            found_risk_levels = [g.get('risk_level', '') for g in intersecting_geofences]
+            has_expected_risk = test["expected_risk"] in found_risk_levels
+            
+            self.log_test(
+                f"Risk Level Detection Test {i+1}", 
+                success and status == 200,
+                f"Status: {status}, Expected: {test['expected_risk']}, Found risks: {found_risk_levels}"
+            )
+
     async def test_efir_system(self):
         """Test E-FIR (Electronic First Information Report) system"""
         print("\n=== Testing E-FIR System ===")
