@@ -294,7 +294,7 @@ metadata:
 
 test_plan:
   current_focus:
-    - "All core data integration tasks completed"
+    - "E-FIR Backend Implementation"
   stuck_tasks: []
   test_all: false
   test_priority: "high_first"
