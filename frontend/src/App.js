@@ -13,6 +13,7 @@ import EFIRForm from './pages/EFIRForm';
 import EFIRDetail from './pages/EFIRDetail';
 import TouristDetailModal from './components/TouristDetailModal';
 import { wsManager } from './services/api';
+import { Toaster } from './components/ui/toaster';
 
 function AppContent() {
   const [selectedTourist, setSelectedTourist] = useState(null);
