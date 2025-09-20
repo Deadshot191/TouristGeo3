@@ -338,3 +338,162 @@ class AlertFilters(BaseModel):
     end_date: Optional[datetime] = None
     skip: int = 0
     limit: int = 100
+
+# E-FIR (Electronic First Information Report) Models
+class EFIRType(str, Enum):
+    TOURIST_INCIDENT = "tourist_incident"
+    SAFETY_VIOLATION = "safety_violation"
+    EMERGENCY_RESPONSE = "emergency_response"
+    PROPERTY_DAMAGE = "property_damage"
+    MEDICAL_EMERGENCY = "medical_emergency"
+    MISSING_PERSON = "missing_person"
+
+class EFIRStatus(str, Enum):
+    DRAFT = "draft"
+    SUBMITTED = "submitted"
+    UNDER_INVESTIGATION = "under_investigation"
+    CLOSED = "closed"
+
+class EFIRPriority(str, Enum):
+    LOW = "low"
+    MEDIUM = "medium"
+    HIGH = "high"
+    URGENT = "urgent"
+
+class DigitalSignature(BaseModel):
+    officer_id: str
+    officer_name: str
+    officer_badge: str
+    department: str
+    signature_hash: str  # Digital signature of the document content
+    signed_at: datetime = Field(default_factory=datetime.utcnow)
+    verification_key: str  # Public key for signature verification
+
+class DocumentVersion(BaseModel):
+    version_number: int
+    modified_by: str
+    modified_at: datetime = Field(default_factory=datetime.utcnow)
+    changes_summary: str
+    document_hash: str  # Hash of document content for integrity
+
+class EFIRDocument(BaseModel):
+    id: Optional[PyObjectId] = Field(default_factory=PyObjectId, alias="_id")
+    fir_number: str  # Auto-generated FIR number like FIR-2025-001
+    title: str
+    fir_type: EFIRType
+    priority: EFIRPriority
+    status: EFIRStatus = EFIRStatus.DRAFT
+    
+    # Incident Details
+    incident_date: datetime
+    incident_location: LocationData
+    incident_description: str
+    
+    # Related Tourist/Alert Information (optional)
+    related_tourist_id: Optional[str] = None
+    related_alert_id: Optional[str] = None
+    
+    # Parties Involved
+    complainant_name: Optional[str] = None
+    complainant_contact: Optional[str] = None
+    accused_details: Optional[str] = None
+    witness_details: Optional[str] = None
+    
+    # Case Details
+    case_details: str
+    evidence_details: Optional[str] = None
+    action_taken: Optional[str] = None
+    
+    # Document Management
+    created_by: str  # Officer ID who created the FIR
+    created_at: datetime = Field(default_factory=datetime.utcnow)
+    versions: List[DocumentVersion] = []
+    current_version: int = 1
+    
+    # Digital Signatures
+    signatures: List[DigitalSignature] = []
+    
+    # Document Security
+    qr_code_data: Optional[str] = None  # For verification
+    document_hash: str = ""  # Content hash for integrity
+    pdf_file_path: Optional[str] = None  # Path to generated PDF
+    
+    class Config:
+        populate_by_name = True
+        arbitrary_types_allowed = True
+        json_encoders = {ObjectId: str}
+
+class EFIRCreate(BaseModel):
+    title: str
+    fir_type: EFIRType
+    priority: EFIRPriority
+    incident_date: datetime
+    incident_location: LocationData
+    incident_description: str
+    related_tourist_id: Optional[str] = None
+    related_alert_id: Optional[str] = None
+    complainant_name: Optional[str] = None
+    complainant_contact: Optional[str] = None
+    accused_details: Optional[str] = None
+    witness_details: Optional[str] = None
+    case_details: str
+    evidence_details: Optional[str] = None
+    action_taken: Optional[str] = None
+
+class EFIRUpdate(BaseModel):
+    title: Optional[str] = None
+    fir_type: Optional[EFIRType] = None
+    priority: Optional[EFIRPriority] = None
+    status: Optional[EFIRStatus] = None
+    incident_date: Optional[datetime] = None
+    incident_location: Optional[LocationData] = None
+    incident_description: Optional[str] = None
+    complainant_name: Optional[str] = None
+    complainant_contact: Optional[str] = None
+    accused_details: Optional[str] = None
+    witness_details: Optional[str] = None
+    case_details: Optional[str] = None
+    evidence_details: Optional[str] = None
+    action_taken: Optional[str] = None
+    changes_summary: str  # Required for version tracking
+
+class EFIRResponse(BaseModel):
+    id: str
+    fir_number: str
+    title: str
+    fir_type: EFIRType
+    priority: EFIRPriority
+    status: EFIRStatus
+    incident_date: datetime
+    incident_location: LocationData
+    incident_description: str
+    related_tourist_id: Optional[str] = None
+    related_alert_id: Optional[str] = None
+    complainant_name: Optional[str] = None
+    complainant_contact: Optional[str] = None
+    accused_details: Optional[str] = None
+    witness_details: Optional[str] = None
+    case_details: str
+    evidence_details: Optional[str] = None
+    action_taken: Optional[str] = None
+    created_by: str
+    created_at: datetime
+    current_version: int
+    signatures: List[DigitalSignature]
+    qr_code_data: Optional[str] = None
+    has_pdf: bool = False
+
+class EFIRSignRequest(BaseModel):
+    document_id: str
+    signature_password: str  # Officer's password for signing
+
+class EFIRFilters(BaseModel):
+    fir_type: Optional[EFIRType] = None
+    status: Optional[EFIRStatus] = None
+    priority: Optional[EFIRPriority] = None
+    created_by: Optional[str] = None
+    search: Optional[str] = None
+    start_date: Optional[datetime] = None
+    end_date: Optional[datetime] = None
+    skip: int = 0
+    limit: int = 100
