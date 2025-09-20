@@ -17,6 +17,19 @@ const TouristDetailModal = ({ tourist, isOpen, onClose }) => {
   const [alerts, setAlerts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  
+  // E-FIR Modal State
+  const [efirModalOpen, setEfirModalOpen] = useState(false);
+  const [efirData, setEfirData] = useState({
+    incidentType: '',
+    incidentDescription: '',
+    officerName: '',
+    officerBadge: '',
+    stationName: '',
+    additionalDetails: '',
+    witnesses: '',
+    actionTaken: ''
+  });
 
   // Fetch full tourist data when modal opens
   useEffect(() => {
