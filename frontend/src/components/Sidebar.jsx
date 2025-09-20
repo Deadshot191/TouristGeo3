@@ -13,6 +13,7 @@ const Sidebar = () => {
     { name: 'Live Map', href: '/', icon: Map, current: location.pathname === '/' },
     { name: 'Alerts', href: '/alerts', icon: AlertTriangle, current: location.pathname === '/alerts' },
     { name: 'Tourist Database', href: '/tourists', icon: Users, current: location.pathname === '/tourists' },
+    { name: 'E-FIR Documents', href: '/efir', icon: FileText, current: location.pathname === '/efir' || location.pathname.startsWith('/efir/') },
     { name: 'Settings', href: '/settings', icon: Settings, current: location.pathname === '/settings' },
   ];
 
