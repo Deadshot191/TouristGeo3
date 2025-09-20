@@ -494,59 +494,7 @@ const LiveMap = ({ onTouristSelect }) => {
           />
         </div>
 
-        {/* Tourist Markers Overlay (Mock) */}
-        <div className="absolute top-8 right-8 w-80 max-h-96 overflow-y-auto">
-          <Card style={{backgroundColor: '#1F2937', borderColor: '#374151'}}>
-            <CardHeader>
-              <CardTitle style={{color: '#F3F4F6'}}>Active Tourists</CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-3">
-              {tourists.slice(0, 5).map((tourist, index) => (
-                <div
-                  key={tourist.tourist_id || index}
-                  className="p-3 rounded-lg border cursor-pointer transition-colors"
-                  style={{backgroundColor: '#374151', borderColor: '#4B5563'}}
-                  onClick={() => handleTouristClick(tourist)}
-                  onMouseEnter={(e) => {
-                    e.target.style.backgroundColor = '#4B5563';
-                  }}
-                  onMouseLeave={(e) => {
-                    e.target.style.backgroundColor = '#374151';
-                  }}
-                >
-                  <div className="flex items-center justify-between mb-2">
-                    <span className="font-medium" style={{color: '#F3F4F6'}}>
-                      {tourist.tourist_name || 'Unknown'}
-                    </span>
-                    <div 
-                      className="px-2 py-1 text-xs font-bold rounded"
-                      style={getStatusBadgeStyle(tourist.status)}
-                    >
-                      {tourist.status?.toUpperCase() || 'UNKNOWN'}
-                    </div>
-                  </div>
-                  <div className="flex items-center text-sm" style={{color: '#9CA3AF'}}>
-                    <MapPin className="w-4 h-4 mr-1" />
-                    <span className="truncate">
-                      {tourist.address || 'Location updating...'}
-                    </span>
-                  </div>
-                  {tourist.timestamp && (
-                    <div className="text-xs mt-1" style={{color: '#9CA3AF'}}>
-                      Last update: {new Date(tourist.timestamp).toLocaleTimeString()}
-                    </div>
-                  )}
-                </div>
-              ))}
-              
-              {tourists.length === 0 && (
-                <div className="text-center py-4">
-                  <p style={{color: '#9CA3AF'}}>No active tourists found</p>
-                </div>
-              )}
-            </CardContent>
-          </Card>
-        </div>
+        {/* Tourist Markers Overlay - Now part of the map */}
       </div>
     </div>
   );
