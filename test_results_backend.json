@@ -1,104 +1,404 @@
 {
   "Health Check Root": {
     "success": true,
-    "details": "Status: 200, Response: {'message': 'Tourism Safety API', 'status': 'operational', 'timestamp': '2025-09-20T02:28:30.690236'}",
+    "details": "Status: 200, Response: {'message': 'Tourism Safety API', 'status': 'operational', 'timestamp': '2025-09-20T02:29:07.268033'}",
     "response_data": null,
-    "timestamp": "2025-09-20T02:28:30.692399"
+    "timestamp": "2025-09-20T02:29:07.269923"
   },
   "Detailed Health Check": {
     "success": true,
     "details": "Status: 200, Database: connected",
     "response_data": null,
-    "timestamp": "2025-09-20T02:28:30.700555"
+    "timestamp": "2025-09-20T02:29:07.277846"
   },
   "Login Valid Credentials": {
-    "success": false,
-    "details": "Status: 401, Response: {'detail': 'Incorrect email or password'}",
+    "success": true,
+    "details": "Successfully logged in as Inspector Raj Kumar",
     "response_data": null,
-    "timestamp": "2025-09-20T02:28:30.713042"
+    "timestamp": "2025-09-20T02:29:07.560263"
   },
-  "Tourist Management": {
-    "success": false,
-    "details": "No auth token available",
+  "Login Invalid Credentials": {
+    "success": true,
+    "details": "Status: 401, Expected 401 for invalid credentials",
     "response_data": null,
-    "timestamp": "2025-09-20T02:28:30.713076"
+    "timestamp": "2025-09-20T02:29:07.607213"
   },
-  "Location Services": {
-    "success": false,
-    "details": "No auth token available",
+  "Protected Endpoint Valid Token": {
+    "success": true,
+    "details": "Status: 200, User: Inspector Raj Kumar",
     "response_data": null,
-    "timestamp": "2025-09-20T02:28:30.713084"
+    "timestamp": "2025-09-20T02:29:07.617019"
   },
-  "Alerts System": {
-    "success": false,
-    "details": "No auth token available",
+  "Protected Endpoint No Token": {
+    "success": true,
+    "details": "Status: 403, Expected 403 for missing token",
     "response_data": null,
-    "timestamp": "2025-09-20T02:28:30.713092"
+    "timestamp": "2025-09-20T02:29:07.626833"
   },
-  "Geofencing": {
-    "success": false,
-    "details": "No auth token available",
+  "Protected Endpoint Invalid Token": {
+    "success": true,
+    "details": "Status: 401, Expected 401 for invalid token",
     "response_data": null,
-    "timestamp": "2025-09-20T02:28:30.713099"
+    "timestamp": "2025-09-20T02:29:07.673073"
   },
-  "Analytics Dashboard": {
-    "success": false,
-    "details": "No auth token available",
+  "Get All Tourists": {
+    "success": true,
+    "details": "Status: 200, Found 5 tourists",
     "response_data": null,
-    "timestamp": "2025-09-20T02:28:30.713107"
+    "timestamp": "2025-09-20T02:29:07.698014"
   },
-  "AI Anomaly Detection": {
-    "success": false,
-    "details": "No auth token available",
+  "Get Specific Tourist": {
+    "success": true,
+    "details": "Status: 200, Tourist: Raj Verma",
     "response_data": null,
-    "timestamp": "2025-09-20T02:28:30.713116"
+    "timestamp": "2025-09-20T02:29:07.746269"
   },
-  "Enhanced Geofencing": {
-    "success": false,
-    "details": "No auth token available",
+  "Update Tourist Status": {
+    "success": true,
+    "details": "Status: 200, Response: {'message': 'Status updated successfully'}",
     "response_data": null,
-    "timestamp": "2025-09-20T02:28:30.713124"
+    "timestamp": "2025-09-20T02:29:07.754360"
   },
-  "New Alert Types": {
-    "success": false,
-    "details": "No auth token available",
+  "Get Location History": {
+    "success": true,
+    "details": "Status: 200, History entries: 1",
     "response_data": null,
-    "timestamp": "2025-09-20T02:28:30.713132"
+    "timestamp": "2025-09-20T02:29:07.803247"
   },
-  "Database Operations": {
-    "success": false,
-    "details": "No auth token available",
+  "Get Tourists With Filters": {
+    "success": true,
+    "details": "Status: 200, Filtered results: 3",
     "response_data": null,
-    "timestamp": "2025-09-20T02:28:30.713141"
+    "timestamp": "2025-09-20T02:29:07.812496"
   },
-  "Digital ID Integration": {
-    "success": false,
-    "details": "No auth token available",
+  "Get Live Locations": {
+    "success": true,
+    "details": "Status: 200, Live locations: 5",
     "response_data": null,
-    "timestamp": "2025-09-20T02:28:30.713153"
+    "timestamp": "2025-09-20T02:29:07.823759"
+  },
+  "Update Location": {
+    "success": true,
+    "details": "Status: 200, Response: {'message': 'Location updated successfully'}",
+    "response_data": null,
+    "timestamp": "2025-09-20T02:29:07.887819"
+  },
+  "Get All Alerts": {
+    "success": true,
+    "details": "Status: 200, Found 4 alerts",
+    "response_data": null,
+    "timestamp": "2025-09-20T02:29:07.897637"
+  },
+  "Create Panic Alert": {
+    "success": true,
+    "details": "Status: 200, Alert ID: PN-534773C6",
+    "response_data": null,
+    "timestamp": "2025-09-20T02:29:08.003282"
+  },
+  "Update Alert Status": {
+    "success": false,
+    "details": "Status: 404, Response: {'detail': 'Alert not found or update failed'}",
+    "response_data": null,
+    "timestamp": "2025-09-20T02:29:08.050669"
+  },
+  "Get Alerts With Filters": {
+    "success": true,
+    "details": "Status: 200, Filtered alerts: 1",
+    "response_data": null,
+    "timestamp": "2025-09-20T02:29:08.059061"
+  },
+  "Get All Geofences": {
+    "success": true,
+    "details": "Status: 200, Found 3 geofences",
+    "response_data": null,
+    "timestamp": "2025-09-20T02:29:08.066114"
+  },
+  "Check Point in Geofences": {
+    "success": true,
+    "details": "Status: 200, Intersecting geofences: 1",
+    "response_data": null,
+    "timestamp": "2025-09-20T02:29:08.113792"
+  },
+  "Get Dashboard KPIs": {
+    "success": true,
+    "details": "Status: 200, Active tourists: 0",
+    "response_data": null,
+    "timestamp": "2025-09-20T02:29:08.126775"
+  },
+  "Get Safety Score": {
+    "success": true,
+    "details": "Status: 200, Safety score: 25",
+    "response_data": null,
+    "timestamp": "2025-09-20T02:29:08.193197"
+  },
+  "Get Location Analytics": {
+    "success": true,
+    "details": "Status: 200, Analytics data available: True",
+    "response_data": null,
+    "timestamp": "2025-09-20T02:29:08.205339"
+  },
+  "Get Alert Analytics": {
+    "success": true,
+    "details": "Status: 200, Analytics data available: True",
+    "response_data": null,
+    "timestamp": "2025-09-20T02:29:08.214311"
+  },
+  "Background Task Status": {
+    "success": true,
+    "details": "Status: 200, Running: True",
+    "response_data": null,
+    "timestamp": "2025-09-20T02:29:08.219859"
+  },
+  "AI Safety Score Calculation": {
+    "success": true,
+    "details": "Status: 200, Safety Score: 0",
+    "response_data": null,
+    "timestamp": "2025-09-20T02:29:08.278850"
+  },
+  "Manual Anomaly Check": {
+    "success": true,
+    "details": "Status: 200, Checks performed: 2",
+    "response_data": null,
+    "timestamp": "2025-09-20T02:29:08.289344"
+  },
+  "Background Task Restart": {
+    "success": true,
+    "details": "Status: 200, Response: Background tasks restarted",
+    "response_data": null,
+    "timestamp": "2025-09-20T02:29:08.308496"
+  },
+  "Geospatial Check - Central Darjeeling": {
+    "success": true,
+    "details": "Status: 200, Intersecting geofences: 1",
+    "response_data": null,
+    "timestamp": "2025-09-20T02:29:08.356053"
+  },
+  "Geospatial Check - Near Military Zone": {
+    "success": true,
+    "details": "Status: 200, Intersecting geofences: 1",
+    "response_data": null,
+    "timestamp": "2025-09-20T02:29:08.403092"
+  },
+  "Geospatial Check - Landslide Area": {
+    "success": true,
+    "details": "Status: 200, Intersecting geofences: 0",
+    "response_data": null,
+    "timestamp": "2025-09-20T02:29:08.410080"
+  },
+  "Geospatial Check - Mall Road Safe Zone": {
+    "success": true,
+    "details": "Status: 200, Intersecting geofences: 1",
+    "response_data": null,
+    "timestamp": "2025-09-20T02:29:08.416702"
+  },
+  "Geofence List with Geospatial Data": {
+    "success": true,
+    "details": "Status: 200, Found 3 geofences with geospatial coordinates",
+    "response_data": null,
+    "timestamp": "2025-09-20T02:29:08.463172"
+  },
+  "Alert Types Analysis": {
+    "success": true,
+    "details": "Status: 200, Alert types found: ['panic_button', 'route_deviation', 'geofence_breach', 'prolonged_inactivity'], Total alerts: 5",
+    "response_data": null,
+    "timestamp": "2025-09-20T02:29:08.473196"
+  },
+  "Filter Alerts - route_deviation": {
+    "success": true,
+    "details": "Status: 200, Found 1 route_deviation alerts",
+    "response_data": null,
+    "timestamp": "2025-09-20T02:29:08.480630"
+  },
+  "Filter Alerts - prolonged_inactivity": {
+    "success": true,
+    "details": "Status: 200, Found 1 prolonged_inactivity alerts",
+    "response_data": null,
+    "timestamp": "2025-09-20T02:29:08.529447"
+  },
+  "Location History Geospatial Data": {
+    "success": true,
+    "details": "Status: 200, History entries: 2, Has geospatial data: True",
+    "response_data": null,
+    "timestamp": "2025-09-20T02:29:08.545938"
+  },
+  "Live Locations Geospatial Structure": {
+    "success": true,
+    "details": "Status: 200, Total locations: 5, Geospatial format: 5",
+    "response_data": null,
+    "timestamp": "2025-09-20T02:29:08.596113"
+  },
+  "Digital ID Service Availability": {
+    "success": true,
+    "details": "Digital ID service available: False (testing backward compatibility)",
+    "response_data": null,
+    "timestamp": "2025-09-20T02:29:08.599536"
+  },
+  "Tourist Data Masking": {
+    "success": false,
+    "details": "Status: 200, Masked data detected: False, Tourist: DIG-PANIC01",
+    "response_data": null,
+    "timestamp": "2025-09-20T02:29:08.609824"
+  },
+  "Digital ID Field Present": {
+    "success": true,
+    "details": "Digital ID format: DIG-PANIC01",
+    "response_data": null,
+    "timestamp": "2025-09-20T02:29:08.609855"
+  },
+  "Panic Alert with Digital ID Integration": {
+    "success": true,
+    "details": "Status: 200, Alert created: True, Alert ID: PN-5348D76F",
+    "response_data": null,
+    "timestamp": "2025-09-20T02:29:08.694563"
   },
   "Digital ID Service Configuration": {
     "success": false,
     "details": "URL configured: False, API Key configured: False",
     "response_data": null,
-    "timestamp": "2025-09-20T02:28:30.713175"
+    "timestamp": "2025-09-20T02:29:08.694622"
   },
   "Digital ID Service Health": {
     "success": false,
     "details": "No Digital ID service URL configured",
     "response_data": null,
-    "timestamp": "2025-09-20T02:28:30.713183"
+    "timestamp": "2025-09-20T02:29:08.694630"
   },
-  "Encrypted Data Separation": {
+  "Data Encryption in Main Database": {
     "success": false,
-    "details": "No auth token available",
+    "details": "Status: 200, Encrypted tourists: 0/5 (0.0%)",
     "response_data": null,
-    "timestamp": "2025-09-20T02:28:30.713191"
+    "timestamp": "2025-09-20T02:29:08.706322"
   },
-  "E-FIR System": {
-    "success": false,
-    "details": "No auth token available",
+  "Digital ID Format Validation": {
+    "success": true,
+    "details": "Valid digital IDs: 1/5 (20.0%)",
     "response_data": null,
-    "timestamp": "2025-09-20T02:28:30.713199"
+    "timestamp": "2025-09-20T02:29:08.706360"
+  },
+  "Emergency Contacts Masking": {
+    "success": false,
+    "details": "Tourists with masked contacts: 0/5 (0.0%)",
+    "response_data": null,
+    "timestamp": "2025-09-20T02:29:08.706369"
+  },
+  "Create E-FIR Document": {
+    "success": true,
+    "details": "Status: 200, FIR Number: FIR-2025-199A3C4C, ID: 68ce11747e1ab5dee49c8a6e",
+    "response_data": null,
+    "timestamp": "2025-09-20T02:29:08.803636"
+  },
+  "Get Specific E-FIR Document": {
+    "success": true,
+    "details": "Status: 200, Title: Tourist Safety Incident - Unauthorized Guide Activity",
+    "response_data": null,
+    "timestamp": "2025-09-20T02:29:08.839005"
+  },
+  "List E-FIR Documents": {
+    "success": true,
+    "details": "Status: 200, Found 1 E-FIR documents",
+    "response_data": null,
+    "timestamp": "2025-09-20T02:29:08.874358"
+  },
+  "List E-FIR Documents with Filters": {
+    "success": true,
+    "details": "Status: 200, Filtered results: 1",
+    "response_data": null,
+    "timestamp": "2025-09-20T02:29:08.941371"
+  },
+  "Update E-FIR Document": {
+    "success": false,
+    "details": "Status: 500, Updated version: error",
+    "response_data": null,
+    "timestamp": "2025-09-20T02:29:09.008594"
+  },
+  "Get E-FIR Version History": {
+    "success": true,
+    "details": "Status: 200, History entries: 1",
+    "response_data": null,
+    "timestamp": "2025-09-20T02:29:09.103544"
+  },
+  "Add Digital Signature": {
+    "success": true,
+    "details": "Status: 200, Signed by: Inspector Raj Kumar",
+    "response_data": null,
+    "timestamp": "2025-09-20T02:29:09.611524"
+  },
+  "Generate E-FIR PDF": {
+    "success": true,
+    "details": "Status: 200, PDF Path: /app/storage/pdfs/FIR-2025-199A3C4C_v1.pdf",
+    "response_data": null,
+    "timestamp": "2025-09-20T02:29:10.327237"
+  },
+  "Download E-FIR PDF": {
+    "success": false,
+    "details": "Status: 0, PDF download: failed",
+    "response_data": null,
+    "timestamp": "2025-09-20T02:29:10.352587"
+  },
+  "Verify E-FIR Document (Public)": {
+    "success": true,
+    "details": "Status: 200, Verification result: False",
+    "response_data": null,
+    "timestamp": "2025-09-20T02:29:10.375042"
+  },
+  "Search E-FIR Documents": {
+    "success": true,
+    "details": "Status: 200, Search results: 1",
+    "response_data": null,
+    "timestamp": "2025-09-20T02:29:10.398361"
+  },
+  "Create E-FIR - Safety Violation": {
+    "success": true,
+    "details": "Status: 200, FIR Number: FIR-2025-1B845E6F",
+    "response_data": null,
+    "timestamp": "2025-09-20T02:29:10.431932"
+  },
+  "Create E-FIR - Emergency Response": {
+    "success": true,
+    "details": "Status: 200, FIR Number: FIR-2025-A81FB9C5",
+    "response_data": null,
+    "timestamp": "2025-09-20T02:29:10.465883"
+  },
+  "Create E-FIR - Medical Emergency": {
+    "success": true,
+    "details": "Status: 200, FIR Number: FIR-2025-A75DCD61",
+    "response_data": null,
+    "timestamp": "2025-09-20T02:29:10.497701"
+  },
+  "Create E-FIR - LOW Priority": {
+    "success": true,
+    "details": "Status: 200, Priority: low",
+    "response_data": null,
+    "timestamp": "2025-09-20T02:29:10.603124"
+  },
+  "Create E-FIR - MEDIUM Priority": {
+    "success": true,
+    "details": "Status: 200, Priority: medium",
+    "response_data": null,
+    "timestamp": "2025-09-20T02:29:10.639071"
+  },
+  "Create E-FIR - URGENT Priority": {
+    "success": true,
+    "details": "Status: 200, Priority: urgent",
+    "response_data": null,
+    "timestamp": "2025-09-20T02:29:10.676051"
+  },
+  "Delete E-FIR Document": {
+    "success": true,
+    "details": "Status: 200, Response: E-FIR document deleted successfully",
+    "response_data": null,
+    "timestamp": "2025-09-20T02:29:10.830297"
+  },
+  "Get Non-existent E-FIR": {
+    "success": true,
+    "details": "Status: 404, Expected 404 for non-existent document",
+    "response_data": null,
+    "timestamp": "2025-09-20T02:29:10.864709"
+  },
+  "Update Non-existent E-FIR": {
+    "success": true,
+    "details": "Status: 404, Expected 404 for non-existent document",
+    "response_data": null,
+    "timestamp": "2025-09-20T02:29:10.940899"
   }
 }
