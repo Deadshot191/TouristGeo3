@@ -33,6 +33,12 @@ const TouristDetailModal = ({ tourist, isOpen, onClose }) => {
     witnesses: '',
     actionTaken: ''
   });
+  
+  // Enhanced Document Features State
+  const [documentVersion, setDocumentVersion] = useState(1);
+  const [hasSignature, setHasSignature] = useState(false);
+  const signatureCanvasRef = useRef(null);
+  const signaturePadRef = useRef(null);
 
   // Fetch full tourist data when modal opens
   useEffect(() => {
