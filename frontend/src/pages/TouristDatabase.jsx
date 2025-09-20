@@ -236,8 +236,15 @@ const TouristDatabase = ({ onTouristSelect }) => {
         ) : (
           <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-6 auto-rows-fr">
             {filteredTourists.map((tourist) => (
-            <Card key={tourist.id} className="tourist-card h-full flex flex-col">
-              <CardContent className="tourist-card-content flex-1 flex flex-col">
+            <Card key={tourist.id} className="h-full flex flex-col transition-all duration-200 hover:shadow-lg hover:scale-[1.02] border"
+                  style={{backgroundColor: '#1F2937', borderColor: '#374151'}}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.backgroundColor = '#374151';
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.backgroundColor = '#1F2937';
+                  }}>
+              <CardContent className="p-5 flex-1 flex flex-col">
                 {/* Header with Avatar, Name, and Status Badge */}
                 <div className="flex items-start justify-between mb-4">
                   <div className="flex items-center space-x-3 flex-1">
