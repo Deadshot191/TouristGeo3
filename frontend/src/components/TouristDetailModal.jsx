@@ -275,44 +275,49 @@ const TouristDetailModal = ({ tourist, isOpen, onClose }) => {
           {/* Center Column - LIVE STATUS & ALERTS (Primary Focus) */}
           <div className="col-span-12 lg:col-span-4 space-y-6">
             {/* MASSIVE STATUS BADGE - Primary Visual Anchor */}
-            <Card className="command-card border-4 border-yellow-500 bg-gradient-to-br from-slate-800 to-slate-900 shadow-2xl">
+            <Card className="border-4 shadow-2xl" style={{backgroundColor: '#1F2937', borderColor: '#F59E0B'}}>
               <CardContent className="command-card-content text-center py-8">
                 {/* HUGE Status Badge */}
                 <div className="mb-6">
-                  <Badge className={`${getStatusColor(fullTourist.status)} px-8 py-4 text-4xl font-black uppercase tracking-wider shadow-lg text-center block w-full border-4`} 
-                         style={{
-                           fontSize: '2.5rem',
-                           padding: '1.5rem 2rem',
-                           borderRadius: '1rem',
-                           textShadow: '2px 2px 4px rgba(0,0,0,0.5)'
-                         }}>
+                  <div className="px-8 py-4 text-4xl font-black uppercase tracking-wider shadow-lg text-center block w-full border-4 rounded-2xl"
+                       style={{
+                         fontSize: '2.5rem',
+                         padding: '1.5rem 2rem',
+                         backgroundColor: getStatusBackgroundColor(fullTourist.status),
+                         borderColor: getStatusBorderColor(fullTourist.status),
+                         color: '#FFFFFF',
+                         textShadow: '2px 2px 4px rgba(0,0,0,0.5)'
+                       }}>
                     {fullTourist.status?.toUpperCase() || 'UNKNOWN'}
-                  </Badge>
+                  </div>
                 </div>
 
                 {/* Large Safety Score Circle */}
                 <div className="relative w-40 h-40 mx-auto mb-6">
-                  <div className="w-40 h-40 rounded-full border-8 border-slate-500 flex items-center justify-center relative bg-gradient-to-br from-slate-700 to-slate-900 shadow-2xl">
+                  <div className="w-40 h-40 rounded-full border-8 flex items-center justify-center relative shadow-2xl" 
+                       style={{backgroundColor: '#1F2937', borderColor: '#4B5563'}}>
                     <div className="text-center">
-                      <span className={`text-5xl font-black ${getSafetyScoreColor(fullTourist.safety_score || 0)}`} 
-                            style={{textShadow: '2px 2px 4px rgba(0,0,0,0.5)'}}>
+                      <span className="text-5xl font-black" 
+                            style={{
+                              color: getSafetyScoreColor(fullTourist.safety_score || 0),
+                              textShadow: '2px 2px 4px rgba(0,0,0,0.5)'
+                            }}>
                         {fullTourist.safety_score || 0}
                       </span>
-                      <div className="text-lg text-slate-400 font-bold">/100</div>
+                      <div className="text-lg font-bold" style={{color: '#9CA3AF'}}>/100</div>
                     </div>
                   </div>
                   {/* Status Ring Indicator */}
                   <div className={`absolute inset-0 rounded-full border-4 ${
-                    fullTourist.status === 'panic' ? 'border-red-500 animate-pulse' :
-                    fullTourist.status === 'anomaly' ? 'border-yellow-500 animate-pulse' :
-                    'border-green-500'
-                  }`}></div>
+                    fullTourist.status === 'panic' ? 'animate-pulse' :
+                    fullTourist.status === 'anomaly' ? 'animate-pulse' : ''
+                  }`} style={{borderColor: getStatusBackgroundColor(fullTourist.status)}}></div>
                 </div>
 
                 {/* Status Description */}
-                <div className="bg-slate-700 p-4 rounded-lg border-2 border-slate-500">
-                  <p className="text-xs text-slate-400 uppercase tracking-wider mb-1">Current Status</p>
-                  <p className="text-lg font-bold text-white">
+                <div className="p-4 rounded-lg border-2" style={{backgroundColor: '#374151', borderColor: '#4B5563'}}>
+                  <p className="text-xs uppercase tracking-wider mb-1" style={{color: '#9CA3AF'}}>Current Status</p>
+                  <p className="text-lg font-bold" style={{color: '#F3F4F6'}}>
                     {fullTourist.status === 'panic' ? 'EMERGENCY ALERT ACTIVE' :
                      fullTourist.status === 'anomaly' ? 'MONITORING ANOMALY' :
                      fullTourist.status === 'safe' ? 'ALL SYSTEMS NORMAL' :
