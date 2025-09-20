@@ -97,32 +97,38 @@ const LiveMap = ({ onTouristSelect }) => {
 
   const getStatusColor = (status) => {
     switch (status) {
-      case 'safe': return '#2ecc71';
-      case 'anomaly': return '#f39c12';
-      case 'panic': return '#e74c3c';
-      default: return '#95a5a6';
+      case 'safe': return '#22C55E'; // Safe Green
+      case 'anomaly': return '#F59E0B'; // Warning Amber
+      case 'panic': return '#EF4444'; // Panic Red
+      default: return '#6B7280'; // Gray
     }
   };
 
-  const getStatusBadgeColor = (status) => {
-    switch (status) {
-      case 'safe': return 'bg-green-100 text-green-800 border-green-200';
-      case 'anomaly': return 'bg-yellow-100 text-yellow-800 border-yellow-200';
-      case 'panic': return 'bg-red-100 text-red-800 border-red-200';
-      default: return 'bg-gray-100 text-gray-800 border-gray-200';
-    }
+  const getStatusBadgeStyle = (status) => {
+    const backgroundColor = getStatusColor(status);
+    return {
+      backgroundColor,
+      color: '#FFFFFF',
+      border: `2px solid ${backgroundColor}`,
+      fontWeight: 'bold'
+    };
   };
 
-  const handleMarkerClick = (tourist) => {
+  const handleTouristClick = (tourist) => {
     setSelectedTourist(tourist);
+    onTouristSelect(tourist);
   };
 
-  if (loading) {
+  const refreshData = () => {
+    loadDashboardData();
+  };
+
+  if (loading && tourists.length === 0) {
     return (
-      <div className="h-full flex items-center justify-center bg-slate-900">
+      <div className="p-6 h-full flex items-center justify-center" style={{backgroundColor: '#111827'}}>
         <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-400 mx-auto mb-4"></div>
-          <p className="text-slate-400">Loading dashboard...</p>
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 mx-auto mb-4" style={{borderColor: '#3B82F6'}}></div>
+          <p style={{color: '#9CA3AF'}}>Loading live map data...</p>
         </div>
       </div>
     );
@@ -130,15 +136,12 @@ const LiveMap = ({ onTouristSelect }) => {
 
   if (error) {
     return (
-      <div className="h-full flex items-center justify-center bg-slate-900">
+      <div className="p-6 h-full flex items-center justify-center" style={{backgroundColor: '#111827'}}>
         <div className="text-center">
-          <AlertTriangle className="w-12 h-12 text-red-400 mx-auto mb-4" />
-          <p className="text-red-400">{error}</p>
-          <Button 
-            onClick={loadDashboardData}
-            className="mt-4 bg-blue-600 hover:bg-blue-700"
-          >
-            Retry
+          <AlertTriangle className="h-12 w-12 mx-auto mb-4" style={{color: '#EF4444'}} />
+          <p style={{color: '#9CA3AF'}} className="mb-4">{error}</p>
+          <Button onClick={refreshData} className="action-btn-primary">
+            Try Again
           </Button>
         </div>
       </div>
@@ -146,178 +149,143 @@ const LiveMap = ({ onTouristSelect }) => {
   }
 
   return (
-    <div className="h-full flex flex-col bg-slate-900">
+    <div className="h-full flex flex-col" style={{backgroundColor: '#111827'}}>
       {/* Header Section with Enhanced KPI Cards */}
-      <div className="p-6 border-b border-slate-700">
-        <div className="flex justify-between items-start">
+      <div className="flex-shrink-0 p-6 border-b" style={{borderColor: '#374151'}}>
+        <div className="flex items-center justify-between mb-6">
           <div>
-            <h1 className="page-title mb-2">Real-time Tourist Monitoring</h1>
-            <p className="text-slate-400 text-sm">Live tracking and safety management dashboard</p>
+            <h1 className="text-3xl font-bold" style={{color: '#F3F4F6'}}>Live Map Dashboard</h1>
+            <p style={{color: '#9CA3AF'}}>Real-time tourist location monitoring and emergency response</p>
           </div>
-          
-          {/* Enhanced KPI Cards */}
-          <div className="grid grid-cols-3 gap-4">
-            <Card className="kpi-card">
-              <CardContent className="kpi-card-content">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <p className="kpi-label mb-1">Total Active</p>
-                    <p className="kpi-value text-blue-400">{kpis.total_active_tourists || tourists.length}</p>
-                  </div>
-                  <Users className="w-8 h-8 text-blue-400 opacity-80" />
+          <Button onClick={refreshData} className="action-btn-primary">
+            <MapPin className="w-4 h-4 mr-2" />
+            Refresh Data
+          </Button>
+        </div>
+
+        {/* Enhanced KPI Cards */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+          <Card className="kpi-card">
+            <CardContent className="kpi-card-content">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="kpi-label mb-1">Total Active</p>
+                  <p className="kpi-value" style={{color: '#3B82F6'}}>{kpis.total_active_tourists || tourists.length}</p>
                 </div>
-              </CardContent>
-            </Card>
-            
-            <Card className="kpi-card">
-              <CardContent className="kpi-card-content">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <p className="kpi-label mb-1">Active Alerts</p>
-                    <p className="kpi-value text-red-400">{kpis.active_alerts}</p>
-                  </div>
-                  <AlertTriangle className="w-8 h-8 text-red-400 opacity-80" />
+                <Users className="w-8 h-8" style={{color: '#3B82F6'}} />
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card className="kpi-card">
+            <CardContent className="kpi-card-content">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="kpi-label mb-1">Active Alerts</p>
+                  <p className="kpi-value" style={{color: '#EF4444'}}>{kpis.active_alerts}</p>
                 </div>
-              </CardContent>
-            </Card>
-            
-            <Card className="kpi-card">
-              <CardContent className="kpi-card-content">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <p className="kpi-label mb-1">Safe Status</p>
-                    <p className="kpi-value text-emerald-400">{kpis.safe_status}</p>
-                  </div>
-                  <Shield className="w-8 h-8 text-emerald-400 opacity-80" />
+                <AlertTriangle className="w-8 h-8" style={{color: '#EF4444'}} />
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card className="kpi-card">
+            <CardContent className="kpi-card-content">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="kpi-label mb-1">Safe Status</p>
+                  <p className="kpi-value" style={{color: '#22C55E'}}>{kpis.safe_status}</p>
                 </div>
-              </CardContent>
-            </Card>
-          </div>
+                <Shield className="w-8 h-8" style={{color: '#22C55E'}} />
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card className="kpi-card">
+            <CardContent className="kpi-card-content">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="kpi-label mb-1">High Risk</p>
+                  <p className="kpi-value" style={{color: '#F59E0B'}}>{kpis.high_risk_tourists || 0}</p>
+                </div>
+                <AlertTriangle className="w-8 h-8" style={{color: '#F59E0B'}} />
+              </div>
+            </CardContent>
+          </Card>
         </div>
       </div>
 
-      {/* Map Component */}
+      {/* Main Map Container */}
       <div className="flex-1 relative">
-        {/* Simulated Map Container */}
-        <div className="w-full h-full bg-slate-700 relative overflow-hidden">
-          {/* Map Background Pattern */}
-          <div className="absolute inset-0 opacity-10">
-            <div className="w-full h-full" style={{
-              backgroundImage: `radial-gradient(circle at 1px 1px, rgba(255,255,255,0.15) 1px, transparent 0)`,
-              backgroundSize: '20px 20px'
-            }}></div>
-          </div>
-
-          {/* Tourist Markers */}
-          {tourists.map((tourist, index) => (
-            <div
-              key={tourist.tourist_id || index}
-              className="absolute transform -translate-x-1/2 -translate-y-1/2 cursor-pointer transition-all hover:scale-110"
-              style={{
-                left: `${30 + (index * 10) % 40}%`,
-                top: `${20 + (index * 15) % 60}%`
-              }}
-              onClick={() => handleMarkerClick(tourist)}
-            >
-              <div 
-                className="w-4 h-4 rounded-full border-2 border-white shadow-lg animate-pulse"
-                style={{ backgroundColor: getStatusColor(tourist.status) }}
-              />
-              {tourist.status === 'panic' && (
-                <div className="absolute -top-8 -left-8 w-16 h-16 border-2 border-red-500 rounded-full animate-ping opacity-75" />
-              )}
-            </div>
-          ))}
-
-          {/* Geo-fenced Zones */}
-          {geofences.map((zone, index) => (
-            <div
-              key={zone.id}
-              className={`absolute border-2 border-dashed rounded-lg ${
-                zone.risk_level === 'critical' ? 'bg-red-500 bg-opacity-20 border-red-500' :
-                zone.risk_level === 'high' ? 'bg-orange-500 bg-opacity-20 border-orange-500' :
-                'bg-yellow-500 bg-opacity-20 border-yellow-500'
-              }`}
-              style={{
-                left: `${60 + (index * 10) % 20}%`,
-                top: `${30 + (index * 12) % 30}%`,
-                width: '120px',
-                height: '80px'
-              }}
-            >
-              <div className={`absolute -top-6 left-0 text-xs font-medium bg-slate-800 px-2 py-1 rounded ${
-                zone.risk_level === 'critical' ? 'text-red-400' :
-                zone.risk_level === 'high' ? 'text-orange-400' :
-                'text-yellow-400'
-              }`}>
-                {zone.name}
-              </div>
-            </div>
-          ))}
-
-          {/* Enhanced Map Legend */}
-          <div className="absolute bottom-4 left-4 command-card p-4">
-            <h3 className="subsection-title mb-3">Map Legend</h3>
-            <div className="space-y-2">
-              <div className="flex items-center space-x-3">
-                <div className="w-3 h-3 rounded-full bg-emerald-500"></div>
-                <span className="text-sm text-slate-300">Safe Tourist</span>
-              </div>
-              <div className="flex items-center space-x-3">
-                <div className="w-3 h-3 rounded-full bg-amber-500"></div>
-                <span className="text-sm text-slate-300">Anomaly Detected</span>
-              </div>
-              <div className="flex items-center space-x-3">
-                <div className="w-3 h-3 rounded-full bg-red-500"></div>
-                <span className="text-sm text-slate-300">Panic Alert</span>
-              </div>
-              <div className="flex items-center space-x-3">
-                <div className="w-3 h-3 border-2 border-red-500 border-dashed"></div>
-                <span className="text-sm text-slate-300">Restricted Zone</span>
-              </div>
+        {/* Placeholder for Map Integration */}
+        <div className="absolute inset-0 rounded-lg border m-4" style={{backgroundColor: '#1F2937', borderColor: '#374151'}}>
+          <div className="h-full flex items-center justify-center">
+            <div className="text-center">
+              <MapPin className="w-16 h-16 mx-auto mb-4" style={{color: '#3B82F6'}} />
+              <h3 className="text-xl font-semibold mb-2" style={{color: '#F3F4F6'}}>Interactive Map</h3>
+              <p style={{color: '#9CA3AF'}} className="mb-4">
+                Live tourist locations and geofences will be displayed here
+              </p>
+              <p className="text-sm" style={{color: '#9CA3AF'}}>
+                Showing {tourists.length} active tourists | {geofences.length} geofences
+              </p>
             </div>
           </div>
         </div>
 
-        {/* Compact Tourist Info Popup */}
-        {selectedTourist && (
-          <div className="absolute top-4 right-4 map-popup-compact">
-            <div className="flex items-start justify-between mb-3">
-              <div className="flex-1">
-                <h3 className="font-semibold text-white text-sm">{selectedTourist.tourist_name}</h3>
-                <p className="text-xs text-slate-400 font-mono">{selectedTourist.digital_id}</p>
-              </div>
-              <Badge className={`ml-2 ${getStatusBadgeColor(selectedTourist.status)} text-xs`}>
-                {selectedTourist.status.toUpperCase()}
-              </Badge>
-            </div>
-            
-            <div className="space-y-2 mb-3">
-              <div className="flex items-center space-x-2 text-xs">
-                <MapPin className="w-3 h-3 text-slate-400" />
-                <span className="text-slate-300 truncate">
-                  {selectedTourist.address || `${selectedTourist.coordinates?.[1]?.toFixed(4)}, ${selectedTourist.coordinates?.[0]?.toFixed(4)}`}
-                </span>
-              </div>
-              <p className="text-xs text-slate-500">
-                Updated: {selectedTourist.timestamp ? new Date(selectedTourist.timestamp).toLocaleTimeString() : 'Unknown'}
-              </p>
-            </div>
-
-            <Button 
-              size="sm"
-              onClick={() => onTouristSelect({
-                id: selectedTourist.tourist_id,
-                name: selectedTourist.tourist_name,
-                digital_id: selectedTourist.digital_id,
-                status: selectedTourist.status
-              })}
-              className="w-full action-btn-primary text-xs py-1.5"
-            >
-              View Full Details
-            </Button>
-          </div>
-        )}
+        {/* Tourist Markers Overlay (Mock) */}
+        <div className="absolute top-8 right-8 w-80 max-h-96 overflow-y-auto">
+          <Card style={{backgroundColor: '#1F2937', borderColor: '#374151'}}>
+            <CardHeader>
+              <CardTitle style={{color: '#F3F4F6'}}>Active Tourists</CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-3">
+              {tourists.slice(0, 5).map((tourist, index) => (
+                <div
+                  key={tourist.tourist_id || index}
+                  className="p-3 rounded-lg border cursor-pointer transition-colors"
+                  style={{backgroundColor: '#374151', borderColor: '#4B5563'}}
+                  onClick={() => handleTouristClick(tourist)}
+                  onMouseEnter={(e) => {
+                    e.target.style.backgroundColor = '#4B5563';
+                  }}
+                  onMouseLeave={(e) => {
+                    e.target.style.backgroundColor = '#374151';
+                  }}
+                >
+                  <div className="flex items-center justify-between mb-2">
+                    <span className="font-medium" style={{color: '#F3F4F6'}}>
+                      {tourist.tourist_name || 'Unknown'}
+                    </span>
+                    <div 
+                      className="px-2 py-1 text-xs font-bold rounded"
+                      style={getStatusBadgeStyle(tourist.status)}
+                    >
+                      {tourist.status?.toUpperCase() || 'UNKNOWN'}
+                    </div>
+                  </div>
+                  <div className="flex items-center text-sm" style={{color: '#9CA3AF'}}>
+                    <MapPin className="w-4 h-4 mr-1" />
+                    <span className="truncate">
+                      {tourist.address || 'Location updating...'}
+                    </span>
+                  </div>
+                  {tourist.timestamp && (
+                    <div className="text-xs mt-1" style={{color: '#9CA3AF'}}>
+                      Last update: {new Date(tourist.timestamp).toLocaleTimeString()}
+                    </div>
+                  )}
+                </div>
+              ))}
+              
+              {tourists.length === 0 && (
+                <div className="text-center py-4">
+                  <p style={{color: '#9CA3AF'}}>No active tourists found</p>
+                </div>
+              )}
+            </CardContent>
+          </Card>
+        </div>
       </div>
     </div>
   );
