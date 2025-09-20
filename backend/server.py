@@ -814,7 +814,19 @@ async def startup_event():
     # Connect to MongoDB
     await connect_to_mongo()
     
-    # Create default geo-fences
+    # Load static geofences from configuration
+    try:
+        from .services.static_geofence_loader import StaticGeofenceLoader
+    except ImportError:
+        from services.static_geofence_loader import StaticGeofenceLoader
+    
+    success = await StaticGeofenceLoader.load_static_geofences()
+    if success:
+        logger.info("Static geofences loaded successfully")
+    else:
+        logger.error("Failed to load static geofences")
+    
+    # Create default geo-fences (legacy - will be replaced by static config)
     await GeofenceService.create_default_geofences()
     
     # Start background AI tasks
