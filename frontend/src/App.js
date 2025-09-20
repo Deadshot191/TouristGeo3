@@ -8,6 +8,9 @@ import LiveMap from './pages/LiveMap';
 import Alerts from './pages/Alerts';
 import TouristDatabase from './pages/TouristDatabase';
 import Settings from './pages/Settings';
+import EFIRDocuments from './pages/EFIRDocuments';
+import EFIRForm from './pages/EFIRForm';
+import EFIRDetail from './pages/EFIRDetail';
 import TouristDetailModal from './components/TouristDetailModal';
 import { wsManager } from './services/api';
 
