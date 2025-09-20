@@ -1,5 +1,8 @@
-import React, { useState, useEffect } from 'react';
-import { X, MapPin, Phone, Calendar, AlertTriangle, Activity, Shield, FileText, PhoneCall, Truck, Users as UsersIcon, Clock, Globe, CreditCard, Download, Save, Printer } from 'lucide-react';
+import React, { useState, useEffect, useRef } from 'react';
+import { X, MapPin, Phone, Calendar, AlertTriangle, Activity, Shield, FileText, PhoneCall, Truck, Users as UsersIcon, Clock, Globe, CreditCard, Download, Save, Printer, Signature, QrCode } from 'lucide-react';
+import jsPDF from 'jspdf';
+import QRCode from 'qrcode';
+import SignaturePad from 'signature_pad';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from './ui/dialog';
 import { Badge } from './ui/badge';
 import { Button } from './ui/button';
