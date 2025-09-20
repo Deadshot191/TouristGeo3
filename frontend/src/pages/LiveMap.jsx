@@ -381,7 +381,9 @@ const LiveMap = ({ onTouristSelect }) => {
 
   const handleTouristClick = (tourist) => {
     setSelectedTourist(tourist);
-    onTouristSelect(tourist);
+    if (onTouristSelect) {
+      onTouristSelect(tourist);
+    }
   };
 
   const refreshData = () => {
