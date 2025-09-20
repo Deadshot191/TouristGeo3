@@ -20,6 +20,7 @@ try:
     from .services.geofence_service import GeofenceService
     from .services.analytics_service import AnalyticsService
     from .services.anomaly_service import AnomalyDetectionService
+    from .services.efir_service import EFIRService
     from .websocket_manager import manager, handle_location_websocket, handle_dashboard_websocket
     from .background_tasks import task_manager
 except ImportError:
