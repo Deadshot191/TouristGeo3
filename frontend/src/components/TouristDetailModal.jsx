@@ -75,11 +75,21 @@ const TouristDetailModal = ({ tourist, isOpen, onClose }) => {
 
   const getAlertTypeColor = (type) => {
     switch (type) {
-      case 'panic_button': return 'bg-red-100 text-red-800 border-red-200';
-      case 'geofence_breach': return 'bg-red-100 text-red-800 border-red-200';
-      case 'route_deviation': return 'bg-yellow-100 text-yellow-800 border-yellow-200';
-      case 'prolonged_inactivity': return 'bg-yellow-100 text-yellow-800 border-yellow-200';
-      default: return 'bg-gray-100 text-gray-800 border-gray-200';
+      case 'panic_button': return 'text-white border-red-500';
+      case 'geofence_breach': return 'text-white border-red-500';
+      case 'route_deviation': return 'text-white border-yellow-500';
+      case 'prolonged_inactivity': return 'text-white border-yellow-500';
+      default: return 'text-white border-gray-500';
+    }
+  };
+  
+  const getAlertTypeBackgroundColor = (type) => {
+    switch (type) {
+      case 'panic_button': return '#EF4444';
+      case 'geofence_breach': return '#EF4444';
+      case 'route_deviation': return '#F59E0B';
+      case 'prolonged_inactivity': return '#F59E0B';
+      default: return '#6B7280';
     }
   };
 
