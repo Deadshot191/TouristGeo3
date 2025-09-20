@@ -19,7 +19,7 @@ from datetime import datetime
 from typing import Dict, Any, Optional, List
 
 # Get backend URL from environment
-BACKEND_URL = os.environ.get('REACT_APP_BACKEND_URL', 'https://safety-dashboard-5.preview.emergentagent.com')
+BACKEND_URL = os.environ.get('REACT_APP_BACKEND_URL', 'https://tourist-theme-fix.preview.emergentagent.com')
 API_BASE_URL = f"{BACKEND_URL}/api"
 
 class LiveMapDataTester:
