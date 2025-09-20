@@ -499,6 +499,273 @@ async def get_websocket_stats(current_user: User = Depends(get_current_admin_or_
     return manager.get_connection_stats()
 
 # ============================================================================
+# E-FIR (ELECTRONIC FIRST INFORMATION REPORT) ROUTES
+# ============================================================================
+
+@api_router.post("/efir", response_model=EFIRResponse)
+async def create_efir(
+    efir_data: EFIRCreate,
+    current_user: User = Depends(get_current_user)
+):
+    """Create new E-FIR document"""
+    efir_service = EFIRService()
+    efir_doc = await efir_service.create_efir(efir_data, current_user.email)
+    
+    # Convert to response
+    return EFIRResponse(
+        id=str(efir_doc.id),
+        fir_number=efir_doc.fir_number,
+        title=efir_doc.title,
+        fir_type=efir_doc.fir_type,
+        priority=efir_doc.priority,
+        status=efir_doc.status,
+        incident_date=efir_doc.incident_date,
+        incident_location=efir_doc.incident_location,
+        incident_description=efir_doc.incident_description,
+        related_tourist_id=efir_doc.related_tourist_id,
+        related_alert_id=efir_doc.related_alert_id,
+        complainant_name=efir_doc.complainant_name,
+        complainant_contact=efir_doc.complainant_contact,
+        accused_details=efir_doc.accused_details,
+        witness_details=efir_doc.witness_details,
+        case_details=efir_doc.case_details,
+        evidence_details=efir_doc.evidence_details,
+        action_taken=efir_doc.action_taken,
+        created_by=efir_doc.created_by,
+        created_at=efir_doc.created_at,
+        current_version=efir_doc.current_version,
+        signatures=efir_doc.signatures,
+        qr_code_data=efir_doc.qr_code_data,
+        has_pdf=bool(efir_doc.pdf_file_path)
+    )
+
+@api_router.get("/efir", response_model=List[EFIRResponse])
+async def list_efirs(
+    fir_type: Optional[EFIRType] = None,
+    status: Optional[EFIRStatus] = None,
+    priority: Optional[EFIRPriority] = None,
+    created_by: Optional[str] = None,
+    search: Optional[str] = None,
+    start_date: Optional[datetime] = None,
+    end_date: Optional[datetime] = None,
+    skip: int = 0,
+    limit: int = 100,
+    current_user: User = Depends(get_current_user)
+):
+    """List E-FIR documents with filtering"""
+    efir_service = EFIRService()
+    filters = EFIRFilters(
+        fir_type=fir_type,
+        status=status,
+        priority=priority,
+        created_by=created_by,
+        search=search,
+        start_date=start_date,
+        end_date=end_date,
+        skip=skip,
+        limit=limit
+    )
+    return await efir_service.list_efirs(filters)
+
+@api_router.get("/efir/{efir_id}", response_model=EFIRResponse)
+async def get_efir(
+    efir_id: str,
+    current_user: User = Depends(get_current_user)
+):
+    """Get E-FIR document by ID"""
+    efir_service = EFIRService()
+    efir_doc = await efir_service.get_efir_by_id(efir_id)
+    
+    if not efir_doc:
+        raise HTTPException(status_code=404, detail="E-FIR document not found")
+    
+    return EFIRResponse(
+        id=str(efir_doc.id),
+        fir_number=efir_doc.fir_number,
+        title=efir_doc.title,
+        fir_type=efir_doc.fir_type,
+        priority=efir_doc.priority,
+        status=efir_doc.status,
+        incident_date=efir_doc.incident_date,
+        incident_location=efir_doc.incident_location,
+        incident_description=efir_doc.incident_description,
+        related_tourist_id=efir_doc.related_tourist_id,
+        related_alert_id=efir_doc.related_alert_id,
+        complainant_name=efir_doc.complainant_name,
+        complainant_contact=efir_doc.complainant_contact,
+        accused_details=efir_doc.accused_details,
+        witness_details=efir_doc.witness_details,
+        case_details=efir_doc.case_details,
+        evidence_details=efir_doc.evidence_details,
+        action_taken=efir_doc.action_taken,
+        created_by=efir_doc.created_by,
+        created_at=efir_doc.created_at,
+        current_version=efir_doc.current_version,
+        signatures=efir_doc.signatures,
+        qr_code_data=efir_doc.qr_code_data,
+        has_pdf=bool(efir_doc.pdf_file_path)
+    )
+
+@api_router.put("/efir/{efir_id}", response_model=EFIRResponse)
+async def update_efir(
+    efir_id: str,
+    update_data: EFIRUpdate,
+    current_user: User = Depends(get_current_user)
+):
+    """Update E-FIR document"""
+    efir_service = EFIRService()
+    efir_doc = await efir_service.update_efir(efir_id, update_data, current_user.email)
+    
+    if not efir_doc:
+        raise HTTPException(status_code=404, detail="E-FIR document not found")
+    
+    return EFIRResponse(
+        id=str(efir_doc.id),
+        fir_number=efir_doc.fir_number,
+        title=efir_doc.title,
+        fir_type=efir_doc.fir_type,
+        priority=efir_doc.priority,
+        status=efir_doc.status,
+        incident_date=efir_doc.incident_date,
+        incident_location=efir_doc.incident_location,
+        incident_description=efir_doc.incident_description,
+        related_tourist_id=efir_doc.related_tourist_id,
+        related_alert_id=efir_doc.related_alert_id,
+        complainant_name=efir_doc.complainant_name,
+        complainant_contact=efir_doc.complainant_contact,
+        accused_details=efir_doc.accused_details,
+        witness_details=efir_doc.witness_details,
+        case_details=efir_doc.case_details,
+        evidence_details=efir_doc.evidence_details,
+        action_taken=efir_doc.action_taken,
+        created_by=efir_doc.created_by,
+        created_at=efir_doc.created_at,
+        current_version=efir_doc.current_version,
+        signatures=efir_doc.signatures,
+        qr_code_data=efir_doc.qr_code_data,
+        has_pdf=bool(efir_doc.pdf_file_path)
+    )
+
+@api_router.delete("/efir/{efir_id}")
+async def delete_efir(
+    efir_id: str,
+    current_user: User = Depends(get_current_admin_or_police_user)
+):
+    """Delete E-FIR document (admin/police only)"""
+    efir_service = EFIRService()
+    success = await efir_service.delete_efir(efir_id)
+    
+    if not success:
+        raise HTTPException(status_code=404, detail="E-FIR document not found")
+    
+    return {"message": "E-FIR document deleted successfully"}
+
+@api_router.post("/efir/{efir_id}/sign")
+async def sign_efir(
+    efir_id: str,
+    sign_request: EFIRSignRequest,
+    current_user: User = Depends(get_current_user)
+):
+    """Add digital signature to E-FIR document"""
+    from passlib.context import CryptContext
+    
+    efir_service = EFIRService()
+    
+    # Verify officer's password
+    pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
+    # In a real system, re-verify the officer's password here
+    # For now, we'll skip password verification and use the current user data
+    
+    officer_data = {
+        "full_name": current_user.full_name,
+        "badge_number": current_user.badge_number,
+        "department": current_user.department
+    }
+    
+    try:
+        success = await efir_service.sign_efir(efir_id, current_user.email, officer_data)
+        if not success:
+            raise HTTPException(status_code=404, detail="E-FIR document not found")
+        
+        return {"message": "Document signed successfully", "signed_by": current_user.full_name}
+    except ValueError as e:
+        raise HTTPException(status_code=400, detail=str(e))
+
+@api_router.post("/efir/{efir_id}/generate-pdf")
+async def generate_efir_pdf(
+    efir_id: str,
+    current_user: User = Depends(get_current_user)
+):
+    """Generate PDF for E-FIR document"""
+    efir_service = EFIRService()
+    
+    # Create verification URL (this would be your actual domain in production)
+    verification_url = "https://efir-system.gov.in/verify"
+    
+    pdf_path = await efir_service.generate_pdf(efir_id, verification_url)
+    
+    if not pdf_path:
+        raise HTTPException(status_code=404, detail="E-FIR document not found or PDF generation failed")
+    
+    return {"message": "PDF generated successfully", "pdf_path": pdf_path}
+
+@api_router.get("/efir/{efir_id}/download-pdf")
+async def download_efir_pdf(
+    efir_id: str,
+    current_user: User = Depends(get_current_user)
+):
+    """Download PDF of E-FIR document"""
+    from fastapi.responses import FileResponse
+    import os
+    
+    efir_service = EFIRService()
+    efir_doc = await efir_service.get_efir_by_id(efir_id)
+    
+    if not efir_doc:
+        raise HTTPException(status_code=404, detail="E-FIR document not found")
+    
+    if not efir_doc.pdf_file_path or not os.path.exists(efir_doc.pdf_file_path):
+        # Generate PDF if it doesn't exist
+        verification_url = "https://efir-system.gov.in/verify"
+        pdf_path = await efir_service.generate_pdf(efir_id, verification_url)
+        if not pdf_path:
+            raise HTTPException(status_code=500, detail="PDF generation failed")
+    else:
+        pdf_path = efir_doc.pdf_file_path
+    
+    filename = f"{efir_doc.fir_number.replace('/', '-')}_v{efir_doc.current_version}.pdf"
+    
+    return FileResponse(
+        path=pdf_path,
+        filename=filename,
+        media_type='application/pdf'
+    )
+
+@api_router.get("/efir/{efir_id}/history")
+async def get_efir_history(
+    efir_id: str,
+    current_user: User = Depends(get_current_user)
+):
+    """Get version history of E-FIR document"""
+    efir_service = EFIRService()
+    history = await efir_service.get_document_history(efir_id)
+    
+    if not history:
+        raise HTTPException(status_code=404, detail="E-FIR document not found")
+    
+    return {"fir_id": efir_id, "history": history}
+
+@api_router.get("/efir/verify/{fir_number}")
+async def verify_efir_document(
+    fir_number: str,
+    document_hash: str
+):
+    """Verify E-FIR document authenticity (public endpoint)"""
+    efir_service = EFIRService()
+    verification_result = await efir_service.verify_document(fir_number, document_hash)
+    return verification_result
+
+# ============================================================================
 # HEALTH CHECK ROUTES
 # ============================================================================
 
