@@ -120,7 +120,6 @@ class EFIRService:
         # Update document
         update_dict = update_data.model_dump(exclude_unset=True, exclude={"changes_summary"})
         update_dict["current_version"] = current_doc.current_version + 1
-        update_dict["$push"] = {"versions": version_entry.model_dump()}
         
         # Calculate new document hash
         temp_doc = current_doc.model_copy(update=update_dict)
