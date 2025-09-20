@@ -795,6 +795,248 @@ class TourismSafetyAPITester:
                 f"Tourists with masked contacts: {masked_contacts_count}/{len(tourists_data)} ({contacts_masking_ratio:.1%})"
             )
 
+    async def test_efir_system(self):
+        """Test E-FIR (Electronic First Information Report) system"""
+        print("\n=== Testing E-FIR System ===")
+        
+        if not self.auth_token:
+            self.log_test("E-FIR System", False, "No auth token available")
+            return
+        
+        # Test data for E-FIR creation
+        efir_create_data = {
+            "title": "Tourist Safety Incident - Unauthorized Guide Activity",
+            "fir_type": "tourist_incident",
+            "priority": "high",
+            "incident_date": "2025-01-15T14:30:00Z",
+            "incident_location": {
+                "coordinates": {
+                    "type": "Point",
+                    "coordinates": [88.2700, 27.0400]
+                },
+                "address": "Mall Road, Darjeeling, West Bengal",
+                "timestamp": "2025-01-15T14:30:00Z"
+            },
+            "incident_description": "Tourist reported being approached by unauthorized guide demanding excessive fees and threatening behavior when refused. Tourist felt unsafe and requested immediate assistance.",
+            "related_tourist_id": None,
+            "related_alert_id": None,
+            "complainant_name": "Sarah Johnson",
+            "complainant_contact": "+1-555-0123",
+            "accused_details": "Male, approximately 35 years old, wearing blue jacket, claimed to be official guide but no valid ID shown",
+            "witness_details": "Local shopkeeper Mr. Ram Sharma witnessed the incident, contact: +91-9876543210",
+            "case_details": "Unauthorized guide activity violating tourism safety regulations. Tourist safety compromised due to aggressive behavior and false representation as official guide.",
+            "evidence_details": "Tourist provided photos of the accused, witness statement recorded, location coordinates captured",
+            "action_taken": "Immediate patrol dispatched to area, tourist escorted to safety, investigation initiated"
+        }
+        
+        created_efir_id = None
+        
+        # Test 1: Create E-FIR document
+        success, data, status = await self.make_request("POST", "/efir", efir_create_data)
+        if success and status == 200 and isinstance(data, dict) and 'id' in data:
+            created_efir_id = data['id']
+            fir_number = data.get('fir_number', 'Unknown')
+            self.log_test(
+                "Create E-FIR Document", 
+                True,
+                f"Status: {status}, FIR Number: {fir_number}, ID: {created_efir_id}"
+            )
+        else:
+            self.log_test(
+                "Create E-FIR Document", 
+                False,
+                f"Status: {status}, Response: {data}"
+            )
+            return  # Can't continue without a created document
+        
+        # Test 2: Get specific E-FIR document
+        success, data, status = await self.make_request("GET", f"/efir/{created_efir_id}")
+        self.log_test(
+            "Get Specific E-FIR Document", 
+            success and status == 200 and isinstance(data, dict),
+            f"Status: {status}, Title: {data.get('title', 'Unknown') if isinstance(data, dict) else 'error'}"
+        )
+        
+        # Test 3: List E-FIR documents
+        success, data, status = await self.make_request("GET", "/efir")
+        efir_list = data if isinstance(data, list) else []
+        self.log_test(
+            "List E-FIR Documents", 
+            success and status == 200 and isinstance(data, list),
+            f"Status: {status}, Found {len(efir_list)} E-FIR documents"
+        )
+        
+        # Test 4: List E-FIR documents with filters
+        params = {"fir_type": "tourist_incident", "priority": "high", "limit": 10}
+        success, data, status = await self.make_request("GET", "/efir", params=params)
+        filtered_efirs = data if isinstance(data, list) else []
+        self.log_test(
+            "List E-FIR Documents with Filters", 
+            success and status == 200,
+            f"Status: {status}, Filtered results: {len(filtered_efirs)}"
+        )
+        
+        # Test 5: Update E-FIR document
+        update_data = {
+            "status": "under_investigation",
+            "action_taken": "Investigation team assigned. Preliminary inquiry completed. Suspect identification in progress.",
+            "changes_summary": "Updated status to under investigation and added investigation progress notes"
+        }
+        
+        success, data, status = await self.make_request("PUT", f"/efir/{created_efir_id}", update_data)
+        self.log_test(
+            "Update E-FIR Document", 
+            success and status == 200,
+            f"Status: {status}, Updated version: {data.get('current_version', 'unknown') if isinstance(data, dict) else 'error'}"
+        )
+        
+        # Test 6: Get document version history
+        success, data, status = await self.make_request("GET", f"/efir/{created_efir_id}/history")
+        history_data = data.get('history', []) if isinstance(data, dict) else []
+        self.log_test(
+            "Get E-FIR Version History", 
+            success and status == 200,
+            f"Status: {status}, History entries: {len(history_data)}"
+        )
+        
+        # Test 7: Add digital signature
+        sign_request = {
+            "document_id": created_efir_id,
+            "signature_password": "password123"  # In real system, this would be officer's password
+        }
+        
+        success, data, status = await self.make_request("POST", f"/efir/{created_efir_id}/sign", sign_request)
+        self.log_test(
+            "Add Digital Signature", 
+            success and status == 200,
+            f"Status: {status}, Signed by: {data.get('signed_by', 'unknown') if isinstance(data, dict) else 'error'}"
+        )
+        
+        # Test 8: Generate PDF
+        success, data, status = await self.make_request("POST", f"/efir/{created_efir_id}/generate-pdf")
+        pdf_generated = success and status == 200 and isinstance(data, dict) and 'pdf_path' in data
+        self.log_test(
+            "Generate E-FIR PDF", 
+            pdf_generated,
+            f"Status: {status}, PDF Path: {data.get('pdf_path', 'none') if isinstance(data, dict) else 'error'}"
+        )
+        
+        # Test 9: Download PDF
+        success, data, status = await self.make_request("GET", f"/efir/{created_efir_id}/download-pdf")
+        # For PDF download, we expect binary data, so success is different
+        pdf_downloadable = success and status == 200
+        self.log_test(
+            "Download E-FIR PDF", 
+            pdf_downloadable,
+            f"Status: {status}, PDF download: {'successful' if pdf_downloadable else 'failed'}"
+        )
+        
+        # Test 10: Document verification (public endpoint - no auth required)
+        if isinstance(efir_list, list) and len(efir_list) > 0:
+            # Get the first E-FIR for verification test
+            test_efir = efir_list[0]
+            fir_number = test_efir.get('fir_number', '')
+            
+            # For verification, we need the document hash - in real scenario this comes from QR code
+            # We'll use a dummy hash for testing the endpoint
+            test_hash = "dummy_hash_for_testing"
+            
+            # Remove auth token for public endpoint
+            temp_token = self.auth_token
+            self.auth_token = None
+            
+            success, data, status = await self.make_request("GET", f"/efir/verify/{fir_number}", params={"document_hash": test_hash})
+            self.auth_token = temp_token
+            
+            # This should return verification result (likely invalid due to dummy hash)
+            verification_attempted = success and status == 200 and isinstance(data, dict)
+            self.log_test(
+                "Verify E-FIR Document (Public)", 
+                verification_attempted,
+                f"Status: {status}, Verification result: {data.get('valid', 'unknown') if isinstance(data, dict) else 'error'}"
+            )
+        else:
+            self.log_test("Verify E-FIR Document (Public)", False, "No E-FIR documents available for verification test")
+        
+        # Test 11: Search E-FIR documents
+        params = {"search": "tourist", "limit": 5}
+        success, data, status = await self.make_request("GET", "/efir", params=params)
+        search_results = data if isinstance(data, list) else []
+        self.log_test(
+            "Search E-FIR Documents", 
+            success and status == 200,
+            f"Status: {status}, Search results: {len(search_results)}"
+        )
+        
+        # Test 12: Test different E-FIR types
+        efir_types = ["safety_violation", "emergency_response", "medical_emergency"]
+        for efir_type in efir_types:
+            test_efir_data = efir_create_data.copy()
+            test_efir_data["title"] = f"Test {efir_type.replace('_', ' ').title()} Case"
+            test_efir_data["fir_type"] = efir_type
+            test_efir_data["priority"] = "medium"
+            test_efir_data["case_details"] = f"Test case for {efir_type} type E-FIR document"
+            
+            success, data, status = await self.make_request("POST", "/efir", test_efir_data)
+            self.log_test(
+                f"Create E-FIR - {efir_type.replace('_', ' ').title()}", 
+                success and status == 200,
+                f"Status: {status}, FIR Number: {data.get('fir_number', 'unknown') if isinstance(data, dict) else 'error'}"
+            )
+        
+        # Test 13: Test E-FIR priorities
+        priorities = ["low", "medium", "urgent"]
+        for priority in priorities:
+            test_efir_data = efir_create_data.copy()
+            test_efir_data["title"] = f"Test {priority.upper()} Priority Case"
+            test_efir_data["priority"] = priority
+            test_efir_data["case_details"] = f"Test case with {priority} priority level"
+            
+            success, data, status = await self.make_request("POST", "/efir", test_efir_data)
+            self.log_test(
+                f"Create E-FIR - {priority.upper()} Priority", 
+                success and status == 200,
+                f"Status: {status}, Priority: {data.get('priority', 'unknown') if isinstance(data, dict) else 'error'}"
+            )
+        
+        # Test 14: Delete E-FIR document (admin/police only)
+        # Create a test document to delete
+        delete_test_data = efir_create_data.copy()
+        delete_test_data["title"] = "Test Document for Deletion"
+        delete_test_data["case_details"] = "This document will be deleted as part of testing"
+        
+        success, data, status = await self.make_request("POST", "/efir", delete_test_data)
+        if success and status == 200 and isinstance(data, dict) and 'id' in data:
+            delete_efir_id = data['id']
+            
+            # Now delete it
+            success, data, status = await self.make_request("DELETE", f"/efir/{delete_efir_id}")
+            self.log_test(
+                "Delete E-FIR Document", 
+                success and status == 200,
+                f"Status: {status}, Response: {data.get('message', 'unknown') if isinstance(data, dict) else 'error'}"
+            )
+        else:
+            self.log_test("Delete E-FIR Document", False, "Could not create test document for deletion")
+        
+        # Test 15: Test invalid E-FIR operations
+        # Test getting non-existent E-FIR
+        fake_id = "507f1f77bcf86cd799439011"  # Valid ObjectId format but non-existent
+        success, data, status = await self.make_request("GET", f"/efir/{fake_id}")
+        self.log_test(
+            "Get Non-existent E-FIR", 
+            not success and status == 404,
+            f"Status: {status}, Expected 404 for non-existent document"
+        )
+        
+        # Test updating non-existent E-FIR
+        success, data, status = await self.make_request("PUT", f"/efir/{fake_id}", update_data)
+        self.log_test(
+            "Update Non-existent E-FIR", 
+            not success and status == 404,
+            f"Status: {status}, Expected 404 for non-existent document"
+        )
+
     async def run_all_tests(self):
         """Run all test suites"""
         print(f"🚀 Starting Tourism Safety API Tests")
@@ -820,6 +1062,9 @@ class TourismSafetyAPITester:
         await self.test_digital_id_integration()
         await self.test_service_authentication()
         await self.test_encrypted_data_separation()
+        
+        # NEW E-FIR SYSTEM TESTS
+        await self.test_efir_system()
         
         # Print summary
         print("\n" + "=" * 60)
