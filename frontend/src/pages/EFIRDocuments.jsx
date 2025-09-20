@@ -166,13 +166,13 @@ const EFIRDocuments = () => {
   };
 
   return (
-    <div className="p-6 max-w-7xl mx-auto">
+    <div className="h-full flex flex-col" style={{backgroundColor: '#111827'}}>
       {/* Header */}
-      <div className="mb-6">
+      <div className="flex-shrink-0 p-6 border-b" style={{borderColor: '#374151'}}>
         <div className="flex items-center justify-between mb-4">
           <div>
-            <h1 className="text-3xl font-bold text-gray-900">E-FIR Documents</h1>
-            <p className="text-gray-600">Electronic First Information Reports Management</p>
+            <h1 className="text-3xl font-bold" style={{color: '#F3F4F6'}}>E-FIR Documents</h1>
+            <p style={{color: '#9CA3AF'}}>Electronic First Information Reports Management</p>
           </div>
           <Button
             onClick={() => navigate('/efir/create')}
@@ -191,9 +191,19 @@ const EFIRDocuments = () => {
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               onKeyPress={(e) => e.key === 'Enter' && handleSearch()}
-              className="flex-1"
+              className="flex-1 border"
+              style={{
+                backgroundColor: '#1F2937',
+                borderColor: '#374151',
+                color: '#F3F4F6'
+              }}
             />
-            <Button onClick={handleSearch} variant="outline">
+            <Button onClick={handleSearch} variant="outline" 
+              style={{
+                borderColor: '#374151',
+                color: '#9CA3AF',
+                backgroundColor: 'transparent'
+              }}>
               <Search className="w-4 h-4" />
             </Button>
           </div>
@@ -201,6 +211,11 @@ const EFIRDocuments = () => {
             onClick={() => setShowFilters(!showFilters)}
             variant="outline"
             className="sm:w-auto"
+            style={{
+              borderColor: '#374151',
+              color: '#9CA3AF',
+              backgroundColor: 'transparent'
+            }}
           >
             <Filter className="w-4 h-4 mr-2" />
             Filters
@@ -209,15 +224,20 @@ const EFIRDocuments = () => {
 
         {/* Filter Panel */}
         {showFilters && (
-          <Card className="mb-4">
+          <Card className="mb-4 border" style={{backgroundColor: '#1F2937', borderColor: '#374151'}}>
             <CardContent className="pt-4">
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                 <div>
-                  <label className="text-sm font-medium text-gray-700 mb-1 block">Type</label>
+                  <label className="text-sm font-medium mb-1 block" style={{color: '#9CA3AF'}}>Type</label>
                   <select
                     value={filters.fir_type}
                     onChange={(e) => setFilters({ ...filters, fir_type: e.target.value })}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    style={{
+                      backgroundColor: '#374151',
+                      borderColor: '#4B5563',
+                      color: '#F3F4F6'
+                    }}
                   >
                     <option value="">All Types</option>
                     {EFIR_TYPES.map(type => (
@@ -226,11 +246,16 @@ const EFIRDocuments = () => {
                   </select>
                 </div>
                 <div>
-                  <label className="text-sm font-medium text-gray-700 mb-1 block">Status</label>
+                  <label className="text-sm font-medium mb-1 block" style={{color: '#9CA3AF'}}>Status</label>
                   <select
                     value={filters.status}
                     onChange={(e) => setFilters({ ...filters, status: e.target.value })}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    style={{
+                      backgroundColor: '#374151',
+                      borderColor: '#4B5563',
+                      color: '#F3F4F6'
+                    }}
                   >
                     <option value="">All Statuses</option>
                     {EFIR_STATUSES.map(status => (
@@ -239,11 +264,16 @@ const EFIRDocuments = () => {
                   </select>
                 </div>
                 <div>
-                  <label className="text-sm font-medium text-gray-700 mb-1 block">Priority</label>
+                  <label className="text-sm font-medium mb-1 block" style={{color: '#9CA3AF'}}>Priority</label>
                   <select
                     value={filters.priority}
                     onChange={(e) => setFilters({ ...filters, priority: e.target.value })}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    style={{
+                      backgroundColor: '#374151',
+                      borderColor: '#4B5563',
+                      color: '#F3F4F6'
+                    }}
                   >
                     <option value="">All Priorities</option>
                     {EFIR_PRIORITIES.map(priority => (
@@ -259,6 +289,11 @@ const EFIRDocuments = () => {
                     }}
                     variant="outline"
                     className="w-full"
+                    style={{
+                      borderColor: '#374151',
+                      color: '#9CA3AF',
+                      backgroundColor: 'transparent'
+                    }}
                   >
                     Clear Filters
                   </Button>
@@ -270,121 +305,149 @@ const EFIRDocuments = () => {
       </div>
 
       {/* Documents List */}
-      {loading ? (
-        <div className="flex items-center justify-center py-12">
-          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
-          <span className="ml-2 text-gray-600">Loading E-FIR documents...</span>
-        </div>
-      ) : efirDocuments.length === 0 ? (
-        <Card>
-          <CardContent className="text-center py-12">
-            <FileText className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-            <h3 className="text-lg font-medium text-gray-900 mb-2">No E-FIR Documents Found</h3>
-            <p className="text-gray-600 mb-4">
-              {searchQuery || Object.values(filters).some(f => f) 
-                ? "Try adjusting your search criteria or filters."
-                : "Get started by creating your first E-FIR document."
-              }
-            </p>
-            <Button
-              onClick={() => navigate('/efir/create')}
-              className="bg-blue-600 hover:bg-blue-700 text-white"
-            >
-              <Plus className="w-4 h-4 mr-2" />
-              Create New E-FIR
-            </Button>
-          </CardContent>
-        </Card>
-      ) : (
-        <div className="grid gap-4">
-          {efirDocuments.map((efir) => (
-            <Card key={efir.id} className="hover:shadow-md transition-shadow">
-              <CardContent className="p-6">
-                <div className="flex items-start justify-between">
-                  <div className="flex-1">
-                    <div className="flex items-center gap-3 mb-2">
-                      <h3 className="text-lg font-semibold text-gray-900">{efir.fir_number}</h3>
-                      <Badge className={getPriorityColor(efir.priority)}>
-                        {EFIR_PRIORITIES.find(p => p.value === efir.priority)?.label || efir.priority}
-                      </Badge>
-                      <Badge className={getStatusColor(efir.status)}>
-                        {EFIR_STATUSES.find(s => s.value === efir.status)?.label || efir.status}
-                      </Badge>
-                      {efir.signatures && efir.signatures.length > 0 && (
-                        <Badge className="text-green-600 bg-green-100">
-                          <Signature className="w-3 h-3 mr-1" />
-                          Signed ({efir.signatures.length})
+      <div className="flex-1 overflow-auto p-6">
+        {loading ? (
+          <div className="flex items-center justify-center py-12">
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+            <span className="ml-2" style={{color: '#9CA3AF'}}>Loading E-FIR documents...</span>
+          </div>
+        ) : efirDocuments.length === 0 ? (
+          <Card className="border" style={{backgroundColor: '#1F2937', borderColor: '#374151'}}>
+            <CardContent className="text-center py-12">
+              <FileText className="w-12 h-12 mx-auto mb-4" style={{color: '#6B7280'}} />
+              <h3 className="text-lg font-medium mb-2" style={{color: '#F3F4F6'}}>No E-FIR Documents Found</h3>
+              <p className="mb-4" style={{color: '#9CA3AF'}}>
+                {searchQuery || Object.values(filters).some(f => f) 
+                  ? "Try adjusting your search criteria or filters."
+                  : "Get started by creating your first E-FIR document."
+                }
+              </p>
+              <Button
+                onClick={() => navigate('/efir/create')}
+                className="bg-blue-600 hover:bg-blue-700 text-white"
+              >
+                <Plus className="w-4 h-4 mr-2" />
+                Create New E-FIR
+              </Button>
+            </CardContent>
+          </Card>
+        ) : (
+          <div className="grid gap-4">
+            {efirDocuments.map((efir) => (
+              <Card key={efir.id} className="hover:shadow-md transition-shadow border" 
+                style={{backgroundColor: '#1F2937', borderColor: '#374151'}}>
+                <CardContent className="p-6">
+                  <div className="flex items-start justify-between">
+                    <div className="flex-1">
+                      <div className="flex items-center gap-3 mb-2">
+                        <h3 className="text-lg font-semibold" style={{color: '#F3F4F6'}}>{efir.fir_number}</h3>
+                        <Badge className={getPriorityColor(efir.priority)}>
+                          {EFIR_PRIORITIES.find(p => p.value === efir.priority)?.label || efir.priority}
                         </Badge>
-                      )}
+                        <Badge className={getStatusColor(efir.status)}>
+                          {EFIR_STATUSES.find(s => s.value === efir.status)?.label || efir.status}
+                        </Badge>
+                        {efir.signatures && efir.signatures.length > 0 && (
+                          <Badge className="text-green-600 bg-green-100">
+                            <Signature className="w-3 h-3 mr-1" />
+                            Signed ({efir.signatures.length})
+                          </Badge>
+                        )}
+                      </div>
+                      <h4 className="text-md font-medium mb-2" style={{color: '#E5E7EB'}}>{efir.title}</h4>
+                      <p className="text-sm mb-2" style={{color: '#9CA3AF'}}>{getTypeLabel(efir.fir_type)}</p>
+                      <p className="text-sm line-clamp-2 mb-3" style={{color: '#9CA3AF'}}>{efir.incident_description}</p>
+                      <div className="flex items-center gap-4 text-xs" style={{color: '#9CA3AF'}}>
+                        <span>Created: {formatDate(efir.created_at)}</span>
+                        <span>Version: {efir.current_version}</span>
+                        <span>By: {efir.created_by}</span>
+                        {efir.incident_date && (
+                          <span>Incident: {formatDate(efir.incident_date)}</span>
+                        )}
+                      </div>
                     </div>
-                    <h4 className="text-md font-medium text-gray-800 mb-2">{efir.title}</h4>
-                    <p className="text-sm text-gray-600 mb-2">{getTypeLabel(efir.fir_type)}</p>
-                    <p className="text-sm text-gray-500 line-clamp-2 mb-3">{efir.incident_description}</p>
-                    <div className="flex items-center gap-4 text-xs text-gray-500">
-                      <span>Created: {formatDate(efir.created_at)}</span>
-                      <span>Version: {efir.current_version}</span>
-                      <span>By: {efir.created_by}</span>
-                      {efir.incident_date && (
-                        <span>Incident: {formatDate(efir.incident_date)}</span>
-                      )}
+                    <div className="flex items-center gap-2 ml-4">
+                      <Button
+                        onClick={() => navigate(`/efir/${efir.id}`)}
+                        size="sm"
+                        variant="outline"
+                        title="View Details"
+                        style={{
+                          borderColor: '#374151',
+                          color: '#9CA3AF',
+                          backgroundColor: 'transparent'
+                        }}
+                      >
+                        <Eye className="w-4 h-4" />
+                      </Button>
+                      <Button
+                        onClick={() => navigate(`/efir/${efir.id}/edit`)}
+                        size="sm"
+                        variant="outline"
+                        title="Edit"
+                        style={{
+                          borderColor: '#374151',
+                          color: '#9CA3AF',
+                          backgroundColor: 'transparent'
+                        }}
+                      >
+                        <Edit className="w-4 h-4" />
+                      </Button>
+                      <Button
+                        onClick={() => handleDownloadPDF(efir.id, efir.fir_number)}
+                        size="sm"
+                        variant="outline"
+                        title="Download PDF"
+                        style={{
+                          borderColor: '#374151',
+                          color: '#9CA3AF',
+                          backgroundColor: 'transparent'
+                        }}
+                      >
+                        <Download className="w-4 h-4" />
+                      </Button>
+                      <Button
+                        onClick={() => navigate(`/efir/${efir.id}/history`)}
+                        size="sm"
+                        variant="outline"
+                        title="View History"
+                        style={{
+                          borderColor: '#374151',
+                          color: '#9CA3AF',
+                          backgroundColor: 'transparent'
+                        }}
+                      >
+                        <Clock className="w-4 h-4" />
+                      </Button>
+                      <Button
+                        onClick={() => handleDeleteEFIR(efir.id, efir.fir_number)}
+                        size="sm"
+                        variant="outline"
+                        className="text-red-600 hover:text-red-700 hover:bg-red-50"
+                        title="Delete"
+                        style={{
+                          borderColor: '#374151',
+                          color: '#EF4444',
+                          backgroundColor: 'transparent'
+                        }}
+                      >
+                        <Trash2 className="w-4 h-4" />
+                      </Button>
                     </div>
                   </div>
-                  <div className="flex items-center gap-2 ml-4">
-                    <Button
-                      onClick={() => navigate(`/efir/${efir.id}`)}
-                      size="sm"
-                      variant="outline"
-                      title="View Details"
-                    >
-                      <Eye className="w-4 h-4" />
-                    </Button>
-                    <Button
-                      onClick={() => navigate(`/efir/${efir.id}/edit`)}
-                      size="sm"
-                      variant="outline"
-                      title="Edit"
-                    >
-                      <Edit className="w-4 h-4" />
-                    </Button>
-                    <Button
-                      onClick={() => handleDownloadPDF(efir.id, efir.fir_number)}
-                      size="sm"
-                      variant="outline"
-                      title="Download PDF"
-                    >
-                      <Download className="w-4 h-4" />
-                    </Button>
-                    <Button
-                      onClick={() => navigate(`/efir/${efir.id}/history`)}
-                      size="sm"
-                      variant="outline"
-                      title="View History"
-                    >
-                      <Clock className="w-4 h-4" />
-                    </Button>
-                    <Button
-                      onClick={() => handleDeleteEFIR(efir.id, efir.fir_number)}
-                      size="sm"
-                      variant="outline"
-                      className="text-red-600 hover:text-red-700 hover:bg-red-50"
-                      title="Delete"
-                    >
-                      <Trash2 className="w-4 h-4" />
-                    </Button>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-          ))}
-        </div>
-      )}
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        )}
 
-      {/* Results Summary */}
-      {!loading && efirDocuments.length > 0 && (
-        <div className="mt-6 text-center text-sm text-gray-500">
-          Showing {efirDocuments.length} E-FIR document{efirDocuments.length !== 1 ? 's' : ''}
-        </div>
-      )}
+        {/* Results Summary */}
+        {!loading && efirDocuments.length > 0 && (
+          <div className="mt-6 text-center text-sm" style={{color: '#9CA3AF'}}>
+            Showing {efirDocuments.length} E-FIR document{efirDocuments.length !== 1 ? 's' : ''}
+          </div>
+        )}
+      </div>
     </div>
   );
 };

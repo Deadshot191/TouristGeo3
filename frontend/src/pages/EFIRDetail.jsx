@@ -179,39 +179,46 @@ const EFIRDetail = () => {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center min-h-screen">
+      <div className="h-full flex items-center justify-center" style={{backgroundColor: '#111827'}}>
         <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
-        <span className="ml-2 text-gray-600">Loading E-FIR document...</span>
+        <span className="ml-2" style={{color: '#9CA3AF'}}>Loading E-FIR document...</span>
       </div>
     );
   }
 
   if (!efir) {
     return (
-      <div className="max-w-4xl mx-auto p-6">
-        <Card>
-          <CardContent className="text-center py-12">
-            <FileText className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-            <h3 className="text-lg font-medium text-gray-900 mb-2">E-FIR Document Not Found</h3>
-            <p className="text-gray-600 mb-4">The requested E-FIR document could not be found.</p>
-            <Button onClick={() => navigate('/efir')}>
-              Back to E-FIR Documents
-            </Button>
-          </CardContent>
-        </Card>
+      <div className="h-full flex flex-col" style={{backgroundColor: '#111827'}}>
+        <div className="flex-1 flex items-center justify-center p-6">
+          <Card className="border" style={{backgroundColor: '#1F2937', borderColor: '#374151'}}>
+            <CardContent className="text-center py-12">
+              <FileText className="w-12 h-12 mx-auto mb-4" style={{color: '#6B7280'}} />
+              <h3 className="text-lg font-medium mb-2" style={{color: '#F3F4F6'}}>E-FIR Document Not Found</h3>
+              <p className="mb-4" style={{color: '#9CA3AF'}}>The requested E-FIR document could not be found.</p>
+              <Button onClick={() => navigate('/efir')} className="bg-blue-600 hover:bg-blue-700 text-white">
+                Back to E-FIR Documents
+              </Button>
+            </CardContent>
+          </Card>
+        </div>
       </div>
     );
   }
 
   return (
-    <div className="max-w-4xl mx-auto p-6">
+    <div className="h-full flex flex-col" style={{backgroundColor: '#111827'}}>
       {/* Header */}
-      <div className="mb-6">
+      <div className="flex-shrink-0 p-6 border-b" style={{borderColor: '#374151'}}>
         <div className="flex items-center gap-4 mb-4">
           <Button
             onClick={() => navigate('/efir')}
             variant="outline"
             size="sm"
+            style={{
+              borderColor: '#374151',
+              color: '#9CA3AF',
+              backgroundColor: 'transparent'
+            }}
           >
             <ArrowLeft className="w-4 h-4 mr-2" />
             Back to E-FIR Documents
@@ -222,8 +229,8 @@ const EFIRDetail = () => {
           <div className="flex items-center gap-4">
             <FileText className="w-8 h-8 text-blue-600" />
             <div>
-              <h1 className="text-3xl font-bold text-gray-900">{efir.fir_number}</h1>
-              <p className="text-lg text-gray-600">{efir.title}</p>
+              <h1 className="text-3xl font-bold" style={{color: '#F3F4F6'}}>{efir.fir_number}</h1>
+              <p className="text-lg" style={{color: '#9CA3AF'}}>{efir.title}</p>
               <div className="flex items-center gap-2 mt-2">
                 <Badge className={getPriorityColor(efir.priority)}>
                   {EFIR_PRIORITIES.find(p => p.value === efir.priority)?.label || efir.priority}
@@ -246,6 +253,11 @@ const EFIRDetail = () => {
               onClick={() => navigate(`/efir/${id}/edit`)}
               variant="outline"
               size="sm"
+              style={{
+                borderColor: '#374151',
+                color: '#9CA3AF',
+                backgroundColor: 'transparent'
+              }}
             >
               <Edit className="w-4 h-4 mr-2" />
               Edit
@@ -254,6 +266,11 @@ const EFIRDetail = () => {
               onClick={handleDownloadPDF}
               variant="outline"
               size="sm"
+              style={{
+                borderColor: '#374151',
+                color: '#9CA3AF',
+                backgroundColor: 'transparent'
+              }}
             >
               <Download className="w-4 h-4 mr-2" />
               Download PDF
@@ -263,6 +280,11 @@ const EFIRDetail = () => {
                 onClick={handleGeneratePDF}
                 variant="outline"
                 size="sm"
+                style={{
+                  borderColor: '#374151',
+                  color: '#9CA3AF',
+                  backgroundColor: 'transparent'
+                }}
               >
                 <FileText className="w-4 h-4 mr-2" />
                 Generate PDF
@@ -275,21 +297,26 @@ const EFIRDetail = () => {
                   size="sm"
                   disabled={isAlreadySigned}
                   className={isAlreadySigned ? "opacity-50" : ""}
+                  style={{
+                    borderColor: '#374151',
+                    color: isAlreadySigned ? '#6B7280' : '#9CA3AF',
+                    backgroundColor: 'transparent'
+                  }}
                 >
                   <Signature className="w-4 h-4 mr-2" />
                   {isAlreadySigned ? 'Already Signed' : 'Sign Document'}
                 </Button>
               </DialogTrigger>
-              <DialogContent>
+              <DialogContent style={{backgroundColor: '#1F2937', borderColor: '#374151'}}>
                 <DialogHeader>
-                  <DialogTitle>Digital Signature</DialogTitle>
+                  <DialogTitle style={{color: '#F3F4F6'}}>Digital Signature</DialogTitle>
                 </DialogHeader>
                 <div className="space-y-4">
-                  <p className="text-sm text-gray-600">
+                  <p className="text-sm" style={{color: '#9CA3AF'}}>
                     Enter your password to digitally sign this E-FIR document.
                   </p>
                   <div>
-                    <label className="text-sm font-medium text-gray-700 mb-1 block">
+                    <label className="text-sm font-medium mb-1 block" style={{color: '#9CA3AF'}}>
                       Password
                     </label>
                     <Input
@@ -297,6 +324,11 @@ const EFIRDetail = () => {
                       value={signPassword}
                       onChange={(e) => setSignPassword(e.target.value)}
                       placeholder="Enter your password"
+                      style={{
+                        backgroundColor: '#374151',
+                        borderColor: '#4B5563',
+                        color: '#F3F4F6'
+                      }}
                     />
                   </div>
                   <div className="flex justify-end gap-2">
@@ -306,12 +338,18 @@ const EFIRDetail = () => {
                         setShowSignDialog(false);
                         setSignPassword('');
                       }}
+                      style={{
+                        borderColor: '#374151',
+                        color: '#9CA3AF',
+                        backgroundColor: 'transparent'
+                      }}
                     >
                       Cancel
                     </Button>
                     <Button
                       onClick={handleSignDocument}
                       disabled={signing || !signPassword.trim()}
+                      className="bg-blue-600 hover:bg-blue-700 text-white"
                     >
                       {signing ? (
                         <>
@@ -333,6 +371,11 @@ const EFIRDetail = () => {
               onClick={() => navigate(`/efir/${id}/history`)}
               variant="outline"
               size="sm"
+              style={{
+                borderColor: '#374151',
+                color: '#9CA3AF',
+                backgroundColor: 'transparent'
+              }}
             >
               <Clock className="w-4 h-4 mr-2" />
               History
@@ -341,230 +384,232 @@ const EFIRDetail = () => {
         </div>
       </div>
 
-      <div className="grid gap-6">
-        {/* Document Information */}
-        <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <FileText className="w-5 h-5" />
-              Document Information
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-              <div>
-                <label className="text-sm font-medium text-gray-500">FIR Number</label>
-                <p className="text-sm font-mono bg-gray-100 px-2 py-1 rounded">{efir.fir_number}</p>
-              </div>
-              <div>
-                <label className="text-sm font-medium text-gray-500">Type</label>
-                <p className="text-sm">{getTypeLabel(efir.fir_type)}</p>
-              </div>
-              <div>
-                <label className="text-sm font-medium text-gray-500">Version</label>
-                <p className="text-sm">{efir.current_version}</p>
-              </div>
-              <div>
-                <label className="text-sm font-medium text-gray-500">Created By</label>
-                <p className="text-sm">{efir.created_by}</p>
-              </div>
-              <div>
-                <label className="text-sm font-medium text-gray-500">Created Date</label>
-                <p className="text-sm">{formatDate(efir.created_at)}</p>
-              </div>
-              <div>
-                <label className="text-sm font-medium text-gray-500">PDF Status</label>
-                <p className="text-sm">{efir.has_pdf ? 'Generated' : 'Not Generated'}</p>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-
-        {/* Incident Details */}
-        <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <AlertTriangle className="w-5 h-5" />
-              Incident Details
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div>
-                <label className="text-sm font-medium text-gray-500">Incident Date</label>
-                <p className="text-sm">{formatDate(efir.incident_date)}</p>
-              </div>
-              <div>
-                <label className="text-sm font-medium text-gray-500">Location</label>
-                <p className="text-sm">
-                  {efir.incident_location?.address || 'No address provided'}
-                  {efir.incident_location?.coordinates && (
-                    <span className="block text-xs text-gray-400 font-mono">
-                      {efir.incident_location.coordinates.coordinates[1].toFixed(6)}, 
-                      {efir.incident_location.coordinates.coordinates[0].toFixed(6)}
-                    </span>
-                  )}
-                </p>
-              </div>
-            </div>
-            <div>
-              <label className="text-sm font-medium text-gray-500">Description</label>
-              <p className="text-sm mt-1 whitespace-pre-wrap">{efir.incident_description}</p>
-            </div>
-          </CardContent>
-        </Card>
-
-        {/* Parties Involved */}
-        <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <Users className="w-5 h-5" />
-              Parties Involved
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div>
-                <label className="text-sm font-medium text-gray-500">Complainant</label>
-                <p className="text-sm">{efir.complainant_name || 'Not specified'}</p>
-                {efir.complainant_contact && (
-                  <p className="text-xs text-gray-400">{efir.complainant_contact}</p>
-                )}
-              </div>
-            </div>
-            {efir.accused_details && (
-              <div>
-                <label className="text-sm font-medium text-gray-500">Accused Details</label>
-                <p className="text-sm mt-1 whitespace-pre-wrap">{efir.accused_details}</p>
-              </div>
-            )}
-            {efir.witness_details && (
-              <div>
-                <label className="text-sm font-medium text-gray-500">Witness Details</label>
-                <p className="text-sm mt-1 whitespace-pre-wrap">{efir.witness_details}</p>
-              </div>
-            )}
-          </CardContent>
-        </Card>
-
-        {/* Case Information */}
-        <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <Shield className="w-5 h-5" />
-              Case Information
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            <div>
-              <label className="text-sm font-medium text-gray-500">Case Details</label>
-              <p className="text-sm mt-1 whitespace-pre-wrap">{efir.case_details}</p>
-            </div>
-            {efir.evidence_details && (
-              <div>
-                <label className="text-sm font-medium text-gray-500">Evidence Details</label>
-                <p className="text-sm mt-1 whitespace-pre-wrap">{efir.evidence_details}</p>
-              </div>
-            )}
-            {efir.action_taken && (
-              <div>
-                <label className="text-sm font-medium text-gray-500">Action Taken</label>
-                <p className="text-sm mt-1 whitespace-pre-wrap">{efir.action_taken}</p>
-              </div>
-            )}
-          </CardContent>
-        </Card>
-
-        {/* Related Information */}
-        {(efir.related_tourist_id || efir.related_alert_id) && (
-          <Card>
+      <div className="flex-1 overflow-auto p-6">
+        <div className="max-w-4xl mx-auto grid gap-6">
+          {/* Document Information */}
+          <Card className="border" style={{backgroundColor: '#1F2937', borderColor: '#374151'}}>
             <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <MapPin className="w-5 h-5" />
-                Related Information
+              <CardTitle className="flex items-center gap-2" style={{color: '#F3F4F6'}}>
+                <FileText className="w-5 h-5" />
+                Document Information
               </CardTitle>
             </CardHeader>
             <CardContent>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                <div>
+                  <label className="text-sm font-medium" style={{color: '#9CA3AF'}}>FIR Number</label>
+                  <p className="text-sm font-mono px-2 py-1 rounded" style={{backgroundColor: '#374151', color: '#F3F4F6'}}>{efir.fir_number}</p>
+                </div>
+                <div>
+                  <label className="text-sm font-medium" style={{color: '#9CA3AF'}}>Type</label>
+                  <p className="text-sm" style={{color: '#F3F4F6'}}>{getTypeLabel(efir.fir_type)}</p>
+                </div>
+                <div>
+                  <label className="text-sm font-medium" style={{color: '#9CA3AF'}}>Version</label>
+                  <p className="text-sm" style={{color: '#F3F4F6'}}>{efir.current_version}</p>
+                </div>
+                <div>
+                  <label className="text-sm font-medium" style={{color: '#9CA3AF'}}>Created By</label>
+                  <p className="text-sm" style={{color: '#F3F4F6'}}>{efir.created_by}</p>
+                </div>
+                <div>
+                  <label className="text-sm font-medium" style={{color: '#9CA3AF'}}>Created Date</label>
+                  <p className="text-sm" style={{color: '#F3F4F6'}}>{formatDate(efir.created_at)}</p>
+                </div>
+                <div>
+                  <label className="text-sm font-medium" style={{color: '#9CA3AF'}}>PDF Status</label>
+                  <p className="text-sm" style={{color: '#F3F4F6'}}>{efir.has_pdf ? 'Generated' : 'Not Generated'}</p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Incident Details */}
+          <Card className="border" style={{backgroundColor: '#1F2937', borderColor: '#374151'}}>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2" style={{color: '#F3F4F6'}}>
+                <AlertTriangle className="w-5 h-5" />
+                Incident Details
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                {efir.related_tourist_id && (
-                  <div>
-                    <label className="text-sm font-medium text-gray-500">Related Tourist ID</label>
-                    <p className="text-sm font-mono bg-gray-100 px-2 py-1 rounded">{efir.related_tourist_id}</p>
-                  </div>
-                )}
-                {efir.related_alert_id && (
-                  <div>
-                    <label className="text-sm font-medium text-gray-500">Related Alert ID</label>
-                    <p className="text-sm font-mono bg-gray-100 px-2 py-1 rounded">{efir.related_alert_id}</p>
-                  </div>
-                )}
+                <div>
+                  <label className="text-sm font-medium" style={{color: '#9CA3AF'}}>Incident Date</label>
+                  <p className="text-sm" style={{color: '#F3F4F6'}}>{formatDate(efir.incident_date)}</p>
+                </div>
+                <div>
+                  <label className="text-sm font-medium" style={{color: '#9CA3AF'}}>Location</label>
+                  <p className="text-sm" style={{color: '#F3F4F6'}}>
+                    {efir.incident_location?.address || 'No address provided'}
+                    {efir.incident_location?.coordinates && (
+                      <span className="block text-xs font-mono" style={{color: '#9CA3AF'}}>
+                        {efir.incident_location.coordinates.coordinates[1].toFixed(6)}, 
+                        {efir.incident_location.coordinates.coordinates[0].toFixed(6)}
+                      </span>
+                    )}
+                  </p>
+                </div>
+              </div>
+              <div>
+                <label className="text-sm font-medium" style={{color: '#9CA3AF'}}>Description</label>
+                <p className="text-sm mt-1 whitespace-pre-wrap" style={{color: '#F3F4F6'}}>{efir.incident_description}</p>
               </div>
             </CardContent>
           </Card>
-        )}
 
-        {/* Digital Signatures */}
-        {efir.signatures && efir.signatures.length > 0 && (
-          <Card>
+          {/* Parties Involved */}
+          <Card className="border" style={{backgroundColor: '#1F2937', borderColor: '#374151'}}>
             <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <Signature className="w-5 h-5" />
-                Digital Signatures
+              <CardTitle className="flex items-center gap-2" style={{color: '#F3F4F6'}}>
+                <Users className="w-5 h-5" />
+                Parties Involved
               </CardTitle>
             </CardHeader>
-            <CardContent>
-              <div className="space-y-4">
-                {efir.signatures.map((signature, index) => (
-                  <div key={index} className="border rounded-lg p-4 bg-green-50">
-                    <div className="flex items-center gap-3 mb-2">
-                      <CheckCircle className="w-5 h-5 text-green-600" />
-                      <h4 className="font-medium text-green-900">{signature.officer_name}</h4>
-                    </div>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
-                      <div>
-                        <label className="font-medium text-gray-500">Badge Number</label>
-                        <p>{signature.officer_badge}</p>
-                      </div>
-                      <div>
-                        <label className="font-medium text-gray-500">Department</label>
-                        <p>{signature.department}</p>
-                      </div>
-                      <div>
-                        <label className="font-medium text-gray-500">Signed At</label>
-                        <p>{formatDate(signature.signed_at)}</p>
-                      </div>
-                      <div>
-                        <label className="font-medium text-gray-500">Signature Hash</label>
-                        <p className="font-mono text-xs break-all">{signature.signature_hash.substring(0, 32)}...</p>
-                      </div>
-                    </div>
-                  </div>
-                ))}
+            <CardContent className="space-y-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label className="text-sm font-medium" style={{color: '#9CA3AF'}}>Complainant</label>
+                  <p className="text-sm" style={{color: '#F3F4F6'}}>{efir.complainant_name || 'Not specified'}</p>
+                  {efir.complainant_contact && (
+                    <p className="text-xs" style={{color: '#9CA3AF'}}>{efir.complainant_contact}</p>
+                  )}
+                </div>
               </div>
+              {efir.accused_details && (
+                <div>
+                  <label className="text-sm font-medium" style={{color: '#9CA3AF'}}>Accused Details</label>
+                  <p className="text-sm mt-1 whitespace-pre-wrap" style={{color: '#F3F4F6'}}>{efir.accused_details}</p>
+                </div>
+              )}
+              {efir.witness_details && (
+                <div>
+                  <label className="text-sm font-medium" style={{color: '#9CA3AF'}}>Witness Details</label>
+                  <p className="text-sm mt-1 whitespace-pre-wrap" style={{color: '#F3F4F6'}}>{efir.witness_details}</p>
+                </div>
+              )}
             </CardContent>
           </Card>
-        )}
 
-        {/* QR Code for Verification */}
-        {efir.qr_code_data && (
-          <Card>
+          {/* Case Information */}
+          <Card className="border" style={{backgroundColor: '#1F2937', borderColor: '#374151'}}>
             <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <QrCode className="w-5 h-5" />
-                Document Verification
+              <CardTitle className="flex items-center gap-2" style={{color: '#F3F4F6'}}>
+                <Shield className="w-5 h-5" />
+                Case Information
               </CardTitle>
             </CardHeader>
-            <CardContent className="text-center">
-              <div className="bg-white inline-block p-4 rounded-lg border">
-                <QrCode className="w-32 h-32 text-gray-400 mx-auto" />
-                <p className="text-sm text-gray-600 mt-2">Scan to verify document authenticity</p>
+            <CardContent className="space-y-4">
+              <div>
+                <label className="text-sm font-medium" style={{color: '#9CA3AF'}}>Case Details</label>
+                <p className="text-sm mt-1 whitespace-pre-wrap" style={{color: '#F3F4F6'}}>{efir.case_details}</p>
               </div>
-              <p className="text-xs text-gray-500 mt-4">
-                QR Code contains verification data for this document
-              </p>
+              {efir.evidence_details && (
+                <div>
+                  <label className="text-sm font-medium" style={{color: '#9CA3AF'}}>Evidence Details</label>
+                  <p className="text-sm mt-1 whitespace-pre-wrap" style={{color: '#F3F4F6'}}>{efir.evidence_details}</p>
+                </div>
+              )}
+              {efir.action_taken && (
+                <div>
+                  <label className="text-sm font-medium" style={{color: '#9CA3AF'}}>Action Taken</label>
+                  <p className="text-sm mt-1 whitespace-pre-wrap" style={{color: '#F3F4F6'}}>{efir.action_taken}</p>
+                </div>
+              )}
             </CardContent>
           </Card>
-        )}
+
+          {/* Related Information */}
+          {(efir.related_tourist_id || efir.related_alert_id) && (
+            <Card className="border" style={{backgroundColor: '#1F2937', borderColor: '#374151'}}>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2" style={{color: '#F3F4F6'}}>
+                  <MapPin className="w-5 h-5" />
+                  Related Information
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  {efir.related_tourist_id && (
+                    <div>
+                      <label className="text-sm font-medium" style={{color: '#9CA3AF'}}>Related Tourist ID</label>
+                      <p className="text-sm font-mono px-2 py-1 rounded" style={{backgroundColor: '#374151', color: '#F3F4F6'}}>{efir.related_tourist_id}</p>
+                    </div>
+                  )}
+                  {efir.related_alert_id && (
+                    <div>
+                      <label className="text-sm font-medium" style={{color: '#9CA3AF'}}>Related Alert ID</label>
+                      <p className="text-sm font-mono px-2 py-1 rounded" style={{backgroundColor: '#374151', color: '#F3F4F6'}}>{efir.related_alert_id}</p>
+                    </div>
+                  )}
+                </div>
+              </CardContent>
+            </Card>
+          )}
+
+          {/* Digital Signatures */}
+          {efir.signatures && efir.signatures.length > 0 && (
+            <Card className="border" style={{backgroundColor: '#1F2937', borderColor: '#374151'}}>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2" style={{color: '#F3F4F6'}}>
+                  <Signature className="w-5 h-5" />
+                  Digital Signatures
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-4">
+                  {efir.signatures.map((signature, index) => (
+                    <div key={index} className="border rounded-lg p-4" style={{borderColor: '#16A34A', backgroundColor: '#15803D20'}}>
+                      <div className="flex items-center gap-3 mb-2">
+                        <CheckCircle className="w-5 h-5 text-green-600" />
+                        <h4 className="font-medium text-green-400">{signature.officer_name}</h4>
+                      </div>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+                        <div>
+                          <label className="font-medium" style={{color: '#9CA3AF'}}>Badge Number</label>
+                          <p style={{color: '#F3F4F6'}}>{signature.officer_badge}</p>
+                        </div>
+                        <div>
+                          <label className="font-medium" style={{color: '#9CA3AF'}}>Department</label>
+                          <p style={{color: '#F3F4F6'}}>{signature.department}</p>
+                        </div>
+                        <div>
+                          <label className="font-medium" style={{color: '#9CA3AF'}}>Signed At</label>
+                          <p style={{color: '#F3F4F6'}}>{formatDate(signature.signed_at)}</p>
+                        </div>
+                        <div>
+                          <label className="font-medium" style={{color: '#9CA3AF'}}>Signature Hash</label>
+                          <p className="font-mono text-xs break-all" style={{color: '#F3F4F6'}}>{signature.signature_hash.substring(0, 32)}...</p>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+          )}
+
+          {/* QR Code for Verification */}
+          {efir.qr_code_data && (
+            <Card className="border" style={{backgroundColor: '#1F2937', borderColor: '#374151'}}>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2" style={{color: '#F3F4F6'}}>
+                  <QrCode className="w-5 h-5" />
+                  Document Verification
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="text-center">
+                <div className="inline-block p-4 rounded-lg border" style={{backgroundColor: '#F3F4F6', borderColor: '#374151'}}>
+                  <QrCode className="w-32 h-32 mx-auto" style={{color: '#6B7280'}} />
+                  <p className="text-sm mt-2" style={{color: '#6B7280'}}>Scan to verify document authenticity</p>
+                </div>
+                <p className="text-xs mt-4" style={{color: '#9CA3AF'}}>
+                  QR Code contains verification data for this document
+                </p>
+              </CardContent>
+            </Card>
+          )}
+        </div>
       </div>
     </div>
   );

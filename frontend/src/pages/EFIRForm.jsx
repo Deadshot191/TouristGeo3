@@ -219,9 +219,9 @@ const EFIRForm = () => {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center min-h-screen">
+      <div className="h-full flex items-center justify-center" style={{backgroundColor: '#111827'}}>
         <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
-        <span className="ml-2 text-gray-600">Loading E-FIR document...</span>
+        <span className="ml-2" style={{color: '#9CA3AF'}}>Loading E-FIR document...</span>
       </div>
     );
   }
@@ -230,14 +230,19 @@ const EFIRForm = () => {
   const coordinatesDisplay = `${currentCoordinates[1]}, ${currentCoordinates[0]}`; // lat, lng for display
 
   return (
-    <div className="max-w-4xl mx-auto p-6">
+    <div className="h-full flex flex-col" style={{backgroundColor: '#111827'}}>
       {/* Header */}
-      <div className="mb-6">
+      <div className="flex-shrink-0 p-6 border-b" style={{borderColor: '#374151'}}>
         <div className="flex items-center gap-4 mb-4">
           <Button
             onClick={() => navigate('/efir')}
             variant="outline"
             size="sm"
+            style={{
+              borderColor: '#374151',
+              color: '#9CA3AF',
+              backgroundColor: 'transparent'
+            }}
           >
             <ArrowLeft className="w-4 h-4 mr-2" />
             Back to E-FIR Documents
@@ -246,308 +251,405 @@ const EFIRForm = () => {
         <div className="flex items-center gap-3">
           <FileText className="w-8 h-8 text-blue-600" />
           <div>
-            <h1 className="text-3xl font-bold text-gray-900">
+            <h1 className="text-3xl font-bold" style={{color: '#F3F4F6'}}>
               {isEdit ? 'Edit E-FIR Document' : 'Create New E-FIR Document'}
             </h1>
-            <p className="text-gray-600">Electronic First Information Report</p>
+            <p style={{color: '#9CA3AF'}}>Electronic First Information Report</p>
           </div>
         </div>
       </div>
 
-      <form onSubmit={handleSubmit} className="space-y-6">
-        {/* Basic Information */}
-        <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <FileText className="w-5 h-5" />
-              Basic Information
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div>
-                <label className="text-sm font-medium text-gray-700 mb-1 block">
-                  Title <span className="text-red-500">*</span>
-                </label>
-                <Input
-                  value={formData.title}
-                  onChange={(e) => handleInputChange('title', e.target.value)}
-                  placeholder="Enter E-FIR title"
-                  required
-                />
-              </div>
-              <div>
-                <label className="text-sm font-medium text-gray-700 mb-1 block">Type</label>
-                <select
-                  value={formData.fir_type}
-                  onChange={(e) => handleInputChange('fir_type', e.target.value)}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                >
-                  {EFIR_TYPES.map(type => (
-                    <option key={type.value} value={type.value}>{type.label}</option>
-                  ))}
-                </select>
-              </div>
-              <div>
-                <label className="text-sm font-medium text-gray-700 mb-1 block">Priority</label>
-                <select
-                  value={formData.priority}
-                  onChange={(e) => handleInputChange('priority', e.target.value)}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                >
-                  {EFIR_PRIORITIES.map(priority => (
-                    <option key={priority.value} value={priority.value}>{priority.label}</option>
-                  ))}
-                </select>
-              </div>
-              {isEdit && (
+      <div className="flex-1 overflow-auto p-6">
+        <form onSubmit={handleSubmit} className="max-w-4xl mx-auto space-y-6">
+          {/* Basic Information */}
+          <Card className="border" style={{backgroundColor: '#1F2937', borderColor: '#374151'}}>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2" style={{color: '#F3F4F6'}}>
+                <FileText className="w-5 h-5" />
+                Basic Information
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                  <label className="text-sm font-medium text-gray-700 mb-1 block">Status</label>
+                  <label className="text-sm font-medium mb-1 block" style={{color: '#9CA3AF'}}>
+                    Title <span className="text-red-500">*</span>
+                  </label>
+                  <Input
+                    value={formData.title}
+                    onChange={(e) => handleInputChange('title', e.target.value)}
+                    placeholder="Enter E-FIR title"
+                    required
+                    style={{
+                      backgroundColor: '#374151',
+                      borderColor: '#4B5563',
+                      color: '#F3F4F6'
+                    }}
+                  />
+                </div>
+                <div>
+                  <label className="text-sm font-medium mb-1 block" style={{color: '#9CA3AF'}}>Type</label>
                   <select
-                    value={formData.status}
-                    onChange={(e) => handleInputChange('status', e.target.value)}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    value={formData.fir_type}
+                    onChange={(e) => handleInputChange('fir_type', e.target.value)}
+                    className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    style={{
+                      backgroundColor: '#374151',
+                      borderColor: '#4B5563',
+                      color: '#F3F4F6'
+                    }}
                   >
-                    {EFIR_STATUSES.map(status => (
-                      <option key={status.value} value={status.value}>{status.label}</option>
+                    {EFIR_TYPES.map(type => (
+                      <option key={type.value} value={type.value}>{type.label}</option>
                     ))}
                   </select>
                 </div>
-              )}
-            </div>
-          </CardContent>
-        </Card>
-
-        {/* Incident Details */}
-        <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <AlertTriangle className="w-5 h-5" />
-              Incident Details
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div>
-                <label className="text-sm font-medium text-gray-700 mb-1 block">Incident Date & Time</label>
-                <Input
-                  type="datetime-local"
-                  value={formData.incident_date}
-                  onChange={(e) => handleInputChange('incident_date', e.target.value)}
-                />
-              </div>
-              <div>
-                <label className="text-sm font-medium text-gray-700 mb-1 block">
-                  Location Coordinates (Lat, Lng)
-                </label>
-                <Input
-                  value={coordinatesDisplay}
-                  onChange={(e) => handleInputChange('coordinates', e.target.value)}
-                  placeholder="e.g., 27.0400, 88.2700"
-                />
-              </div>
-            </div>
-            <div>
-              <label className="text-sm font-medium text-gray-700 mb-1 block">Address</label>
-              <Input
-                value={formData.incident_location?.address || ''}
-                onChange={(e) => handleInputChange('incident_location.address', e.target.value)}
-                placeholder="Enter incident location address"
-              />
-            </div>
-            <div>
-              <label className="text-sm font-medium text-gray-700 mb-1 block">
-                Incident Description <span className="text-red-500">*</span>
-              </label>
-              <Textarea
-                value={formData.incident_description}
-                onChange={(e) => handleInputChange('incident_description', e.target.value)}
-                placeholder="Describe the incident in detail"
-                rows={4}
-                required
-              />
-            </div>
-          </CardContent>
-        </Card>
-
-        {/* Parties Involved */}
-        <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <Users className="w-5 h-5" />
-              Parties Involved
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div>
-                <label className="text-sm font-medium text-gray-700 mb-1 block">Complainant Name</label>
-                <Input
-                  value={formData.complainant_name}
-                  onChange={(e) => handleInputChange('complainant_name', e.target.value)}
-                  placeholder="Enter complainant name"
-                />
-              </div>
-              <div>
-                <label className="text-sm font-medium text-gray-700 mb-1 block">Complainant Contact</label>
-                <Input
-                  value={formData.complainant_contact}
-                  onChange={(e) => handleInputChange('complainant_contact', e.target.value)}
-                  placeholder="Enter contact information"
-                />
-              </div>
-            </div>
-            <div>
-              <label className="text-sm font-medium text-gray-700 mb-1 block">Accused Details</label>
-              <Textarea
-                value={formData.accused_details}
-                onChange={(e) => handleInputChange('accused_details', e.target.value)}
-                placeholder="Describe the accused person(s)"
-                rows={3}
-              />
-            </div>
-            <div>
-              <label className="text-sm font-medium text-gray-700 mb-1 block">Witness Details</label>
-              <Textarea
-                value={formData.witness_details}
-                onChange={(e) => handleInputChange('witness_details', e.target.value)}
-                placeholder="Describe witnesses and their contact information"
-                rows={3}
-              />
-            </div>
-          </CardContent>
-        </Card>
-
-        {/* Case Information */}
-        <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <FileText className="w-5 h-5" />
-              Case Information
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            <div>
-              <label className="text-sm font-medium text-gray-700 mb-1 block">
-                Case Details <span className="text-red-500">*</span>
-              </label>
-              <Textarea
-                value={formData.case_details}
-                onChange={(e) => handleInputChange('case_details', e.target.value)}
-                placeholder="Provide detailed case information"
-                rows={4}
-                required
-              />
-            </div>
-            <div>
-              <label className="text-sm font-medium text-gray-700 mb-1 block">Evidence Details</label>
-              <Textarea
-                value={formData.evidence_details}
-                onChange={(e) => handleInputChange('evidence_details', e.target.value)}
-                placeholder="Describe evidence collected"
-                rows={3}
-              />
-            </div>
-            <div>
-              <label className="text-sm font-medium text-gray-700 mb-1 block">Action Taken</label>
-              <Textarea
-                value={formData.action_taken}
-                onChange={(e) => handleInputChange('action_taken', e.target.value)}
-                placeholder="Describe actions taken"
-                rows={3}
-              />
-            </div>
-          </CardContent>
-        </Card>
-
-        {/* Related Information */}
-        <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <MapPin className="w-5 h-5" />
-              Related Information
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div>
-                <label className="text-sm font-medium text-gray-700 mb-1 block">Related Tourist ID</label>
-                <Input
-                  value={formData.related_tourist_id}
-                  onChange={(e) => handleInputChange('related_tourist_id', e.target.value)}
-                  placeholder="Enter tourist ID if applicable"
-                />
-              </div>
-              <div>
-                <label className="text-sm font-medium text-gray-700 mb-1 block">Related Alert ID</label>
-                <Input
-                  value={formData.related_alert_id}
-                  onChange={(e) => handleInputChange('related_alert_id', e.target.value)}
-                  placeholder="Enter alert ID if applicable"
-                />
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-
-        {/* Version Information for Edit */}
-        {isEdit && (
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <Clock className="w-5 h-5" />
-                Version Information
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div>
-                <label className="text-sm font-medium text-gray-700 mb-1 block">
-                  Changes Summary <span className="text-red-500">*</span>
-                </label>
-                <Textarea
-                  value={formData.changes_summary}
-                  onChange={(e) => handleInputChange('changes_summary', e.target.value)}
-                  placeholder="Describe the changes made in this version"
-                  rows={3}
-                  required
-                />
-                <p className="text-xs text-gray-500 mt-1">
-                  This information will be used for version tracking and audit purposes.
-                </p>
+                <div>
+                  <label className="text-sm font-medium mb-1 block" style={{color: '#9CA3AF'}}>Priority</label>
+                  <select
+                    value={formData.priority}
+                    onChange={(e) => handleInputChange('priority', e.target.value)}
+                    className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    style={{
+                      backgroundColor: '#374151',
+                      borderColor: '#4B5563',
+                      color: '#F3F4F6'
+                    }}
+                  >
+                    {EFIR_PRIORITIES.map(priority => (
+                      <option key={priority.value} value={priority.value}>{priority.label}</option>
+                    ))}
+                  </select>
+                </div>
+                {isEdit && (
+                  <div>
+                    <label className="text-sm font-medium mb-1 block" style={{color: '#9CA3AF'}}>Status</label>
+                    <select
+                      value={formData.status}
+                      onChange={(e) => handleInputChange('status', e.target.value)}
+                      className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      style={{
+                        backgroundColor: '#374151',
+                        borderColor: '#4B5563',
+                        color: '#F3F4F6'
+                      }}
+                    >
+                      {EFIR_STATUSES.map(status => (
+                        <option key={status.value} value={status.value}>{status.label}</option>
+                      ))}
+                    </select>
+                  </div>
+                )}
               </div>
             </CardContent>
           </Card>
-        )}
 
-        {/* Form Actions */}
-        <div className="flex items-center justify-end gap-4 pt-6 border-t">
-          <Button
-            type="button"
-            variant="outline"
-            onClick={() => navigate('/efir')}
-            disabled={saving}
-          >
-            Cancel
-          </Button>
-          <Button
-            type="submit"
-            className="bg-blue-600 hover:bg-blue-700 text-white"
-            disabled={saving}
-          >
-            {saving ? (
-              <>
-                <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
-                {isEdit ? 'Updating...' : 'Creating...'}
-              </>
-            ) : (
-              <>
-                <Save className="w-4 h-4 mr-2" />
-                {isEdit ? 'Update E-FIR' : 'Create E-FIR'}
-              </>
-            )}
-          </Button>
-        </div>
-      </form>
+          {/* Incident Details */}
+          <Card className="border" style={{backgroundColor: '#1F2937', borderColor: '#374151'}}>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2" style={{color: '#F3F4F6'}}>
+                <AlertTriangle className="w-5 h-5" />
+                Incident Details
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label className="text-sm font-medium mb-1 block" style={{color: '#9CA3AF'}}>Incident Date & Time</label>
+                  <Input
+                    type="datetime-local"
+                    value={formData.incident_date}
+                    onChange={(e) => handleInputChange('incident_date', e.target.value)}
+                    style={{
+                      backgroundColor: '#374151',
+                      borderColor: '#4B5563',
+                      color: '#F3F4F6'
+                    }}
+                  />
+                </div>
+                <div>
+                  <label className="text-sm font-medium mb-1 block" style={{color: '#9CA3AF'}}>
+                    Location Coordinates (Lat, Lng)
+                  </label>
+                  <Input
+                    value={coordinatesDisplay}
+                    onChange={(e) => handleInputChange('coordinates', e.target.value)}
+                    placeholder="e.g., 27.0400, 88.2700"
+                    style={{
+                      backgroundColor: '#374151',
+                      borderColor: '#4B5563',
+                      color: '#F3F4F6'
+                    }}
+                  />
+                </div>
+              </div>
+              <div>
+                <label className="text-sm font-medium mb-1 block" style={{color: '#9CA3AF'}}>Address</label>
+                <Input
+                  value={formData.incident_location?.address || ''}
+                  onChange={(e) => handleInputChange('incident_location.address', e.target.value)}
+                  placeholder="Enter incident location address"
+                  style={{
+                    backgroundColor: '#374151',
+                    borderColor: '#4B5563',
+                    color: '#F3F4F6'
+                  }}
+                />
+              </div>
+              <div>
+                <label className="text-sm font-medium mb-1 block" style={{color: '#9CA3AF'}}>
+                  Incident Description <span className="text-red-500">*</span>
+                </label>
+                <Textarea
+                  value={formData.incident_description}
+                  onChange={(e) => handleInputChange('incident_description', e.target.value)}
+                  placeholder="Describe the incident in detail"
+                  rows={4}
+                  required
+                  style={{
+                    backgroundColor: '#374151',
+                    borderColor: '#4B5563',
+                    color: '#F3F4F6'
+                  }}
+                />
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Parties Involved */}
+          <Card className="border" style={{backgroundColor: '#1F2937', borderColor: '#374151'}}>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2" style={{color: '#F3F4F6'}}>
+                <Users className="w-5 h-5" />
+                Parties Involved
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label className="text-sm font-medium mb-1 block" style={{color: '#9CA3AF'}}>Complainant Name</label>
+                  <Input
+                    value={formData.complainant_name}
+                    onChange={(e) => handleInputChange('complainant_name', e.target.value)}
+                    placeholder="Enter complainant name"
+                    style={{
+                      backgroundColor: '#374151',
+                      borderColor: '#4B5563',
+                      color: '#F3F4F6'
+                    }}
+                  />
+                </div>
+                <div>
+                  <label className="text-sm font-medium mb-1 block" style={{color: '#9CA3AF'}}>Complainant Contact</label>
+                  <Input
+                    value={formData.complainant_contact}
+                    onChange={(e) => handleInputChange('complainant_contact', e.target.value)}
+                    placeholder="Enter contact information"
+                    style={{
+                      backgroundColor: '#374151',
+                      borderColor: '#4B5563',
+                      color: '#F3F4F6'
+                    }}
+                  />
+                </div>
+              </div>
+              <div>
+                <label className="text-sm font-medium mb-1 block" style={{color: '#9CA3AF'}}>Accused Details</label>
+                <Textarea
+                  value={formData.accused_details}
+                  onChange={(e) => handleInputChange('accused_details', e.target.value)}
+                  placeholder="Describe the accused person(s)"
+                  rows={3}
+                  style={{
+                    backgroundColor: '#374151',
+                    borderColor: '#4B5563',
+                    color: '#F3F4F6'
+                  }}
+                />
+              </div>
+              <div>
+                <label className="text-sm font-medium mb-1 block" style={{color: '#9CA3AF'}}>Witness Details</label>
+                <Textarea
+                  value={formData.witness_details}
+                  onChange={(e) => handleInputChange('witness_details', e.target.value)}
+                  placeholder="Describe witnesses and their contact information"
+                  rows={3}
+                  style={{
+                    backgroundColor: '#374151',
+                    borderColor: '#4B5563',
+                    color: '#F3F4F6'
+                  }}
+                />
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Case Information */}
+          <Card className="border" style={{backgroundColor: '#1F2937', borderColor: '#374151'}}>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2" style={{color: '#F3F4F6'}}>
+                <FileText className="w-5 h-5" />
+                Case Information
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div>
+                <label className="text-sm font-medium mb-1 block" style={{color: '#9CA3AF'}}>
+                  Case Details <span className="text-red-500">*</span>
+                </label>
+                <Textarea
+                  value={formData.case_details}
+                  onChange={(e) => handleInputChange('case_details', e.target.value)}
+                  placeholder="Provide detailed case information"
+                  rows={4}
+                  required
+                  style={{
+                    backgroundColor: '#374151',
+                    borderColor: '#4B5563',
+                    color: '#F3F4F6'
+                  }}
+                />
+              </div>
+              <div>
+                <label className="text-sm font-medium mb-1 block" style={{color: '#9CA3AF'}}>Evidence Details</label>
+                <Textarea
+                  value={formData.evidence_details}
+                  onChange={(e) => handleInputChange('evidence_details', e.target.value)}
+                  placeholder="Describe evidence collected"
+                  rows={3}
+                  style={{
+                    backgroundColor: '#374151',
+                    borderColor: '#4B5563',
+                    color: '#F3F4F6'
+                  }}
+                />
+              </div>
+              <div>
+                <label className="text-sm font-medium mb-1 block" style={{color: '#9CA3AF'}}>Action Taken</label>
+                <Textarea
+                  value={formData.action_taken}
+                  onChange={(e) => handleInputChange('action_taken', e.target.value)}
+                  placeholder="Describe actions taken"
+                  rows={3}
+                  style={{
+                    backgroundColor: '#374151',
+                    borderColor: '#4B5563',
+                    color: '#F3F4F6'
+                  }}
+                />
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Related Information */}
+          <Card className="border" style={{backgroundColor: '#1F2937', borderColor: '#374151'}}>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2" style={{color: '#F3F4F6'}}>
+                <MapPin className="w-5 h-5" />
+                Related Information
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label className="text-sm font-medium mb-1 block" style={{color: '#9CA3AF'}}>Related Tourist ID</label>
+                  <Input
+                    value={formData.related_tourist_id}
+                    onChange={(e) => handleInputChange('related_tourist_id', e.target.value)}
+                    placeholder="Enter tourist ID if applicable"
+                    style={{
+                      backgroundColor: '#374151',
+                      borderColor: '#4B5563',
+                      color: '#F3F4F6'
+                    }}
+                  />
+                </div>
+                <div>
+                  <label className="text-sm font-medium mb-1 block" style={{color: '#9CA3AF'}}>Related Alert ID</label>
+                  <Input
+                    value={formData.related_alert_id}
+                    onChange={(e) => handleInputChange('related_alert_id', e.target.value)}
+                    placeholder="Enter alert ID if applicable"
+                    style={{
+                      backgroundColor: '#374151',
+                      borderColor: '#4B5563',
+                      color: '#F3F4F6'
+                    }}
+                  />
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Version Information for Edit */}
+          {isEdit && (
+            <Card className="border" style={{backgroundColor: '#1F2937', borderColor: '#374151'}}>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2" style={{color: '#F3F4F6'}}>
+                  <Clock className="w-5 h-5" />
+                  Version Information
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div>
+                  <label className="text-sm font-medium mb-1 block" style={{color: '#9CA3AF'}}>
+                    Changes Summary <span className="text-red-500">*</span>
+                  </label>
+                  <Textarea
+                    value={formData.changes_summary}
+                    onChange={(e) => handleInputChange('changes_summary', e.target.value)}
+                    placeholder="Describe the changes made in this version"
+                    rows={3}
+                    required
+                    style={{
+                      backgroundColor: '#374151',
+                      borderColor: '#4B5563',
+                      color: '#F3F4F6'
+                    }}
+                  />
+                  <p className="text-xs mt-1" style={{color: '#9CA3AF'}}>
+                    This information will be used for version tracking and audit purposes.
+                  </p>
+                </div>
+              </CardContent>
+            </Card>
+          )}
+
+          {/* Form Actions */}
+          <div className="flex items-center justify-end gap-4 pt-6 border-t" style={{borderColor: '#374151'}}>
+            <Button
+              type="button"
+              variant="outline"
+              onClick={() => navigate('/efir')}
+              disabled={saving}
+              style={{
+                borderColor: '#374151',
+                color: '#9CA3AF',
+                backgroundColor: 'transparent'
+              }}
+            >
+              Cancel
+            </Button>
+            <Button
+              type="submit"
+              className="bg-blue-600 hover:bg-blue-700 text-white"
+              disabled={saving}
+            >
+              {saving ? (
+                <>
+                  <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
+                  {isEdit ? 'Updating...' : 'Creating...'}
+                </>
+              ) : (
+                <>
+                  <Save className="w-4 h-4 mr-2" />
+                  {isEdit ? 'Update E-FIR' : 'Create E-FIR'}
+                </>
+              )}
+            </Button>
+          </div>
+        </form>
+      </div>
     </div>
   );
 };
