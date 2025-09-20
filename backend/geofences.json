@@ -1,0 +1,98 @@
+[
+  {
+    "name": "Restricted Forest Area",
+    "type": "restricted",
+    "risk_level": "critical",
+    "description": "Protected forest area - entry strictly prohibited",
+    "geometry": {
+      "type": "Polygon",
+      "coordinates": [[ 
+        [88.26, 27.04], 
+        [88.27, 27.04], 
+        [88.27, 27.03], 
+        [88.26, 27.03], 
+        [88.26, 27.04] 
+      ]]
+    }
+  },
+  {
+    "name": "Military Zone",
+    "type": "restricted", 
+    "risk_level": "critical",
+    "description": "Military restricted area - unauthorized access prohibited",
+    "geometry": {
+      "type": "Polygon",
+      "coordinates": [[ 
+        [88.30, 27.05], 
+        [88.31, 27.05], 
+        [88.31, 27.04], 
+        [88.30, 27.04], 
+        [88.30, 27.05] 
+      ]]
+    }
+  },
+  {
+    "name": "Avalanche Risk Zone",
+    "type": "high_risk",
+    "risk_level": "high", 
+    "description": "High avalanche risk during winter months",
+    "geometry": {
+      "type": "Polygon",
+      "coordinates": [[ 
+        [88.28, 27.06], 
+        [88.29, 27.06], 
+        [88.29, 27.055], 
+        [88.28, 27.055], 
+        [88.28, 27.06] 
+      ]]
+    }
+  },
+  {
+    "name": "Landslide Prone Area - Monsoon",
+    "type": "high_risk",
+    "risk_level": "high",
+    "description": "Unstable terrain - high landslide risk during monsoon season",
+    "geometry": {
+      "type": "Polygon",
+      "coordinates": [[ 
+        [88.245, 27.035], 
+        [88.255, 27.035], 
+        [88.255, 27.025], 
+        [88.245, 27.025], 
+        [88.245, 27.035] 
+      ]]
+    }
+  },
+  {
+    "name": "Wildlife Sanctuary Buffer",
+    "type": "high_risk",
+    "risk_level": "medium",
+    "description": "Wildlife sanctuary buffer zone - potential wild animal encounters",
+    "geometry": {
+      "type": "Polygon",
+      "coordinates": [[ 
+        [88.32, 27.02], 
+        [88.34, 27.02], 
+        [88.34, 27.01], 
+        [88.32, 27.01], 
+        [88.32, 27.02] 
+      ]]
+    }
+  },
+  {
+    "name": "Tourist Safe Zone - Mall Road",
+    "type": "safe_zone",
+    "risk_level": "low",
+    "description": "Main tourist area with regular police patrol and emergency services",
+    "geometry": {
+      "type": "Polygon",
+      "coordinates": [[ 
+        [88.2600, 27.0380], 
+        [88.2700, 27.0380], 
+        [88.2700, 27.0420], 
+        [88.2600, 27.0420], 
+        [88.2600, 27.0380] 
+      ]]
+    }
+  }
+]
