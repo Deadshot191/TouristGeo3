@@ -1,0 +1,110 @@
+{
+  "Demo Login - Inspector Kumar": {
+    "success": false,
+    "details": "Status: 401, Response: {'detail': 'Incorrect email or password'}",
+    "response_data": null,
+    "timestamp": "2025-09-20T04:06:51.827124"
+  },
+  "Demo Login - Admin User": {
+    "success": false,
+    "details": "Status: 401, Response: {'detail': 'Incorrect email or password'}",
+    "response_data": null,
+    "timestamp": "2025-09-20T04:06:51.839324"
+  },
+  "Demo Login - Police Officer": {
+    "success": false,
+    "details": "Status: 401, Response: {'detail': 'Incorrect email or password'}",
+    "response_data": null,
+    "timestamp": "2025-09-20T04:06:51.888372"
+  },
+  "Demo Accounts Overall": {
+    "success": false,
+    "details": "Successful logins: 0/3",
+    "response_data": null,
+    "timestamp": "2025-09-20T04:06:51.888412"
+  },
+  "Invalid Login - Valid Email, Wrong Password": {
+    "success": true,
+    "details": "Status: 401, Expected failure: True, Response: {'detail': 'Incorrect email or password'}",
+    "response_data": null,
+    "timestamp": "2025-09-20T04:06:51.901118"
+  },
+  "Invalid Login - Invalid Email, Valid Password": {
+    "success": true,
+    "details": "Status: 401, Expected failure: True, Response: {'detail': 'Incorrect email or password'}",
+    "response_data": null,
+    "timestamp": "2025-09-20T04:06:51.951245"
+  },
+  "Invalid Login - Malformed Email": {
+    "success": true,
+    "details": "Status: 401, Expected failure: True, Response: {'detail': 'Incorrect email or password'}",
+    "response_data": null,
+    "timestamp": "2025-09-20T04:06:51.963137"
+  },
+  "Invalid Login - Empty Email": {
+    "success": true,
+    "details": "Status: 401, Expected failure: True, Response: {'detail': 'Incorrect email or password'}",
+    "response_data": null,
+    "timestamp": "2025-09-20T04:06:51.971448"
+  },
+  "Invalid Login - Empty Password": {
+    "success": true,
+    "details": "Status: 401, Expected failure: True, Response: {'detail': 'Incorrect email or password'}",
+    "response_data": null,
+    "timestamp": "2025-09-20T04:06:52.019829"
+  },
+  "No Auth - /auth/me": {
+    "success": true,
+    "details": "Status: 403, Expected failure: True",
+    "response_data": null,
+    "timestamp": "2025-09-20T04:06:52.027100"
+  },
+  "No Auth - /tourists": {
+    "success": true,
+    "details": "Status: 403, Expected failure: True",
+    "response_data": null,
+    "timestamp": "2025-09-20T04:06:52.034383"
+  },
+  "No Auth - /alerts": {
+    "success": true,
+    "details": "Status: 403, Expected failure: True",
+    "response_data": null,
+    "timestamp": "2025-09-20T04:06:52.082592"
+  },
+  "No Auth - /analytics/dashboard": {
+    "success": true,
+    "details": "Status: 403, Expected failure: True",
+    "response_data": null,
+    "timestamp": "2025-09-20T04:06:52.090445"
+  },
+  "Invalid Token - invalid_token_format...": {
+    "success": true,
+    "details": "Status: 401, Expected 401 for invalid token",
+    "response_data": null,
+    "timestamp": "2025-09-20T04:06:52.138631"
+  },
+  "Invalid Token - Bearer invalid_token...": {
+    "success": true,
+    "details": "Status: 401, Expected 401 for invalid token",
+    "response_data": null,
+    "timestamp": "2025-09-20T04:06:52.145545"
+  },
+  "Invalid Token - eyJhbGciOiJIUzI1NiIs...": {
+    "success": true,
+    "details": "Status: 401, Expected 401 for invalid token",
+    "response_data": null,
+    "timestamp": "2025-09-20T04:06:52.152245"
+  },
+  "Invalid Token - ...": {
+    "success": false,
+    "details": "Status: 403, Expected 401 for invalid token",
+    "response_data": null,
+    "timestamp": "2025-09-20T04:06:52.199961"
+  },
+  "Invalid Token - expired_token_here...": {
+    "success": true,
+    "details": "Status: 401, Expected 401 for invalid token",
+    "response_data": null,
+    "timestamp": "2025-09-20T04:06:52.208731"
+  }
+}
