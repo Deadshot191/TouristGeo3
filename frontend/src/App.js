@@ -85,6 +85,7 @@ function AppContent() {
             onClose={handleCloseModal}
           />
         )}
+        <Toaster />
       </div>
     </ProtectedRoute>
   );
