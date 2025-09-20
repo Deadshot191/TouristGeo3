@@ -48,10 +48,28 @@ const TouristDetailModal = ({ tourist, isOpen, onClose }) => {
 
   const getStatusColor = (status) => {
     switch (status) {
-      case 'safe': return 'bg-green-600 text-white border-green-400 shadow-lg';
-      case 'anomaly': return 'bg-yellow-500 text-black border-yellow-300 shadow-lg animate-pulse';
-      case 'panic': return 'bg-red-600 text-white border-red-400 shadow-lg animate-pulse';
+      case 'safe': return 'bg-opacity-100 shadow-lg animate-none';
+      case 'anomaly': return 'bg-opacity-100 shadow-lg animate-pulse'; 
+      case 'panic': return 'bg-opacity-100 shadow-lg animate-pulse';
       default: return 'bg-gray-600 text-white border-gray-400 shadow-lg';
+    }
+  };
+
+  const getStatusBackgroundColor = (status) => {
+    switch (status) {
+      case 'safe': return '#22C55E'; // Safe Green
+      case 'anomaly': return '#F59E0B'; // Warning Amber
+      case 'panic': return '#EF4444'; // Panic Red
+      default: return '#6B7280'; // Gray
+    }
+  };
+
+  const getStatusBorderColor = (status) => {
+    switch (status) {
+      case 'safe': return '#16A34A';
+      case 'anomaly': return '#D97706';
+      case 'panic': return '#DC2626';
+      default: return '#4B5563';
     }
   };
 
