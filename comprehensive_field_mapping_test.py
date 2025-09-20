@@ -11,7 +11,7 @@ import os
 from datetime import datetime
 
 # Get backend URL from environment
-BACKEND_URL = os.environ.get('REACT_APP_BACKEND_URL', 'https://fence-alert.preview.emergentagent.com')
+BACKEND_URL = os.environ.get('REACT_APP_BACKEND_URL', 'https://efir-ui-consistency.preview.emergentagent.com')
 API_BASE_URL = f"{BACKEND_URL}/api"
 
 async def comprehensive_field_mapping_test():
