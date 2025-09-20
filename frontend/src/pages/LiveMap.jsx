@@ -217,20 +217,14 @@ const LiveMap = ({ onTouristSelect }) => {
 
       {/* Main Map Container */}
       <div className="flex-1 relative">
-        {/* Placeholder for Map Integration */}
-        <div className="absolute inset-0 rounded-lg border m-4" style={{backgroundColor: '#1F2937', borderColor: '#374151'}}>
-          <div className="h-full flex items-center justify-center">
-            <div className="text-center">
-              <MapPin className="w-16 h-16 mx-auto mb-4" style={{color: '#3B82F6'}} />
-              <h3 className="text-xl font-semibold mb-2" style={{color: '#F3F4F6'}}>Interactive Map</h3>
-              <p style={{color: '#9CA3AF'}} className="mb-4">
-                Live tourist locations and geofences will be displayed here
-              </p>
-              <p className="text-sm" style={{color: '#9CA3AF'}}>
-                Showing {tourists.length} active tourists | {geofences.length} geofences
-              </p>
-            </div>
-          </div>
+        {/* Interactive Map with Tourist Locations and Geofences */}
+        <div className="absolute inset-0 rounded-lg border m-4 overflow-hidden" style={{backgroundColor: '#1F2937', borderColor: '#374151'}}>
+          <CoordinateMap 
+            tourists={tourists} 
+            geofences={geofences} 
+            onTouristClick={handleTouristClick}
+            selectedTourist={selectedTourist}
+          />
         </div>
 
         {/* Tourist Markers Overlay (Mock) */}
