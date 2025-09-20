@@ -59,6 +59,22 @@ function AppContent() {
               path="/settings" 
               element={<Settings />} 
             />
+            <Route 
+              path="/efir" 
+              element={<EFIRDocuments />} 
+            />
+            <Route 
+              path="/efir/create" 
+              element={<EFIRForm />} 
+            />
+            <Route 
+              path="/efir/:id" 
+              element={<EFIRDetail />} 
+            />
+            <Route 
+              path="/efir/:id/edit" 
+              element={<EFIRForm />} 
+            />
           </Routes>
         </main>
         {isModalOpen && selectedTourist && (
