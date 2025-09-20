@@ -173,34 +173,34 @@ const TouristDetailModal = ({ tourist, isOpen, onClose }) => {
           {/* Left Column - Identity & Profile */}
           <div className="col-span-12 lg:col-span-4 space-y-6">
             {/* Tourist Identity - Simplified and Clean */}
-            <Card className="command-card border-2 border-slate-600">
+            <Card className="border-2" style={{backgroundColor: '#1F2937', borderColor: '#374151'}}>
               <CardHeader className="command-card-header pb-4">
-                <CardTitle className="modal-section-title text-lg font-bold">
+                <CardTitle className="text-lg font-bold flex items-center gap-2" style={{color: '#F3F4F6'}}>
                   <CreditCard className="w-6 h-6" />
                   Tourist Identity
                 </CardTitle>
               </CardHeader>
               <CardContent className="command-card-content space-y-5">
                 <div className="flex items-center space-x-4">
-                  <Avatar className="w-24 h-24 ring-4 ring-blue-500 ring-opacity-50">
+                  <Avatar className="w-24 h-24 ring-4 ring-opacity-50" style={{ringColor: '#3B82F6'}}>
                     <AvatarImage src={fullTourist.photo_url} alt={fullTourist.full_name} />
-                    <AvatarFallback className="bg-blue-600 text-white text-2xl font-bold">
+                    <AvatarFallback className="text-2xl font-bold" style={{backgroundColor: '#3B82F6', color: '#FFFFFF'}}>
                       {fullTourist.full_name ? fullTourist.full_name.split(' ').map(n => n[0]).join('') : 'NA'}
                     </AvatarFallback>
                   </Avatar>
                   <div className="flex-1">
-                    <h3 className="text-2xl font-bold text-white mb-2">{fullTourist.full_name || 'Unknown'}</h3>
+                    <h3 className="text-2xl font-bold mb-2" style={{color: '#F3F4F6'}}>{fullTourist.full_name || 'Unknown'}</h3>
                     <div className="flex items-center space-x-2 mb-3">
-                      <Globe className="w-5 h-5 text-blue-400" />
-                      <span className="text-lg text-slate-200 font-medium">{fullTourist.nationality || 'Unknown'}</span>
+                      <Globe className="w-5 h-5" style={{color: '#3B82F6'}} />
+                      <span className="text-lg font-medium" style={{color: '#F3F4F6'}}>{fullTourist.nationality || 'Unknown'}</span>
                     </div>
                   </div>
                 </div>
 
                 {/* Digital ID - More Prominent */}
-                <div className="bg-gradient-to-r from-blue-900 to-blue-800 p-4 rounded-lg border border-blue-400">
-                  <p className="text-xs text-blue-200 mb-1 uppercase tracking-wide">Digital ID</p>
-                  <p className="text-lg font-mono font-bold text-white">{fullTourist.digital_id || 'N/A'}</p>
+                <div className="p-4 rounded-lg border" style={{background: 'linear-gradient(to right, #1E3A8A, #3B82F6)', borderColor: '#3B82F6'}}>
+                  <p className="text-xs mb-1 uppercase tracking-wide" style={{color: '#BFDBFE'}}>Digital ID</p>
+                  <p className="text-lg font-mono font-bold" style={{color: '#FFFFFF'}}>{fullTourist.digital_id || 'N/A'}</p>
                 </div>
               </CardContent>
             </Card>
