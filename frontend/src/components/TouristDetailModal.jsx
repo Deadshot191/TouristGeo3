@@ -229,20 +229,172 @@ This is an electronically generated document.
     return { efirNumber, efirDocument };
   };
 
-  const handleDownloadEFIR = () => {
+  const generateQRCode = async (efirNumber) => {
+    try {
+      const qrData = `E-FIR: ${efirNumber}\nVerification: https://tourism-safety.gov.in/verify/${efirNumber}\nGenerated: ${new Date().toISOString()}`;
+      const qrCodeDataURL = await QRCode.toDataURL(qrData, {
+        width: 150,
+        margin: 2,
+        color: {
+          dark: '#000000',
+          light: '#FFFFFF'
+        }
+      });
+      return qrCodeDataURL;
+    } catch (error) {
+      console.error('Error generating QR code:', error);
+      return null;
+    }
+  };
+
+  const handleDownloadEFIR = async () => {
     const { efirNumber, efirDocument } = generateEFIRDocument();
     
-    // Create and download the E-FIR as a text file
-    const blob = new Blob([efirDocument], { type: 'text/plain' });
-    const url = window.URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = `${efirNumber.replace(/\//g, '_')}.txt`;
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    window.URL.revokeObjectURL(url);
+    // Generate QR code
+    const qrCodeDataURL = await generateQRCode(efirNumber);
     
+    // Get signature if available
+    let signatureDataURL = null;
+    if (signaturePadRef.current && !signaturePadRef.current.isEmpty()) {
+      signatureDataURL = signaturePadRef.current.toDataURL();
+    }
+    
+    // Create PDF
+    const pdf = new jsPDF('p', 'mm', 'a4');
+    const pageWidth = pdf.internal.pageSize.getWidth();
+    const pageHeight = pdf.internal.pageSize.getHeight();
+    const margin = 20;
+    
+    // Header
+    pdf.setFontSize(16);
+    pdf.setFont('helvetica', 'bold');
+    pdf.text('ELECTRONIC FIRST INFORMATION REPORT (E-FIR)', pageWidth / 2, 30, { align: 'center' });
+    
+    // Add QR Code in top right
+    if (qrCodeDataURL) {
+      pdf.addImage(qrCodeDataURL, 'PNG', pageWidth - 45, 10, 25, 25);
+    }
+    
+    pdf.setFontSize(12);
+    pdf.setFont('helvetica', 'normal');
+    
+    let yPosition = 50;
+    const lineHeight = 7;
+    
+    // Document info
+    pdf.setFont('helvetica', 'bold');
+    pdf.text('E-FIR Number:', margin, yPosition);
+    pdf.setFont('helvetica', 'normal');
+    pdf.text(efirNumber, margin + 35, yPosition);
+    
+    yPosition += lineHeight;
+    pdf.setFont('helvetica', 'bold');
+    pdf.text('Version:', margin, yPosition);
+    pdf.setFont('helvetica', 'normal');
+    pdf.text(`v${documentVersion}`, margin + 20, yPosition);
+    
+    yPosition += lineHeight;
+    pdf.setFont('helvetica', 'bold');
+    pdf.text('Generated:', margin, yPosition);
+    pdf.setFont('helvetica', 'normal');
+    pdf.text(new Date().toLocaleString(), margin + 25, yPosition);
+    
+    yPosition += lineHeight * 2;
+    
+    // Tourist Information Section
+    pdf.setFont('helvetica', 'bold');
+    pdf.text('TOURIST INFORMATION', margin, yPosition);
+    yPosition += lineHeight;
+    
+    const touristInfo = [
+      `Name: ${fullTourist?.full_name || 'Unknown'}`,
+      `Digital ID: ${fullTourist?.digital_id || 'N/A'}`,
+      `Nationality: ${fullTourist?.nationality || 'Unknown'}`,
+      `Contact: ${fullTourist?.emergency_contacts?.[0]?.phone || 'N/A'}`,
+      `Location: ${fullTourist?.location?.address || 'Unknown'}`,
+      `Safety Score: ${fullTourist?.safety_score || 0}/100`
+    ];
+    
+    pdf.setFont('helvetica', 'normal');
+    touristInfo.forEach(info => {
+      pdf.text(info, margin, yPosition);
+      yPosition += lineHeight;
+    });
+    
+    yPosition += lineHeight;
+    
+    // Incident Details Section
+    pdf.setFont('helvetica', 'bold');
+    pdf.text('INCIDENT DETAILS', margin, yPosition);
+    yPosition += lineHeight;
+    
+    pdf.setFont('helvetica', 'normal');
+    pdf.text(`Type: ${efirData.incidentType}`, margin, yPosition);
+    yPosition += lineHeight;
+    
+    // Split long description into multiple lines
+    const description = efirData.incidentDescription;
+    const maxLineWidth = pageWidth - 2 * margin;
+    const descriptionLines = pdf.splitTextToSize(description, maxLineWidth);
+    pdf.text('Description:', margin, yPosition);
+    yPosition += lineHeight;
+    pdf.text(descriptionLines, margin, yPosition);
+    yPosition += descriptionLines.length * lineHeight + lineHeight;
+    
+    // Officer Information
+    pdf.setFont('helvetica', 'bold');
+    pdf.text('REPORTING OFFICER', margin, yPosition);
+    yPosition += lineHeight;
+    
+    pdf.setFont('helvetica', 'normal');
+    pdf.text(`Name: ${efirData.officerName}`, margin, yPosition);
+    yPosition += lineHeight;
+    pdf.text(`Badge: ${efirData.officerBadge}`, margin, yPosition);
+    yPosition += lineHeight;
+    pdf.text(`Station: ${efirData.stationName}`, margin, yPosition);
+    yPosition += lineHeight * 2;
+    
+    // Action Taken
+    if (efirData.actionTaken) {
+      pdf.setFont('helvetica', 'bold');
+      pdf.text('ACTION TAKEN', margin, yPosition);
+      yPosition += lineHeight;
+      
+      pdf.setFont('helvetica', 'normal');
+      const actionLines = pdf.splitTextToSize(efirData.actionTaken, maxLineWidth);
+      pdf.text(actionLines, margin, yPosition);
+      yPosition += actionLines.length * lineHeight + lineHeight;
+    }
+    
+    // Add signature if available
+    if (signatureDataURL) {
+      yPosition += lineHeight;
+      pdf.setFont('helvetica', 'bold');
+      pdf.text('DIGITAL SIGNATURE', margin, yPosition);
+      yPosition += lineHeight;
+      
+      // Add signature image
+      pdf.addImage(signatureDataURL, 'PNG', margin, yPosition, 60, 30);
+      yPosition += 35;
+      
+      pdf.setFont('helvetica', 'normal');
+      pdf.setFontSize(10);
+      pdf.text(`Digitally signed by: ${efirData.officerName}`, margin, yPosition);
+      yPosition += lineHeight;
+      pdf.text(`Date: ${new Date().toLocaleString()}`, margin, yPosition);
+    }
+    
+    // Footer with verification info
+    pdf.setFontSize(8);
+    pdf.setFont('helvetica', 'italic');
+    pdf.text('This document is electronically generated and digitally verified.', pageWidth / 2, pageHeight - 20, { align: 'center' });
+    pdf.text('Scan QR code for online verification.', pageWidth / 2, pageHeight - 15, { align: 'center' });
+    
+    // Save PDF
+    pdf.save(`${efirNumber.replace(/\//g, '_')}_v${documentVersion}.pdf`);
+    
+    // Increment version for next generation
+    setDocumentVersion(prev => prev + 1);
     setEfirModalOpen(false);
   };
 
