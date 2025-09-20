@@ -410,7 +410,7 @@ const TouristDetailModal = ({ tourist, isOpen, onClose }) => {
           {/* Right Column - History & Response Actions */}
           <div className="col-span-12 lg:col-span-4 space-y-6">
             {/* Location History Trail */}
-            <Card className="command-card border-2 border-green-500">
+            <Card className="command-card border-2 border-green-500" style={{backgroundColor: '#1F2937'}}>
               <CardHeader className="command-card-header pb-4">
                 <CardTitle className="modal-section-title text-lg font-bold">
                   <MapPin className="w-6 h-6 text-green-400" />
