@@ -662,6 +662,214 @@ This is an electronically generated document.
           </div>
         </div>
       </DialogContent>
+
+      {/* E-FIR Generation Modal */}
+      <Dialog open={efirModalOpen} onOpenChange={setEfirModalOpen}>
+        <DialogContent className="max-w-4xl max-h-[95vh] overflow-y-auto" 
+                       style={{backgroundColor: '#1F2937', borderColor: '#374151'}}>
+          <DialogHeader className="pb-6 border-b" style={{borderColor: '#374151'}}>
+            <DialogTitle className="text-2xl font-bold flex items-center gap-3" style={{color: '#F3F4F6'}}>
+              <FileText className="w-7 h-7 text-blue-400" />
+              Generate Electronic First Information Report (E-FIR)
+            </DialogTitle>
+            <p style={{color: '#9CA3AF'}}>
+              Create official E-FIR for tourist emergency incident
+            </p>
+          </DialogHeader>
+
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-6">
+            {/* Left Column - Incident Details */}
+            <div className="space-y-4">
+              <Card style={{backgroundColor: '#374151', borderColor: '#4B5563'}}>
+                <CardHeader>
+                  <CardTitle style={{color: '#F3F4F6'}}>Incident Information</CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <div>
+                    <label className="block text-sm font-medium mb-2" style={{color: '#9CA3AF'}}>
+                      Incident Type
+                    </label>
+                    <Select value={efirData.incidentType} onValueChange={(value) => handleEfirInputChange('incidentType', value)}>
+                      <SelectTrigger style={{backgroundColor: '#1F2937', borderColor: '#4B5563', color: '#F3F4F6'}}>
+                        <SelectValue placeholder="Select incident type" />
+                      </SelectTrigger>
+                      <SelectContent style={{backgroundColor: '#1F2937', borderColor: '#4B5563'}}>
+                        <SelectItem value="Panic Button" style={{color: '#F3F4F6'}}>Panic Button</SelectItem>
+                        <SelectItem value="Geofence Breach" style={{color: '#F3F4F6'}}>Geofence Breach</SelectItem>
+                        <SelectItem value="Route Deviation" style={{color: '#F3F4F6'}}>Route Deviation</SelectItem>
+                        <SelectItem value="Prolonged Inactivity" style={{color: '#F3F4F6'}}>Prolonged Inactivity</SelectItem>
+                        <SelectItem value="Missing Person" style={{color: '#F3F4F6'}}>Missing Person</SelectItem>
+                        <SelectItem value="Medical Emergency" style={{color: '#F3F4F6'}}>Medical Emergency</SelectItem>
+                        <SelectItem value="Theft/Robbery" style={{color: '#F3F4F6'}}>Theft/Robbery</SelectItem>
+                        <SelectItem value="Accident" style={{color: '#F3F4F6'}}>Accident</SelectItem>
+                        <SelectItem value="Other" style={{color: '#F3F4F6'}}>Other</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium mb-2" style={{color: '#9CA3AF'}}>
+                      Incident Description
+                    </label>
+                    <Textarea
+                      value={efirData.incidentDescription}
+                      onChange={(e) => handleEfirInputChange('incidentDescription', e.target.value)}
+                      placeholder="Detailed description of the incident..."
+                      rows={4}
+                      style={{backgroundColor: '#1F2937', borderColor: '#4B5563', color: '#F3F4F6'}}
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium mb-2" style={{color: '#9CA3AF'}}>
+                      Additional Details
+                    </label>
+                    <Textarea
+                      value={efirData.additionalDetails}
+                      onChange={(e) => handleEfirInputChange('additionalDetails', e.target.value)}
+                      placeholder="Any additional relevant information..."
+                      rows={3}
+                      style={{backgroundColor: '#1F2937', borderColor: '#4B5563', color: '#F3F4F6'}}
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium mb-2" style={{color: '#9CA3AF'}}>
+                      Witnesses (if any)
+                    </label>
+                    <Textarea
+                      value={efirData.witnesses}
+                      onChange={(e) => handleEfirInputChange('witnesses', e.target.value)}
+                      placeholder="Details of witnesses present..."
+                      rows={2}
+                      style={{backgroundColor: '#1F2937', borderColor: '#4B5563', color: '#F3F4F6'}}
+                    />
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+
+            {/* Right Column - Officer Details & Action */}
+            <div className="space-y-4">
+              <Card style={{backgroundColor: '#374151', borderColor: '#4B5563'}}>
+                <CardHeader>
+                  <CardTitle style={{color: '#F3F4F6'}}>Reporting Officer</CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <div>
+                    <label className="block text-sm font-medium mb-2" style={{color: '#9CA3AF'}}>
+                      Officer Name
+                    </label>
+                    <Input
+                      value={efirData.officerName}
+                      onChange={(e) => handleEfirInputChange('officerName', e.target.value)}
+                      placeholder="Officer full name"
+                      style={{backgroundColor: '#1F2937', borderColor: '#4B5563', color: '#F3F4F6'}}
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium mb-2" style={{color: '#9CA3AF'}}>
+                      Badge Number
+                    </label>
+                    <Input
+                      value={efirData.officerBadge}
+                      onChange={(e) => handleEfirInputChange('officerBadge', e.target.value)}
+                      placeholder="Officer badge/ID number"
+                      style={{backgroundColor: '#1F2937', borderColor: '#4B5563', color: '#F3F4F6'}}
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium mb-2" style={{color: '#9CA3AF'}}>
+                      Police Station
+                    </label>
+                    <Input
+                      value={efirData.stationName}
+                      onChange={(e) => handleEfirInputChange('stationName', e.target.value)}
+                      placeholder="Police station name"
+                      style={{backgroundColor: '#1F2937', borderColor: '#4B5563', color: '#F3F4F6'}}
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium mb-2" style={{color: '#9CA3AF'}}>
+                      Action Taken
+                    </label>
+                    <Textarea
+                      value={efirData.actionTaken}
+                      onChange={(e) => handleEfirInputChange('actionTaken', e.target.value)}
+                      placeholder="Describe actions taken or planned..."
+                      rows={4}
+                      style={{backgroundColor: '#1F2937', borderColor: '#4B5563', color: '#F3F4F6'}}
+                    />
+                  </div>
+                </CardContent>
+              </Card>
+
+              {/* Tourist Summary */}
+              <Card style={{backgroundColor: '#374151', borderColor: '#4B5563'}}>
+                <CardHeader>
+                  <CardTitle style={{color: '#F3F4F6'}}>Tourist Summary</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-2 text-sm">
+                    <div className="flex justify-between">
+                      <span style={{color: '#9CA3AF'}}>Name:</span>
+                      <span style={{color: '#F3F4F6'}}>{fullTourist?.full_name || 'Unknown'}</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span style={{color: '#9CA3AF'}}>Digital ID:</span>
+                      <span style={{color: '#F3F4F6'}}>{fullTourist?.digital_id || 'N/A'}</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span style={{color: '#9CA3AF'}}>Nationality:</span>
+                      <span style={{color: '#F3F4F6'}}>{fullTourist?.nationality || 'Unknown'}</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span style={{color: '#9CA3AF'}}>Status:</span>
+                      <span style={{color: getStatusBackgroundColor(fullTourist?.status)}}>
+                        {fullTourist?.status?.toUpperCase() || 'UNKNOWN'}
+                      </span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span style={{color: '#9CA3AF'}}>Location:</span>
+                      <span style={{color: '#F3F4F6'}} className="text-right max-w-48 truncate">
+                        {fullTourist?.location?.address || 'Unknown'}
+                      </span>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+          </div>
+
+          {/* Action Buttons */}
+          <div className="flex justify-end space-x-4 mt-6 pt-6 border-t" style={{borderColor: '#374151'}}>
+            <Button 
+              variant="outline" 
+              onClick={() => setEfirModalOpen(false)}
+              className="border-slate-500 text-slate-300 hover:bg-slate-700"
+            >
+              Cancel
+            </Button>
+            <Button 
+              onClick={handlePrintEFIR}
+              className="bg-gray-600 hover:bg-gray-700 text-white"
+            >
+              <Printer className="w-4 h-4 mr-2" />
+              Print E-FIR
+            </Button>
+            <Button 
+              onClick={handleDownloadEFIR}
+              className="bg-blue-600 hover:bg-blue-700 text-white"
+            >
+              <Download className="w-4 h-4 mr-2" />
+              Download E-FIR
+            </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
     </Dialog>
   );
 };
