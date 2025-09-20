@@ -1303,6 +1303,9 @@ class TourismSafetyAPITester:
         await self.test_new_alert_types()
         await self.test_database_operations()
         
+        # STATIC GEOFENCING WITH GEOAPIFY INTEGRATION TESTS
+        await self.test_static_geofencing_with_geoapify()
+        
         # DIGITAL ID SECURITY INTEGRATION TESTS
         await self.test_digital_id_integration()
         await self.test_service_authentication()
