@@ -165,48 +165,48 @@ const LiveMap = ({ onTouristSelect }) => {
 
         {/* Enhanced KPI Cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-          <Card className="kpi-card">
-            <CardContent className="kpi-card-content">
+          <Card className="min-w-[140px] border" style={{backgroundColor: '#1F2937', borderColor: '#374151'}}>
+            <CardContent className="p-4">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="kpi-label mb-1">Total Active</p>
-                  <p className="kpi-value" style={{color: '#3B82F6'}}>{kpis.total_active_tourists || tourists.length}</p>
+                  <p className="text-xs font-medium uppercase tracking-wide mb-1" style={{color: '#9CA3AF'}}>Total Active</p>
+                  <p className="text-2xl font-bold leading-none" style={{color: '#3B82F6'}}>{kpis.total_active_tourists || tourists.length}</p>
                 </div>
                 <Users className="w-8 h-8" style={{color: '#3B82F6'}} />
               </div>
             </CardContent>
           </Card>
 
-          <Card className="kpi-card">
-            <CardContent className="kpi-card-content">
+          <Card className="min-w-[140px] border" style={{backgroundColor: '#1F2937', borderColor: '#374151'}}>
+            <CardContent className="p-4">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="kpi-label mb-1">Active Alerts</p>
-                  <p className="kpi-value" style={{color: '#EF4444'}}>{kpis.active_alerts}</p>
+                  <p className="text-xs font-medium uppercase tracking-wide mb-1" style={{color: '#9CA3AF'}}>Active Alerts</p>
+                  <p className="text-2xl font-bold leading-none" style={{color: '#EF4444'}}>{kpis.active_alerts}</p>
                 </div>
                 <AlertTriangle className="w-8 h-8" style={{color: '#EF4444'}} />
               </div>
             </CardContent>
           </Card>
 
-          <Card className="kpi-card">
-            <CardContent className="kpi-card-content">
+          <Card className="min-w-[140px] border" style={{backgroundColor: '#1F2937', borderColor: '#374151'}}>
+            <CardContent className="p-4">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="kpi-label mb-1">Safe Status</p>
-                  <p className="kpi-value" style={{color: '#22C55E'}}>{kpis.safe_status}</p>
+                  <p className="text-xs font-medium uppercase tracking-wide mb-1" style={{color: '#9CA3AF'}}>Safe Status</p>
+                  <p className="text-2xl font-bold leading-none" style={{color: '#22C55E'}}>{kpis.safe_status}</p>
                 </div>
                 <Shield className="w-8 h-8" style={{color: '#22C55E'}} />
               </div>
             </CardContent>
           </Card>
 
-          <Card className="kpi-card">
-            <CardContent className="kpi-card-content">
+          <Card className="min-w-[140px] border" style={{backgroundColor: '#1F2937', borderColor: '#374151'}}>
+            <CardContent className="p-4">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="kpi-label mb-1">High Risk</p>
-                  <p className="kpi-value" style={{color: '#F59E0B'}}>{kpis.high_risk_tourists || 0}</p>
+                  <p className="text-xs font-medium uppercase tracking-wide mb-1" style={{color: '#9CA3AF'}}>High Risk</p>
+                  <p className="text-2xl font-bold leading-none" style={{color: '#F59E0B'}}>{kpis.high_risk_tourists || 0}</p>
                 </div>
                 <AlertTriangle className="w-8 h-8" style={{color: '#F59E0B'}} />
               </div>
