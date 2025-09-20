@@ -1,104 +1,104 @@
 {
   "Health Check Root": {
-    "success": false,
-    "details": "Status: 502, Response: ",
+    "success": true,
+    "details": "Status: 200, Response: {'message': 'Tourism Safety API', 'status': 'operational', 'timestamp': '2025-09-20T02:28:30.690236'}",
     "response_data": null,
-    "timestamp": "2025-09-20T02:27:24.690020"
+    "timestamp": "2025-09-20T02:28:30.692399"
   },
   "Detailed Health Check": {
-    "success": false,
-    "details": "Status: 502, Database: error",
+    "success": true,
+    "details": "Status: 200, Database: connected",
     "response_data": null,
-    "timestamp": "2025-09-20T02:27:24.703304"
+    "timestamp": "2025-09-20T02:28:30.700555"
   },
   "Login Valid Credentials": {
     "success": false,
-    "details": "Status: 502, Response: ",
+    "details": "Status: 401, Response: {'detail': 'Incorrect email or password'}",
     "response_data": null,
-    "timestamp": "2025-09-20T02:27:25.062046"
+    "timestamp": "2025-09-20T02:28:30.713042"
   },
   "Tourist Management": {
     "success": false,
     "details": "No auth token available",
     "response_data": null,
-    "timestamp": "2025-09-20T02:27:25.062082"
+    "timestamp": "2025-09-20T02:28:30.713076"
   },
   "Location Services": {
     "success": false,
     "details": "No auth token available",
     "response_data": null,
-    "timestamp": "2025-09-20T02:27:25.062090"
+    "timestamp": "2025-09-20T02:28:30.713084"
   },
   "Alerts System": {
     "success": false,
     "details": "No auth token available",
     "response_data": null,
-    "timestamp": "2025-09-20T02:27:25.062098"
+    "timestamp": "2025-09-20T02:28:30.713092"
   },
   "Geofencing": {
     "success": false,
     "details": "No auth token available",
     "response_data": null,
-    "timestamp": "2025-09-20T02:27:25.062106"
+    "timestamp": "2025-09-20T02:28:30.713099"
   },
   "Analytics Dashboard": {
     "success": false,
     "details": "No auth token available",
     "response_data": null,
-    "timestamp": "2025-09-20T02:27:25.062114"
+    "timestamp": "2025-09-20T02:28:30.713107"
   },
   "AI Anomaly Detection": {
     "success": false,
     "details": "No auth token available",
     "response_data": null,
-    "timestamp": "2025-09-20T02:27:25.062123"
+    "timestamp": "2025-09-20T02:28:30.713116"
   },
   "Enhanced Geofencing": {
     "success": false,
     "details": "No auth token available",
     "response_data": null,
-    "timestamp": "2025-09-20T02:27:25.062130"
+    "timestamp": "2025-09-20T02:28:30.713124"
   },
   "New Alert Types": {
     "success": false,
     "details": "No auth token available",
     "response_data": null,
-    "timestamp": "2025-09-20T02:27:25.062137"
+    "timestamp": "2025-09-20T02:28:30.713132"
   },
   "Database Operations": {
     "success": false,
     "details": "No auth token available",
     "response_data": null,
-    "timestamp": "2025-09-20T02:27:25.062156"
+    "timestamp": "2025-09-20T02:28:30.713141"
   },
   "Digital ID Integration": {
     "success": false,
     "details": "No auth token available",
     "response_data": null,
-    "timestamp": "2025-09-20T02:27:25.062169"
+    "timestamp": "2025-09-20T02:28:30.713153"
   },
   "Digital ID Service Configuration": {
     "success": false,
     "details": "URL configured: False, API Key configured: False",
     "response_data": null,
-    "timestamp": "2025-09-20T02:27:25.062194"
+    "timestamp": "2025-09-20T02:28:30.713175"
   },
   "Digital ID Service Health": {
     "success": false,
     "details": "No Digital ID service URL configured",
     "response_data": null,
-    "timestamp": "2025-09-20T02:27:25.062199"
+    "timestamp": "2025-09-20T02:28:30.713183"
   },
   "Encrypted Data Separation": {
     "success": false,
     "details": "No auth token available",
     "response_data": null,
-    "timestamp": "2025-09-20T02:27:25.062207"
+    "timestamp": "2025-09-20T02:28:30.713191"
   },
   "E-FIR System": {
     "success": false,
     "details": "No auth token available",
     "response_data": null,
-    "timestamp": "2025-09-20T02:27:25.062216"
+    "timestamp": "2025-09-20T02:28:30.713199"
   }
 }
