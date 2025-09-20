@@ -85,28 +85,37 @@ code {
     }
 }
 
-/* Enhanced Global Styles for Professional Command Center */
+/* Unified Color System for Smart Tourist Safety System */
 @layer components {
+  
+  /* ===== BASE THEME COLORS ===== */
+  
   /* Typography Hierarchy */
   .page-title {
-    @apply text-3xl font-bold tracking-tight text-white;
+    @apply text-3xl font-bold tracking-tight;
+    color: #F3F4F6; /* Primary Text */
   }
   
   .section-title {
-    @apply text-xl font-semibold text-white;
+    @apply text-xl font-semibold;
+    color: #F3F4F6; /* Primary Text */
   }
   
   .card-title {
-    @apply text-lg font-medium text-white;
+    @apply text-lg font-medium;
+    color: #F3F4F6; /* Primary Text */
   }
   
   .subsection-title {
-    @apply text-base font-medium text-slate-300;
+    @apply text-base font-medium;
+    color: #9CA3AF; /* Secondary Text */
   }
   
   /* Consistent Card Styling */
   .command-card {
-    @apply bg-slate-800 border-slate-700 rounded-lg shadow-sm;
+    @apply rounded-lg shadow-sm border;
+    background-color: #1F2937; /* Card Background */
+    border-color: #374151;
   }
   
   .command-card-header {
@@ -128,32 +137,50 @@ code {
   
   .kpi-value {
     @apply text-2xl font-bold leading-none;
+    color: #F3F4F6; /* Primary Text */
   }
   
   .kpi-label {
-    @apply text-xs font-medium text-slate-400 uppercase tracking-wide;
+    @apply text-xs font-medium uppercase tracking-wide;
+    color: #9CA3AF; /* Secondary Text */
   }
   
   /* Tourist Card Layout */
   .tourist-card {
-    @apply command-card hover:bg-slate-700 transition-all duration-200 hover:shadow-lg hover:scale-[1.02];
+    @apply command-card transition-all duration-200 hover:shadow-lg hover:scale-[1.02];
+    background-color: #1F2937; /* Card Background */
+  }
+  
+  .tourist-card:hover {
+    background-color: #374151; /* Slightly lighter on hover */
   }
   
   .tourist-card-content {
     @apply p-5;
   }
   
-  /* Status Badge Improvements */
+  /* ===== STATUS INDICATOR COLORS ===== */
+  
+  /* Status Badges */
   .status-badge-safe {
-    @apply bg-emerald-100 text-emerald-800 border-emerald-200 px-3 py-1 text-sm font-semibold;
+    @apply px-3 py-1 text-sm font-semibold rounded border;
+    background-color: #22C55E; /* Safe Green */
+    color: #FFFFFF;
+    border-color: #16A34A;
   }
   
   .status-badge-anomaly {
-    @apply bg-amber-100 text-amber-800 border-amber-200 px-3 py-1 text-sm font-semibold;
+    @apply px-3 py-1 text-sm font-semibold rounded border;
+    background-color: #F59E0B; /* Warning Amber */
+    color: #FFFFFF;
+    border-color: #D97706;
   }
   
   .status-badge-panic {
-    @apply bg-red-100 text-red-800 border-red-200 px-3 py-1 text-sm font-semibold;
+    @apply px-3 py-1 text-sm font-semibold rounded border;
+    background-color: #EF4444; /* Panic Red */
+    color: #FFFFFF;
+    border-color: #DC2626;
   }
   
   /* Modal Improvements */
@@ -162,32 +189,64 @@ code {
   }
   
   .modal-section-title {
-    @apply text-lg font-semibold text-white flex items-center gap-2 mb-3;
+    @apply text-lg font-semibold flex items-center gap-2 mb-3;
+    color: #F3F4F6; /* Primary Text */
   }
   
-  /* Action Button Improvements */
+  /* ===== ACTION BUTTONS ===== */
+  
   .action-btn-primary {
-    @apply bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md transition-colors duration-200 flex items-center gap-2 font-medium;
+    @apply px-4 py-2 rounded-md transition-colors duration-200 flex items-center gap-2 font-medium;
+    background-color: #3B82F6; /* Primary Button Blue */
+    color: #FFFFFF;
+  }
+  
+  .action-btn-primary:hover {
+    background-color: #2563EB;
   }
   
   .action-btn-danger {
-    @apply bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-md transition-colors duration-200 flex items-center gap-2 font-medium;
+    @apply px-4 py-2 rounded-md transition-colors duration-200 flex items-center gap-2 font-medium;
+    background-color: #EF4444; /* Panic Red */
+    color: #FFFFFF;
+  }
+  
+  .action-btn-danger:hover {
+    background-color: #DC2626;
   }
   
   .action-btn-success {
-    @apply bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 rounded-md transition-colors duration-200 flex items-center gap-2 font-medium;
+    @apply px-4 py-2 rounded-md transition-colors duration-200 flex items-center gap-2 font-medium;
+    background-color: #22C55E; /* Safe Green */
+    color: #FFFFFF;
+  }
+  
+  .action-btn-success:hover {
+    background-color: #16A34A;
   }
   
   .action-btn-warning {
-    @apply bg-amber-600 hover:bg-amber-700 text-white px-4 py-2 rounded-md transition-colors duration-200 flex items-center gap-2 font-medium;
+    @apply px-4 py-2 rounded-md transition-colors duration-200 flex items-center gap-2 font-medium;
+    background-color: #F59E0B; /* Warning Amber */
+    color: #FFFFFF;
+  }
+  
+  .action-btn-warning:hover {
+    background-color: #D97706;
   }
   
   /* Map Popup Improvements */
   .map-popup {
-    @apply bg-slate-800 border border-slate-600 rounded-lg shadow-xl p-4 min-w-[280px] max-w-[320px];
+    @apply rounded-lg shadow-xl p-4 min-w-[280px] max-w-[320px] border;
+    background-color: #1F2937; /* Card Background */
+    border-color: #374151;
+    color: #F3F4F6; /* Primary Text */
   }
   
   .map-popup-compact {
-    @apply bg-slate-800 border border-slate-600 rounded-lg shadow-xl p-3 min-w-[240px] max-w-[280px];
+    @apply rounded-lg shadow-xl p-3 min-w-[240px] max-w-[280px] border;
+    background-color: #1F2937; /* Card Background */
+    border-color: #374151;
+    color: #F3F4F6; /* Primary Text */
   }
 }
