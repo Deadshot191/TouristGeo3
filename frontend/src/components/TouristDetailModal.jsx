@@ -377,10 +377,12 @@ const TouristDetailModal = ({ tourist, isOpen, onClose }) => {
                     alerts.filter(alert => alert.status === 'new' || alert.status === 'in_progress').map((alert, index) => (
                       <div key={alert.id || index} className="p-4 bg-red-900 rounded-lg border-2 border-red-500 shadow-lg">
                         <div className="flex items-center justify-between mb-3">
-                          <Badge className="bg-red-200 text-red-900 border-red-400 px-3 py-1 text-sm font-bold">
+                          <Badge className={`px-3 py-1 text-sm font-bold ${getAlertTypeColor(alert.alert_type)}`}
+                                 style={{backgroundColor: getAlertTypeBackgroundColor(alert.alert_type)}}>
                             {formatAlertType(alert.alert_type)}
                           </Badge>
-                          <Badge className="bg-yellow-200 text-yellow-900 border-yellow-400 px-3 py-1 text-sm font-bold">
+                          <Badge className="text-white border-yellow-500 px-3 py-1 text-sm font-bold"
+                                 style={{backgroundColor: '#F59E0B'}}>
                             {alert.status.replace('_', ' ').toUpperCase()}
                           </Badge>
                         </div>
