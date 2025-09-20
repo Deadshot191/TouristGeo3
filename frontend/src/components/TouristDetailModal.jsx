@@ -137,26 +137,34 @@ const TouristDetailModal = ({ tourist, isOpen, onClose }) => {
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-[95vw] max-h-[95vh] overflow-y-auto bg-slate-800 border-4 border-slate-600 text-white shadow-2xl">
-        <DialogHeader className="pb-6 border-b-2 border-slate-600 bg-gradient-to-r from-slate-800 to-slate-700 -mx-6 -mt-6 px-6 pt-6">
+      <DialogContent className="max-w-[95vw] max-h-[95vh] overflow-y-auto border-4 text-white shadow-2xl" 
+                     style={{backgroundColor: '#1F2937', borderColor: '#374151'}}>
+        <DialogHeader className="pb-6 border-b-2 -mx-6 -mt-6 px-6 pt-6" 
+                      style={{borderColor: '#374151', background: 'linear-gradient(to right, #1F2937, #374151)'}}>
           <div className="flex items-center justify-between">
             <div>
-              <DialogTitle className="text-3xl font-black text-white mb-2">
+              <DialogTitle className="text-3xl font-black mb-2" style={{color: '#F3F4F6'}}>
                 🚨 TOURIST MONITORING REPORT
               </DialogTitle>
-              <p className="text-slate-300 text-lg font-medium">
+              <p className="text-lg font-medium" style={{color: '#9CA3AF'}}>
                 Real-time Emergency Operations Dashboard
               </p>
             </div>
             <div className="flex items-center space-x-4">
               {/* Live Status Indicator */}
-              <div className="flex items-center space-x-2 bg-slate-700 px-4 py-2 rounded-lg border-2 border-slate-500">
-                <div className="w-3 h-3 bg-green-500 rounded-full animate-pulse"></div>
-                <span className="text-green-400 font-bold text-sm">LIVE</span>
+              <div className="flex items-center space-x-2 px-4 py-2 rounded-lg border-2" 
+                   style={{backgroundColor: '#1F2937', borderColor: '#374151'}}>
+                <div className="w-3 h-3 rounded-full animate-pulse" style={{backgroundColor: '#22C55E'}}></div>
+                <span className="font-bold text-sm" style={{color: '#22C55E'}}>LIVE</span>
               </div>
-              <Badge className={`${getStatusColor(fullTourist.status)} px-6 py-3 text-xl font-black border-4`}>
+              <div className={`px-6 py-3 text-xl font-black border-4 rounded`}
+                   style={{
+                     backgroundColor: getStatusBackgroundColor(fullTourist.status),
+                     borderColor: getStatusBorderColor(fullTourist.status),
+                     color: '#FFFFFF'
+                   }}>
                 {fullTourist.status?.toUpperCase() || 'UNKNOWN'}
-              </Badge>
+              </div>
             </div>
           </div>
         </DialogHeader>
