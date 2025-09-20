@@ -216,7 +216,7 @@ const TouristDetailModal = ({ tourist, isOpen, onClose }) => {
             </Card>
 
             {/* Trip Information - Streamlined */}
-            <Card className="command-card border-2 border-slate-600">
+            <Card className="command-card border-2 border-slate-600" style={{backgroundColor: '#1F2937'}}>
               <CardHeader className="command-card-header pb-4">
                 <CardTitle className="modal-section-title text-lg font-bold">
                   <Calendar className="w-6 h-6" />
@@ -242,7 +242,7 @@ const TouristDetailModal = ({ tourist, isOpen, onClose }) => {
             </Card>
 
             {/* Emergency Contacts - Operator Focused */}
-            <Card className="command-card border-2 border-slate-600">
+            <Card className="command-card border-2 border-slate-600" style={{backgroundColor: '#1F2937'}}>
               <CardHeader className="command-card-header pb-4">
                 <CardTitle className="modal-section-title text-lg font-bold">
                   <Phone className="w-6 h-6" />
