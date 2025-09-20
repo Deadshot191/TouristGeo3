@@ -36,7 +36,7 @@ function AppContent() {
 
   return (
     <ProtectedRoute>
-      <div className="flex h-screen bg-slate-900">
+      <div className="flex h-screen" style={{backgroundColor: '#111827'}}>
         <Sidebar />
         <main className="flex-1 overflow-hidden">
           <Routes>
