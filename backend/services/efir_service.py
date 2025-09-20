@@ -23,8 +23,8 @@ except ImportError:
         EFIRFilters, DocumentVersion, DigitalSignature
     )
     from database import get_database
-    from signature_service import SignatureService
-    from pdf_service import PDFService
+    from services.signature_service import SignatureService
+    from services.pdf_service import PDFService
 
 
 class EFIRService:
